@@ -18,7 +18,7 @@ const SignUp = (props) => {
   const [password, setpassword] = useState('');
 
   createAccount = () => async (props) => {
-    fetch("http://localhost:3000/register", {
+    fetch("http://192.168.1.11:5000/register", {
       method: "POST",
       headers: {
         'Content-Type': 'application/json'
