@@ -10,16 +10,18 @@ const createToken = (id) => {
 module.exports.signUp = async (req, res) => {
     console.log(req.body);
     const { login, email, password } = req.body
-    try {
-        const user = await UserModel.create({ login, email, password });
-        res.status(201).json({ user: user._id });
-    }
-    catch (err) {
-        const errors = signUpErrors(err);
-        res.status(200).send({ errors })
+try {
+    const user = await UserModel.create({ login, email, password });
+    res.status(201).json({ user: user._id });
+}
+catch (err) {
+    const errors = signUpErrors(err);
+    res.status(200).send({ errors })
 
-    }
+}
 };
+  
+
 
 module.exports.signIn = async (req, res) => {
     const { login, password } = req.body
@@ -47,7 +49,25 @@ module.exports.logout = (req, res) => {
 
 
 
+/*
+const newUser = new UserModel({
+    login: req.body.login,
+    email: req.body.email,
+    password: req.body.email
 
+
+
+
+});
+try {
+    const user = await newUser.save();
+    return res.status(201).json(user);
+} catch (err) {
+    const errors = signUpErrors(err);
+    res.status(200).send({ errors })
+}
+
+};*/
 
 
 

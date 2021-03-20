@@ -1,7 +1,7 @@
 package com.myapp;
 
 import com.facebook.react.ReactActivity;
-
+import net.zubricky.AndroidKeyboardAdjust.AndroidKeyboardAdjustPackage;
 
 public class MainActivity extends ReactActivity {
 
@@ -16,6 +16,6 @@ public class MainActivity extends ReactActivity {
   }
  
   
-
+ 
 }
 

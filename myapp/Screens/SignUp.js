@@ -1,13 +1,12 @@
 import 'react-native-gesture-handler';
 import React, { Component, useState } from 'react';
-import { View, Text, Image, Animated, Dimensions, TextInput, TouchableOpacity, Button } from 'react-native';
+import { View, Text, Image, Animated, Dimensions, TextInput, ScrollView, TouchableOpacity, Button } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import { styles } from '../Styles/style';
 import LinearGradient from 'react-native-linear-gradient';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 import { registerUser } from "../service/apis";
-
 
 const { height } = Dimensions.get("screen");
 
@@ -18,7 +17,11 @@ export default class signUp extends Component {
       loading: true,
       login: '',
       password: '',
-      email: ''
+      confirmPassword: '',
+      email: '',
+      icon: 'eye-off-outline',
+      showPassword: true,
+
     };
   }
 
@@ -26,7 +29,7 @@ export default class signUp extends Component {
     AndroidKeyboardAdjust.setAdjustPan()
   }
   handleRegister = () => {
-    let { login, email, password } = this.state
+    let { login, email, password, } = this.state
 
     registerUser({
       login,
@@ -40,7 +43,17 @@ export default class signUp extends Component {
     });
 
 
+  };
+
+
+  changeIcon = () => {
+    this.setState(prevState => ({
+      icon: prevState.icon === 'eye-outline' ? 'eye-off-outline' : 'eye-outline',
+      showPassword: !prevState.showPassword
+    }));
+
   }
+
 
 
 
@@ -51,7 +64,7 @@ export default class signUp extends Component {
 
   render() {
     return (
-      <View>
+      <ScrollView>
         <Image source={require('../components/img/logo2.jpg')} style={styles.logo} />
 
         <View style={[styles.centerAlign, {
@@ -73,35 +86,33 @@ export default class signUp extends Component {
 
                 <View>
                   <Icon style={styles.inputIcon} name={'ios-lock-closed'} size={20} color='#4169e1' />
-                  <TextInput secureTextEntry={true} placeholder="Password" style={styles.input} onChangeText={(text) => this.setState({ password: text })} />
+                  <TextInput style={styles.input}
+                    secureTextEntry={this.state.showPassword} placeholder="Password" onChangeText={(text) => this.setState({ password: text })} />
 
                   <View>
                     <Icon style={styles.inputIcon} name={'ios-lock-closed'} size={20} color='#4169e1' />
-                    <TextInput secureTextEntry={true} placeholder="Repeat password" style={styles.input} onChangeText={(text) => this.setState({ password: text })} />
+                    <TextInput style={styles.input}
+                      secureTextEntry={this.state.showPassword} placeholder="Confirm password" />
                   </View>
-                  <TouchableOpacity style={styles.eye}>
-                    <Icon name={'eye-off-outline'} size={20} color='#888' />
+                  <TouchableOpacity style={styles.eye} onPress={() => this.changeIcon()}>
+                    <Icon name={this.state.icon} size={20} color='#888' />
                   </TouchableOpacity>
 
                 </View>
 
-                <TouchableOpacity style={styles.eye}>
-                  <Icon name={'eye-off-outline'} size={20} color='#888' />
+                <TouchableOpacity style={styles.eye} onPress={() => this.changeIcon()}>
+                  <Icon name={this.state.icon} size={20} color='#888' />
                 </TouchableOpacity>
 
               </View>
             </View>
 
-            <View style={{ alignItems: "center", marginBottom: 20}}>
+            <View style={{ alignItems: "center", marginBottom: 20 }}>
               <TouchableOpacity onPress={this.handleRegister}>
                 <LinearGradient style={{ padding: 10, borderRadius: 20, marginTop: 20, height: 50, width: 300 }} colors={['#0000ff', '#4169e1', '#fa8072']} >
                   <Text style={{ color: 'white', textAlign: "center", fontWeight: 'bold', fontSize: 18 }}>SIGN UP</Text>
                 </LinearGradient>
               </TouchableOpacity>
-
-
-
-
             </View>
             <View style={{ flex: 0.5, alignItems: "center" }}>
               <Text style={{ color: '#888', marginLeft: 10 }}>Already have an account?</Text>
@@ -112,12 +123,13 @@ export default class signUp extends Component {
 
           </View>
         </View>
-      </View>
+      </ScrollView>
 
 
 
     )
   }
 }
+
 
 
