@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { Component, useState } from 'react';
-import { View, Text, Image, Animated, Dimensions, TextInput, ScrollView, TouchableOpacity, Button } from 'react-native';
+import { View, Text, Image, Animated, Dimensions, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import { styles } from '../Styles/style';

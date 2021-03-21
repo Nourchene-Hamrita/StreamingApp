@@ -39,5 +39,5 @@ export const registerUser = async (user) => {
   return await axios.post(`${endPoint}users/register`, user);
 }
 export const LoginUser = async (user) => {
-    return await axios.post(`${endPoint}users/login`, user);
-  }
+  return await axios.post(`${endPoint}users/login`, user);
+}

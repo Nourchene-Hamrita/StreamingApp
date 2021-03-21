@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { Component, useState } from 'react';
-import { View, Text, Image, Animated, Dimensions, TextInput, ScrollView, TouchableOpacity, } from 'react-native';
+import { View, Text, Image, Animated, Dimensions, TextInput, ScrollView, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Checkbox } from 'react-native-paper';
 import { styles } from '../Styles/style';

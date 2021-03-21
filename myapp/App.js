@@ -25,7 +25,7 @@ export default class App extends Component {
       <>
        
         <StatusBar backgroundColor="#4169e1" barStyle="light-content" />
-        <Routes />
+        <Home/>
         
 
       </>
