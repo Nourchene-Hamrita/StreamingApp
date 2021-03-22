@@ -1,7 +1,19 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import history from'../Screens/History';
+import Header from '../Screens/Header';
+const HistoryStack = createStackNavigator();
+const HistoryStackScreen = () => {
+    return (
+      <HistoryStack.Navigator>
+        <HistoryStack.Screen name="History" component={History}options={({ navigation }) => ({
+                headerTitle: () => (<Header navigation={navigation} title='History' />)
+            })}  />
+      </HistoryStack.Navigator>)
+  };
 
-export default class MyScreen extends Component {
+ class History extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -20,3 +32,4 @@ export default class MyScreen extends Component {
      );
    }
 }
+export default HistoryStackScreen;
