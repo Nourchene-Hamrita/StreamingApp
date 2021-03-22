@@ -9,9 +9,9 @@ import SecondTab from './SecondTab';
 import ThirdTab from './ThirdTab';
 import FourthTab from './FourthTab';
 import {createDrawerNavigator} from '@react-navigation/drawer';
-import HomeStackScreen from'../Screens/HomeStack';
-import HistoryStackScreen from './HistoryStack';
-
+import HomeStackScreen from'../Screens/Home';
+import HistoryStackScreen from '../Screens/History';
+import SubStackScreen from'./Subscription';
 const Tab = createBottomTabNavigator();
 const Drawer=createDrawerNavigator();
 const RecomStack = createStackNavigator();
@@ -22,7 +22,8 @@ const RootDrawerScreen = () => {
     
     <Drawer.Navigator initialRouteName="Home">
       <Drawer.Screen name="Home" component={HomeStackScreen} />
-      <Drawer.Screen name="History" component={HistoryStackScreen} />
+      <Drawer.Screen name="History" component={HistoryStackScreen}/>
+       <Drawer.Screen name="Subscription" component={SubStackScreen} />
     </Drawer.Navigator>
   
 );

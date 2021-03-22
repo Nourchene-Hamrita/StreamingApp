@@ -69,6 +69,13 @@ const styles = StyleSheet.create({
         left:2
 
     },
+    icons:{ position:"relative",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width:150,
+    marginLeft:200,
+
+    },
     header:{
         width: '100%',
         height: '100%' ,

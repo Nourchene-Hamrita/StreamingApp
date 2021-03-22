@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 import { View, Text } from 'react-native';
 import { createStackNavigator} from '@react-navigation/stack';
 import Header from '../Screens/Header';
-const HomeStack = createStackNavigator();
-const HomeStackScreen = () => {
+const SubStack = createStackNavigator();
+const SubStackScreen = () => {
     return (
-        <HomeStack.Navigator>
-            <HomeStack.Screen name="Home" component={Home} options={({ navigation }) => ({
-                headerTitle: () => (<Header navigation={navigation} title='Home' />)
+        <SubStack.Navigator>
+            <SubStack.Screen name="Home" component={Subscription} options={({ navigation }) => ({
+                headerTitle: () => (<Header navigation={navigation} title='Subscription' />)
             })} />
-        </HomeStack.Navigator>)
+        </SubStack.Navigator>)
 }
-
- class Home extends Component {
+ class Subscription extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,6 +21,7 @@ const HomeStackScreen = () => {
 
   componentDidMount() {
   }
+ 
 
    render() {
      return (
@@ -31,4 +31,4 @@ const HomeStackScreen = () => {
      );
    }
 }
-export default HomeStackScreen;
+export default SubStackScreen;
