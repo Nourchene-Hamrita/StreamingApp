@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StatusBar,} from 'react-native';
 import Routes from './Screens/Routes';
-import Home from './Screens/Home';
+import Navigation from './Screens/Navigation';
 import Header from './Screens/Header';
 import FirstTab from './Screens/FirstTab';
 import Search from './Screens/Search';
@@ -25,7 +25,7 @@ export default class App extends Component {
       <>
        
         <StatusBar backgroundColor="#4169e1" barStyle="light-content" />
-        <Home/>
+        <Navigation/>
         
 
       </>

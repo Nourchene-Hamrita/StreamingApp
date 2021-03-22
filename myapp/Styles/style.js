@@ -1,4 +1,6 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import Header from '../Screens/Header';
+import React  from 'react';
 const { width, height } = Dimensions.get("screen");
 
 const styles = StyleSheet.create({
@@ -49,7 +51,7 @@ const styles = StyleSheet.create({
     },
     inputIcon: {
         position: 'absolute',
-        top: 20,
+        top:20,
         left: 20,
 
 
@@ -59,6 +61,33 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 90,
         right: 20,
+
+    },
+    menu: {
+
+        position: 'absolute',
+        left:2
+
+    },
+    header:{
+        width: '100%',
+        height: '100%' ,
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center',
+
+
+
+
+      },
+    headerText:{
+        position:'absolute',
+        left:40,
+        fontSize:20,
+        fontWeight:'bold',
+        letterSpacing:1,
+        color:'#333'
+
 
     },
     logo: {
