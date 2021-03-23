@@ -1,7 +1,7 @@
 import React,{ Component } from 'react';
 import {StyleSheet,View,Text} from'react-native';
 
-class  FourthTab extends Component {
+class  Profile extends Component {
     render(){
     return (
       <View style={styles.MainView}>
@@ -18,4 +18,4 @@ class  FourthTab extends Component {
 
     
   });
-  export default FourthTab;
+  export default Profile;

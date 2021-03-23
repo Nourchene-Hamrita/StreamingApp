@@ -4,14 +4,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
-import FirstTab from '../Screens/FirstTab';
-import SecondTab from '../Screens/SecondTab';
-import ThirdTab from '../Screens/ThirdTab';
-import FourthTab from '../Screens/FourthTab';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { HomeStackScreen } from '../navigations/stack';
 import { HistoryStackScreen } from '../navigations/stack';
 import { SubStackScreen } from '../navigations/stack';
+import Library from'../Screens/Library';
+import Profile from'../Screens/Profile';
+import { styles } from '../Styles/style';
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const RecomStack = createStackNavigator();
@@ -24,6 +23,7 @@ const RootDrawerScreen = () => {
       <Drawer.Screen name="Home" component={HomeStackScreen} />
       <Drawer.Screen name="History" component={HistoryStackScreen} />
       <Drawer.Screen name="Subscription" component={SubStackScreen} />
+      
     </Drawer.Navigator>
 
   );
@@ -37,13 +37,19 @@ const RecomStackScreen = () => {
 const LibraryStackScreen = () => {
   return (
     <LibraryStack.Navigator>
-      <LibraryStack.Screen name="Library" component={ThirdTab} />
+      <LibraryStack.Screen name="Library" component={Library}  options={{ headerTitleStyle: {
+      color:'#4169e1',
+      letterSpacing:1,
+    }}}/>
     </LibraryStack.Navigator>)
 };
 const ProfileStackScreen = () => {
   return (
     <ProfileStack.Navigator>
-      <ProfileStack.Screen name="Profile" component={FourthTab} />
+      <ProfileStack.Screen name="Profile" component={Profile}  options={{ headerTitleStyle: {
+      color:'#4169e1',
+      letterSpacing:1,
+    }}}/>
     </ProfileStack.Navigator>)
 };
 

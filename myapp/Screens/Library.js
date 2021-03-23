@@ -1,7 +1,7 @@
 import React,{ Component } from 'react';
 import {StyleSheet,View,Text} from'react-native';
 
-class  ThirdTab extends Component {
+class Library extends Component {
     render(){
     return (
       <View style={styles.MainView}>
@@ -18,4 +18,4 @@ class  ThirdTab extends Component {
 
     
   });
-  export default ThirdTab;
+  export default Library;

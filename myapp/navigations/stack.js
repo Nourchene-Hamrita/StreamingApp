@@ -4,6 +4,7 @@ import Header from '../Screens/Header';
 import History from '../Screens/History';
 import Home from '../Screens/Home';
 import Subscription from '../Screens/Subscription';
+
 const HistoryStack = createStackNavigator();
 const HomeStack = createStackNavigator();
 const SubStack = createStackNavigator();
@@ -26,13 +27,10 @@ export const HistoryStackScreen = () => {
         </HistoryStack.Navigator>)
 };
 
-
-
-
 export const SubStackScreen = () => {
     return (
         <SubStack.Navigator>
-            <SubStack.Screen name="Home" component={Subscription} options={({ navigation }) => ({
+            <SubStack.Screen name="Subscription" component={Subscription} options={({ navigation }) => ({
                 headerTitle: () => (<Header navigation={navigation} title='Subscription' />)
             })} />
         </SubStack.Navigator>)
