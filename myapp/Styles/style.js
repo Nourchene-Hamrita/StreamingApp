@@ -1,6 +1,4 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import Header from '../Screens/Header';
-import React  from 'react';
 const { width, height } = Dimensions.get("screen");
 
 const styles = StyleSheet.create({
@@ -91,9 +89,8 @@ const styles = StyleSheet.create({
         position:'absolute',
         left:40,
         fontSize:20,
-        fontWeight:'bold',
         letterSpacing:1,
-        color:'#333'
+        color:'#4169e1'
 
 
     },

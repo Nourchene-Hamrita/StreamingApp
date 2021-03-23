@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { View, Text, StatusBar,} from 'react-native';
+import { View, Text, StatusBar, } from 'react-native';
 import Routes from './Screens/Routes';
-import Navigation from './Screens/Navigation';
+import Navigation from './navigations/Navigation';
 import Header from './Screens/Header';
 import FirstTab from './Screens/FirstTab';
 import Search from './Screens/Search';
+import { Router } from 'react-native-router-flux';
 
 
 
@@ -23,10 +24,10 @@ export default class App extends Component {
   render() {
     return (
       <>
-       
+
         <StatusBar backgroundColor="#4169e1" barStyle="light-content" />
-        <Navigation/>
-        
+        <Navigation />
+
 
       </>
 

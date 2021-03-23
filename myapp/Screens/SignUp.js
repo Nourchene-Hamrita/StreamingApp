@@ -6,7 +6,7 @@ import { Actions } from 'react-native-router-flux';
 import { styles } from '../Styles/style';
 import LinearGradient from 'react-native-linear-gradient';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
-import { registerUser } from "../service/apis";
+import { registerUser } from "../services/apis";
 
 const { height } = Dimensions.get("screen");
 
@@ -28,19 +28,42 @@ export default class signUp extends Component {
   componentDidMount() {
     AndroidKeyboardAdjust.setAdjustPan()
   }
+  validation = () => {
+    let { login, email, password, confirmPassword } = this.state
+    if (login == '') {
+      alert('Please enter username')
+      return false
+    }
+    else if (email == '') {
+      alert('Please enter an email')
+      return false
+    }
+    else if (password == '') {
+      alert('Please enter password')
+      return false
+    }
+    else if(password!==confirmPassword){
+      alert("Passwords are not the same")
+      return false 
+    }
+    else return true
+  }
   handleRegister = () => {
     let { login, email, password, } = this.state
+    if (this.validation()) {
 
-    registerUser({
-      login,
-      email,
-      password
-    }).then((res) => {
-      console.log(res)
-    }).catch(err => {
-      console.log(err);
+      registerUser({
+        login,
+        email,
+        password
+      }).then((res) => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err);
 
-    });
+      });
+      alert('Successfully SignUp');
+    }
 
 
   };

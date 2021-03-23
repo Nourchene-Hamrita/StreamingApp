@@ -4,29 +4,29 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
-import FirstTab from './FirstTab';
-import SecondTab from './SecondTab';
-import ThirdTab from './ThirdTab';
-import FourthTab from './FourthTab';
-import {createDrawerNavigator} from '@react-navigation/drawer';
-import HomeStackScreen from'../Screens/Home';
-import HistoryStackScreen from '../Screens/History';
-import SubStackScreen from'./Subscription';
+import FirstTab from '../Screens/FirstTab';
+import SecondTab from '../Screens/SecondTab';
+import ThirdTab from '../Screens/ThirdTab';
+import FourthTab from '../Screens/FourthTab';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import { HomeStackScreen } from '../navigations/stack';
+import { HistoryStackScreen } from '../navigations/stack';
+import { SubStackScreen } from '../navigations/stack';
 const Tab = createBottomTabNavigator();
-const Drawer=createDrawerNavigator();
+const Drawer = createDrawerNavigator();
 const RecomStack = createStackNavigator();
 const LibraryStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 const RootDrawerScreen = () => {
   return (
-    
+
     <Drawer.Navigator initialRouteName="Home">
       <Drawer.Screen name="Home" component={HomeStackScreen} />
-      <Drawer.Screen name="History" component={HistoryStackScreen}/>
-       <Drawer.Screen name="Subscription" component={SubStackScreen} />
+      <Drawer.Screen name="History" component={HistoryStackScreen} />
+      <Drawer.Screen name="Subscription" component={SubStackScreen} />
     </Drawer.Navigator>
-  
-);
+
+  );
 };
 const RecomStackScreen = () => {
   return (
@@ -50,7 +50,7 @@ const ProfileStackScreen = () => {
 
 
 
-class Home extends Component {
+class Navigation extends Component {
   render() {
 
     return (
@@ -86,9 +86,10 @@ class Home extends Component {
           <Tab.Screen name="Library" component={LibraryStackScreen} />
           <Tab.Screen name="Profile" component={ProfileStackScreen} />
         </Tab.Navigator>
-      </NavigationContainer>)
+      </NavigationContainer>
+    )
 
   }
 }
-export default Home;
+export default Navigation;
 

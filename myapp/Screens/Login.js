@@ -7,7 +7,7 @@ import { styles } from '../Styles/style';
 import { Actions } from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
-import { LoginUser } from "../service/apis";
+import { LoginUser } from "../services/apis";
 
 const { height } = Dimensions.get("screen");
 
@@ -27,18 +27,32 @@ export default class Login extends Component {
   componentDidMount() {
     AndroidKeyboardAdjust.setAdjustPan()
   }
-  handleLogin = () => {
+  validation = () => {
     let { login, password } = this.state
-    LoginUser({
-      login,
-      password
-    }).then((res) => {
-      console.log(res)
-    }).catch(err => {
-      console.log(err);
+    if (login == '') {
+      alert('Please enter username')
+      return false
+    }
+    else if (password == '') {
+      alert('Please enter password')
+      return false
+    }
+  }
+  handleLogin = () => {
+      let { login, password } = this.state
+      if (this.validation()) {
+      LoginUser({
+        login,
+        password
+      }).then((res) => {
+        console.log(res)
+      }).catch(err => {
+        console.log(err);
 
-    });
-
+      });
+      alert('Successfully Login');
+    
+    }
 
   };
   changeIcon = () => {
@@ -83,7 +97,7 @@ export default class Login extends Component {
               </View>
 
               <TouchableOpacity style={styles.eye} onPress={() => this.changeIcon()}>
-                <Icon name={'eye-off-outline'} size={20} color='#888' />
+                <Icon name={this.state.icon} size={20} color='#888' />
               </TouchableOpacity>
 
             </View>
@@ -127,7 +141,6 @@ export default class Login extends Component {
 
   }
 }
-
 
 
 
