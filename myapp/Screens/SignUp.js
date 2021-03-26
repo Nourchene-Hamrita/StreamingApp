@@ -98,13 +98,6 @@ export default class signUp extends Component {
   }
 
 
-
-
-  goback = () => {
-    Actions.pop();
-
-  }
-
   render() {
     return (
       <ScrollView>

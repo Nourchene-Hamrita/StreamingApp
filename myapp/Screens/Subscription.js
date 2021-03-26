@@ -1,24 +1,18 @@
 import React, { Component } from 'react';
 import { View, Text } from 'react-native';
-
-class Subscription extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      loading: true,
-    };
-  }
-
-  componentDidMount() {
-  }
-
+import CustomHeader from'../components/CustomHeader';
+class SubscriptionScreen extends Component {
 
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <Text>MyScreen</Text>
+        <CustomHeader title='Subscription' navigation={this.props.navigation} />
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>Subscription!</Text>
+        </View>
       </View>
     );
   }
+
 }
-export default Subscription;
+export default SubscriptionScreen;

@@ -1,21 +1,19 @@
 import React,{ Component } from 'react';
 import {StyleSheet,View,Text} from'react-native';
+import CustomHeader from'../components/CustomHeader';
 
-class  Profile extends Component {
-    render(){
+class ProfileScreen extends Component {
+
+  render() {
     return (
-      <View style={styles.MainView}>
-          <Text>THIS IS  FOURTH TAB </Text>
+      <View style={{ flex: 1 }}>
+        <CustomHeader title='Profile' navigation={this.props.navigation} />
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>Profile!</Text>
+        </View>
       </View>
     );
-  }}
-  const styles=StyleSheet.create({
-      MainView:{
-        flex:1,
-        alignItems:'center',
-        justifyContent:'center',
-        backgroundColor:'pink'}
+  }
 
-    
-  });
-  export default Profile;
+}
+  export default ProfileScreen;

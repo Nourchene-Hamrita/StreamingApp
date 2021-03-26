@@ -31,7 +31,7 @@ export default class Login extends Component {
       await AsyncStorage.setItem("token", Token)
       const resetAction = StackActions.reset({
         index: 0,
-        actions: [NavigationActions.navigate({ routeName: 'Home' })],
+        actions: [NavigationActions.navigate({ routeName: 'Acceuil' })],
       });
       this.props.navigation.dispatch(resetAction);
     } catch (e) {
@@ -43,7 +43,7 @@ export default class Login extends Component {
       if(res[0]=="e"){
         const resetAction = StackActions.reset({
           index: 0,
-          actions: [NavigationActions.navigate({ routeName: 'Home' })],
+          actions: [NavigationActions.navigate({ routeName: 'Acceuil' })],
         });
         this.props.navigation.dispatch(resetAction);
       }
@@ -51,7 +51,7 @@ export default class Login extends Component {
       console.log(err);
     });
   }
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
     AndroidKeyboardAdjust.setAdjustPan()
     this.getData()
   }
@@ -99,10 +99,7 @@ export default class Login extends Component {
 
   };
 
-  signUp = () => {
-    Actions.signup()
 
-  }
   render() {
     return (
       <ScrollView>

@@ -1,16 +1,24 @@
 import React, { Component } from 'react';
-import { View, Text, StatusBar, } from 'react-native';
-import Routes from './Screens/Routes';
-import Navigation from './navigations/Navigation';
-import Search from './Screens/Search';
+import { View, Text, StatusBar, Dimensions, } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createAppContainer, NavigationEvents } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import Login from './Screens/Login';
 import SignUp from './Screens/SignUp'
-import SideBar from './components/SideBar'
-import Home from './Screens/Home';
+import HomeScreen from './Screens/Home';
+import LibraryScreen from'./Screens/Library';
+import Search from'./Screens/Search';
+import ProfileScreen from'./Screens/Profile';
+import HistoryScreen from'./Screens/History';
+import SubscriptionScreen from'./Screens/Subscription';
+import RecommandationScreen from'./Screens/Recommandation';
+import Notifications from'./Screens/Notifications';
+import Playlist from'./Screens/Playlist';
+import SideBar from'./components/SideBar';
+
 
 
 
@@ -22,8 +30,121 @@ class App extends Component {
   }
 }
 
+const HomeStack = createStackNavigator({
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Search: {
+    screen: Search,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Notifications: {
+    screen: Notifications,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Playlist: {
+    screen: Playlist,
+    navigationOptions: {
+      header: null,
+    }
+  },
+})
+const RecommandationStack = createStackNavigator({
+  Recommandations: {
+    screen: RecommandationScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
+ 
+})
+const LibraryStack = createStackNavigator({
+  Library: {
+    screen: LibraryScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
+ 
+})
+const MainTabs = createBottomTabNavigator({
+  Home: HomeStack,
+  Recommandations: RecommandationStack,
+  Library: LibraryStack,
+}, {
+  defaultNavigationOptions: ({ navigation }) => ({
+    tabBarIcon: ({ focused, horizontal, tintColor }) => {
+      const { routeName } = navigation.state;
+      let IconComponent = Ionicons;
+      let iconName;
+      if (routeName === 'Home') {
+        iconName = focused
+          ? 'home'
+          : 'home-outline';
 
-const StackNavigator = createStackNavigator({
+      } else if (routeName === 'Recommandations') {
+        iconName = focused ? 'flash-sharp' : 'flash-outline';
+      }
+      else if (routeName === 'Library') {
+        iconName = focused ? 'library-sharp' : 'library-outline';
+      }
+
+      return <IconComponent name={iconName} size={25} color={tintColor} />;
+    },
+  }),
+  tabBarOptions: {
+    activeTintColor: '#4169e1',
+    inactiveTintColor: 'gray',
+  },
+}
+);
+const MainStack = createStackNavigator({
+  Home: {
+    screen: MainTabs,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Profile: {
+    screen: ProfileScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  History: {
+    screen: HistoryScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Subscription: {
+    screen: SubscriptionScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
+}, { initialRouteName: 'Home' })
+const appDrawer = createDrawerNavigator({
+  drawer: MainStack
+},
+  {
+    contentComponent: SideBar,
+    drawerWidth:Dimensions.get('window').width*3/4
+            
+  } 
+  
+    
+    
+  )
+
+const MainApp = createStackNavigator({
 
   Login: {
     screen: Login,
@@ -37,36 +158,14 @@ const StackNavigator = createStackNavigator({
       header: null
     }
   },
-  Home: {
-    screen:Home,
-    navigationOptions: {
-      header: null
-    }
-  }
-});
-const MyApp = createDrawerNavigator({
-
   Acceuil: {
-    screen: StackNavigator,
-
-  },
-
+  screen:appDrawer ,
+  navigationOptions: {
+    header: null
+  }
 },
-  {
-    initialRouteParams: ["Login", "Menu"],
-    initialRouteName: 'Acceuil',
-    drawerPosition: 'Left',
-    contentComponent: ({ navigation }) => {
-      return (<SideBar {...navigation} navigation={navigation} />
-            
-      )
-    },
-    drawerType: "slide",
-    drawerOpenRoute: 'DrawerOpen',
-    drawerCloseRoute: 'DrawerClose',
-    drawerToggleRoute: 'DrawerToggle'
-  });
 
-// define your styles
-const AppContainer = createAppContainer(MyApp);
-export default AppContainer;
+});
+
+const AppContainer = createAppContainer(MainApp);
+export default App;

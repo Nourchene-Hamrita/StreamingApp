@@ -1,21 +1,19 @@
 import React,{ Component } from 'react';
-import {StyleSheet,View,Text} from'react-native';
+import {StyleSheet,View} from'react-native';
+import CustomHeader from'../components/CustomHeader';
+import { Container, Header, Left, Body, Right, Button, Icon, Title, Text } from 'native-base';
 
-class Library extends Component {
-    render(){
+class LibraryScreen extends React.Component {
+  render() {
     return (
-      <View style={styles.MainView}>
-          <Text>THIS IS  THIRD TAB </Text>
+      <View style={{ flex: 1 }}>
+        <CustomHeader title='Library' isHome={true} navigation={this.props.navigation} />
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text>Library!</Text>
+        </View>
       </View>
     );
-  }}
-  const styles=StyleSheet.create({
-      MainView:{
-        flex:1,
-        alignItems:'center',
-        justifyContent:'center',
-        backgroundColor:'lightblue'}
+  }
 
-    
-  });
-  export default Library;
+}
+export default LibraryScreen;
