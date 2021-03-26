@@ -7,7 +7,10 @@ import { styles } from '../Styles/style';
 import { Actions } from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
-import { LoginUser } from "../services/apis";
+import { LoginUser, getData } from "../services/apis";
+import AsyncStorage from '@react-native-community/async-storage';
+import { StackActions, NavigationActions } from 'react-navigation';
+
 
 const { height } = Dimensions.get("screen");
 
@@ -23,9 +26,34 @@ export default class Login extends Component {
 
     };
   }
-
-  componentDidMount() {
+  storeToken = async (Token) => {
+    try {
+      await AsyncStorage.setItem("token", Token)
+      const resetAction = StackActions.reset({
+        index: 0,
+        actions: [NavigationActions.navigate({ routeName: 'Home' })],
+      });
+      this.props.navigation.dispatch(resetAction);
+    } catch (e) {
+      // error reading value
+    }
+  }
+  getData() {
+    getData().then((res) => {
+      if(res[0]=="e"){
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [NavigationActions.navigate({ routeName: 'Home' })],
+        });
+        this.props.navigation.dispatch(resetAction);
+      }
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+  componentWillMount() {
     AndroidKeyboardAdjust.setAdjustPan()
+    this.getData()
   }
   validation = () => {
     let { login, password } = this.state
@@ -37,21 +65,29 @@ export default class Login extends Component {
       alert('Please enter password')
       return false
     }
+    else return true
   }
   handleLogin = () => {
-      let { login, password } = this.state
-      if (this.validation()) {
+    let { login, password } = this.state
+    if (this.validation()) {
       LoginUser({
         login,
         password
       }).then((res) => {
-        console.log(res)
+        if (res.data.token != null || res.data.token != undefined) {
+          this.storeToken(res.data.token)
+        }
+        else {
+          if(res.data.errors.login=="Unknown login"){
+            alert('Unknown login ')
+          }
+          else if(res.data.errors.password=="Incorrect password"){
+            alert("Incorrect password")
+          }
+        }  
       }).catch(err => {
         console.log(err);
-
       });
-      alert('Successfully Login');
-    
     }
 
   };
@@ -126,7 +162,7 @@ export default class Login extends Component {
             </View>
             <View style={{ flex: 0.5, alignItems: "center" }}>
               <Text style={{ color: '#888', marginTop: 20 }}>Still not connected?</Text>
-              <TouchableOpacity style={{}} onPress={() => this.signUp()}>
+              <TouchableOpacity style={{}} onPress={() => this.props.navigation.navigate('SignUp')}>
                 <Text style={{ color: '#4169e1', fontWeight: 'bold' }}>Sign Up from here</Text>
               </TouchableOpacity>
             </View>

@@ -1,15 +1,48 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import Header from '../Screens/Header';
+import { createStackNavigator } from 'react-navigation-stack';
 import History from '../Screens/History';
 import Home from '../Screens/Home';
 import Subscription from '../Screens/Subscription';
+import Library from '../Screens/Library';
+import Profile from '../Screens/Profile';
+import FirstTab from '../Screens/FirstTab';
+import { createAppContainer } from 'react-navigation';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
-const HistoryStack = createStackNavigator();
-const HomeStack = createStackNavigator();
-const SubStack = createStackNavigator();
 
-export const HomeStackScreen = () => {
+const StackNavigator = createStackNavigator({
+
+    Home: {
+        screen: Home,
+        navigationOptions:  
+        {header: null}
+           
+    },
+    Recommandations: {
+        screen: FirstTab,
+        navigationOptions: {
+            header: null
+        }
+    },
+    Library: {
+        screen: Library,
+        navigationOptions: {
+            header: null
+        }
+    },
+    Profile: {
+        screen: Profile,
+        navigationOptions: {
+            header: null
+        }
+    }
+
+});
+
+const Container = createAppContainer(StackNavigator);
+export default Container;
+
+/*export const HomeStackScreen = () => {
     return (
         <HomeStack.Navigator>
             <HomeStack.Screen name="Home" component={Home} options={({ navigation }) => ({
@@ -34,4 +67,4 @@ export const SubStackScreen = () => {
                 headerTitle: () => (<Header navigation={navigation} title='Subscription' />)
             })} />
         </SubStack.Navigator>)
-};
+};*/

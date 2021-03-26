@@ -10,7 +10,7 @@ import { HistoryStackScreen } from '../navigations/stack';
 import { SubStackScreen } from '../navigations/stack';
 import Library from'../Screens/Library';
 import Profile from'../Screens/Profile';
-import { styles } from '../Styles/style';
+import FirstTab from'../Screens/FirstTab';
 const Tab = createBottomTabNavigator();
 const Drawer = createDrawerNavigator();
 const RecomStack = createStackNavigator();
@@ -31,7 +31,10 @@ const RootDrawerScreen = () => {
 const RecomStackScreen = () => {
   return (
     <RecomStack.Navigator>
-      <RecomStack.Screen name="Recommandations" component={FirstTab} />
+      <RecomStack.Screen name="Recommandations" component={FirstTab} options={{ headerTitleStyle: {
+      color:'#4169e1',
+      letterSpacing:1,
+    }}} />
     </RecomStack.Navigator>)
 };
 const LibraryStackScreen = () => {
@@ -52,10 +55,6 @@ const ProfileStackScreen = () => {
     }}}/>
     </ProfileStack.Navigator>)
 };
-
-
-
-
 class Navigation extends Component {
   render() {
 

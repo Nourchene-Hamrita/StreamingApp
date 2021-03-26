@@ -42,14 +42,14 @@ export default class signUp extends Component {
       alert('Please enter password')
       return false
     }
-    else if(password!==confirmPassword){
+    else if (password !== confirmPassword) {
       alert("Passwords are not the same")
-      return false 
+      return false
     }
     else return true
   }
   handleRegister = () => {
-    let { login, email, password, } = this.state
+    let { login, email, password } = this.state
     if (this.validation()) {
 
       registerUser({
@@ -58,11 +58,31 @@ export default class signUp extends Component {
         password
       }).then((res) => {
         console.log(res)
-      }).catch(err => {
+        
+        if (res.data.errors.login == "Login incorrect or already taken") {
+          alert('Login incorrect or already taken')
+        }
+        else if (res.data.errors.email == "Incorrect email") {
+          alert("Incorrect email")
+        }
+        else if (res.data.errors.email == "This email is already registered") {
+          alert("This email is already registered")
+        }
+        else if (res.data.errors.login == "This login is already taken") {
+          alert("This login is already taken")
+        }
+        else if (res.data.errors.password == "Password must be 6 characters minimum") {
+          alert("Password must be 6 characters minimum")
+        }
+        else return alert('Successfully SignUp');
+      }
+     
+
+      ).catch(err => {
         console.log(err);
 
       });
-      alert('Successfully SignUp');
+     
     }
 
 
@@ -115,7 +135,7 @@ export default class signUp extends Component {
                   <View>
                     <Icon style={styles.inputIcon} name={'ios-lock-closed'} size={20} color='#4169e1' />
                     <TextInput style={styles.input}
-                      secureTextEntry={this.state.showPassword} placeholder="Confirm password" />
+                      secureTextEntry={this.state.showPassword} placeholder="Confirm password" onChangeText={(text) => this.setState({ confirmPassword: text })} />
                   </View>
                   <TouchableOpacity style={styles.eye} onPress={() => this.changeIcon()}>
                     <Icon name={this.state.icon} size={20} color='#888' />
@@ -139,7 +159,7 @@ export default class signUp extends Component {
             </View>
             <View style={{ flex: 0.5, alignItems: "center" }}>
               <Text style={{ color: '#888', marginLeft: 10 }}>Already have an account?</Text>
-              <TouchableOpacity style={{}} onPress={() => this.goback()}>
+              <TouchableOpacity style={{}} onPress={() => this.props.navigation.goBack(null)}>
                 <Text style={{ color: '#4169e1', fontWeight: 'bold' }}>Sign In from here</Text>
               </TouchableOpacity>
             </View>
