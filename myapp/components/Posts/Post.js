@@ -3,6 +3,10 @@ import { View, Text, TouchableWithoutFeedback } from 'react-native';
 import Video from 'react-native-video';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
 import styles from './style';
+import  Ionicons from'react-native-vector-icons/Ionicons';
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
+
+
 export default class Post extends Component {
   videoPlayer;
 
@@ -93,10 +97,19 @@ export default class Post extends Component {
 
       <View style={styles.uiContainer}>
         <View style={styles.rightContainer}>
-        <Text style={{fontSize:16,color:'white'}}>side</Text>
+          <View style={styles.iconContainer}>
+           
+          <EvilIcons name='heart' size={40} color='white'/>
+            <Text style={styles.statsLabel}>123</Text>
+            <Ionicons name='ios-heart-dislike-outline' size={30} color='white'/>
+            <Text style={styles.statsLabel}>123</Text>
+            <EvilIcons name='comment' size={40} color='white'/>
+            <Text style={styles.statsLabel}>123</Text>
+           
+          </View>
         </View>
         <View style={styles.bottomContainer}>
-        <Text style={styles.handle}>username</Text>
+        <Text style={styles.handle}>Title</Text>
         <Text style={styles.description}>Description</Text>
         </View>
       </View>

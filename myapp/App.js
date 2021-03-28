@@ -2,22 +2,21 @@ import React, { Component } from 'react';
 import { View, Text, StatusBar, Dimensions, } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createStackNavigator } from 'react-navigation-stack';
-import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 import { createBottomTabNavigator } from 'react-navigation-tabs';
 import { createAppContainer, NavigationEvents } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import Login from './Screens/Login';
 import SignUp from './Screens/SignUp'
 import HomeScreen from './Screens/Home';
-import LibraryScreen from'./Screens/Library';
-import Search from'./Screens/Search';
-import ProfileScreen from'./Screens/Profile';
-import HistoryScreen from'./Screens/History';
-import SubscriptionScreen from'./Screens/Subscription';
-import RecommandationScreen from'./Screens/Recommandation';
-import Notifications from'./Screens/Notifications';
-import Playlist from'./Screens/Playlist';
-import SideBar from'./components/SideBar';
+import LibraryScreen from './Screens/Library';
+import Search from './Screens/Search';
+import ProfileScreen from './Screens/Profile';
+import HistoryScreen from './Screens/History';
+import SubscriptionScreen from './Screens/Subscription';
+import RecommandationScreen from './Screens/Recommandation';
+import Notifications from './Screens/Notifications';
+import Playlist from './Screens/Playlist';
+import SideBar from './components/SideBar';
 
 
 
@@ -25,7 +24,7 @@ import SideBar from'./components/SideBar';
 class App extends Component {
   render() {
     return (
-      <AppContainer/>
+      < AppContainer/>
     );
   }
 }
@@ -63,7 +62,7 @@ const RecommandationStack = createStackNavigator({
       header: null,
     }
   },
- 
+
 })
 const LibraryStack = createStackNavigator({
   Library: {
@@ -72,7 +71,7 @@ const LibraryStack = createStackNavigator({
       header: null,
     }
   },
- 
+
 })
 const MainTabs = createBottomTabNavigator({
   Home: HomeStack,
@@ -136,13 +135,13 @@ const appDrawer = createDrawerNavigator({
 },
   {
     contentComponent: SideBar,
-    drawerWidth:Dimensions.get('window').width*3/4
-            
-  } 
-  
-    
-    
-  )
+    drawerWidth: Dimensions.get('window').width * 3 / 4
+
+  }
+
+
+
+)
 
 const MainApp = createStackNavigator({
 
@@ -159,13 +158,13 @@ const MainApp = createStackNavigator({
     }
   },
   Acceuil: {
-  screen:appDrawer ,
-  navigationOptions: {
-    header: null
-  }
-},
+    screen: appDrawer,
+    navigationOptions: {
+      header: null
+    }
+  },
 
 });
 
-const AppContainer = createAppContainer(MainApp);
+const AppContainer = createAppContainer(appDrawer);
 export default App;

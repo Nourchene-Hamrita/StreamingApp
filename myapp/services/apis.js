@@ -40,3 +40,6 @@ export const registerUser = async (user) => {
 export const LoginUser = async (user) => {
   return await axios.post(`${endPoint}users/login`, user);
 }
+export const getVideos = async (user) => {
+  return await axios.get(`${endPoint}videos`, user);
+}

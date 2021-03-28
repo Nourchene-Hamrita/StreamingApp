@@ -21,19 +21,19 @@ export default class SideBar extends Component {
          <ScrollView>
            <List>
              <ListItem>
-               <Text>Profile</Text>
+               <Text style={{color:'#4169e1'}}>Profile</Text>
              </ListItem>
              <ListItem >
-               <Text>History</Text>
+               <Text style={{color:'#4169e1'}}>History</Text>
              </ListItem>
              <ListItem>
-               <Text>Subscription</Text>
+               <Text style={{color:'#4169e1'}}>Subscription</Text>
              </ListItem>
            </List>
          </ScrollView>
          <List>
            <ListItem >
-             <Text>LogOut</Text>
+             <Text style={{color:'#4169e1'}}>LogOut</Text>
            </ListItem>
          </List>
        </SafeAreaView>

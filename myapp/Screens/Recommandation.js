@@ -3,6 +3,16 @@ import { View} from 'react-native';
 import CustomHeader from'../components/CustomHeader';
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Text } from 'native-base';
 class RecommandationScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+    };
+  }
+
+  componentDidMount() {
+  }
+
     render() {
       return (
         <View style={{ flex: 1 }}>

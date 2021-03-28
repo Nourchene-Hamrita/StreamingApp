@@ -40,7 +40,7 @@ export default class Login extends Component {
   }
   getData() {
     getData().then((res) => {
-      if(res[0]=="e"){
+      if (res[0] == "e") {
         const resetAction = StackActions.reset({
           index: 0,
           actions: [NavigationActions.navigate({ routeName: 'Acceuil' })],
@@ -78,13 +78,13 @@ export default class Login extends Component {
           this.storeToken(res.data.token)
         }
         else {
-          if(res.data.errors.login=="Unknown login"){
+          if (res.data.errors.login == "Unknown login") {
             alert('Unknown login ')
           }
-          else if(res.data.errors.password=="Incorrect password"){
+          else if (res.data.errors.password == "Incorrect password") {
             alert("Incorrect password")
           }
-        }  
+        }
       }).catch(err => {
         console.log(err);
       });

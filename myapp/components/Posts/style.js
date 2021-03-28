@@ -2,7 +2,7 @@ import { StyleSheet,Dimensions} from 'react-native';
 const styles = StyleSheet.create({
     container:{
      width:'100%',
-     height:Dimensions.get('window').height-129  
+     height:Dimensions.get('window').height-129 
     },
     video:{
         position:'absolute',
@@ -18,10 +18,13 @@ const styles = StyleSheet.create({
 
     },
     rightContainer:{
-       alignSelf:'flex-end'
+       alignSelf:'flex-end',
+       height:300,
+       justifyContent:'space-between',
+       marginRight:5
     },
     bottomContainer:{
-        
+        padding:10
     },
     toolbar: {
         marginTop: 30,
@@ -37,6 +40,31 @@ const styles = StyleSheet.create({
         right: 0,
         backgroundColor: 'black',
       },
+      handle:{
+        color:'white',
+        fontSize:16,
+        fontWeight:'700',
+        marginBottom:5
+
+      },
+      description:{
+        color:'white',
+        fontSize:16,
+        fontWeight:'300',
+        marginBottom:10
+
+
+      },
+      iconContainer:{
+        alignItems:'center'
+      },
+      statsLabel:{
+        color:'white',
+        fontSize:15,
+        marginTop:5
+        
+
+      }
    
 })
 export default styles ;

@@ -3,6 +3,16 @@ import { Container, Header, Left, Body, Right, Button, Icon, Title, Text } from 
 
 
 class CustomHeader extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+          loading: true,
+        };
+      }
+    
+      componentDidMount() {
+      }
+    
 
     render() {
         let { title, isHome } = this.props

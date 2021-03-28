@@ -3,6 +3,16 @@ import {StyleSheet,View,Text} from'react-native';
 import CustomHeader from'../components/CustomHeader';
 
 class ProfileScreen extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+    };
+  }
+
+  componentDidMount() {
+  }
+
 
   render() {
     return (
