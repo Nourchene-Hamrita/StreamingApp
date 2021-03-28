@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import { View,SafeAreaView,ScrollView ,Image} from 'react-native';
 import { Container, Header, Left, Body, Right, Button, Icon, Title, Text,List,ListItem } from 'native-base';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import  MaterialCommunityIcons from'react-native-vector-icons/MaterialCommunityIcons';
+import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 export default class SideBar extends Component {
   constructor(props) {
     super(props);
@@ -16,24 +19,33 @@ export default class SideBar extends Component {
      return (
        <SafeAreaView style={{ flex: 1 }}>
          <View style={{height:150,justifyContent:'center',alignItems:'center'}}>
-           <Image  source={require('../components/img/Profile.png')}style={{height:120,width:120,borderRadius:60}}/>
+           <Image  source={require('../components/img/Profile.png')}style={{backgroundColor:'#4169e1',height:120,width:120,borderRadius:60}}/>
+           <Text>Username</Text>
          </View>
          <ScrollView>
-           <List>
+           <List  style={{marginLeft:5}}>
              <ListItem>
-               <Text style={{color:'#4169e1'}}>Profile</Text>
+             <Ionicons  name={'person'} size={20} color='#4169e1' />
+               <Text style={{color:'#4169e1',padding:5}}>Profile</Text>
              </ListItem>
              <ListItem >
-               <Text style={{color:'#4169e1'}}>History</Text>
+               < MaterialCommunityIcons name={'history'} size={25} color='#4169e1'/>
+               <Text style={{color:'#4169e1',padding:5}}>History</Text>
+             </ListItem>
+             <ListItem >
+             <Ionicons  name={'md-star-sharp'} size={20} color='#4169e1' />
+               <Text style={{color:'#4169e1',padding:5}}>Saved</Text>
              </ListItem>
              <ListItem>
-               <Text style={{color:'#4169e1'}}>Subscription</Text>
+             < MaterialCommunityIcons name={'clipboard-play-multiple'} size={20} color='#4169e1'/>
+               <Text style={{color:'#4169e1',padding:5}}>Subscription</Text>
              </ListItem>
            </List>
          </ScrollView>
          <List>
            <ListItem >
-             <Text style={{color:'#4169e1'}}>LogOut</Text>
+             <SimpleLineIcons  name={'logout'} size={20} color='#4169e1'/>
+             <Text style={{color:'#4169e1',padding:5}}>LogOut</Text>
            </ListItem>
          </List>
        </SafeAreaView>

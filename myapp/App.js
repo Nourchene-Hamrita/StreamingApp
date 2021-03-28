@@ -24,7 +24,7 @@ import SideBar from './components/SideBar';
 class App extends Component {
   render() {
     return (
-      < AppContainer/>
+      <ProfileScreen/>
     );
   }
 }

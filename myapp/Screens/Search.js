@@ -1,6 +1,7 @@
 import React,{ Component } from 'react';
-import {StyleSheet,View,Text} from'react-native';
+import {StyleSheet,View} from'react-native';
 import CustomHeader from'../components/CustomHeader';
+import { Container, Header, Item, Input, Icon, Button, Text } from 'native-base';
 
 class Search extends Component {
   constructor(props) {
@@ -17,10 +18,19 @@ class Search extends Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
-        <CustomHeader title='Search' navigation={this.props.navigation} />
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text>Search!</Text>
-        </View>
+      <Container>
+        <Header searchBar rounded>
+          <Item>
+            <Icon name="ios-search" />
+            <Input placeholder="Search" />
+            <Icon name="ios-videocam" />
+          </Item>
+          <Button transparent>
+            <Text>Search</Text>
+          </Button>
+        </Header>
+      </Container>
+      
       </View>
     );
   }

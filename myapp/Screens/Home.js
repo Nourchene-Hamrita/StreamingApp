@@ -34,6 +34,7 @@ class HomeScreen extends React.Component{
     super(props);
     this.state = {
       loading: true,
+      data:[]
     };
   }
 
