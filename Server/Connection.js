@@ -7,8 +7,11 @@ const morgan = require('morgan');
 require('dotenv').config({ path: './config/.env' });
 require('./config/db');
 const {checkUser,requireAuth}=require('./middleware/auth.middleware');
+const path = require('path');
 
 const app = express();
+app.use('/public',express.static(path.join(__dirname, 'public'))); 
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -44,31 +44,12 @@ class HomeScreen extends React.Component{
   
 render(){
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={{flex:1}}>
        <CustomHeader title='Home' isHome={true} navigation={this.props.navigation}  />
-      <FlatList
-        data={DATA}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-      />
-    </SafeAreaView>
-  );
+      <Post/>
+      </View>)
 }}
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
 
-  },
-  item: {
-    backgroundColor: '#4169e1',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 10,
-  },
-  title: {
-    fontSize: 32,
-  },
-});
 
 
 export default HomeScreen;

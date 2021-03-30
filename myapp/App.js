@@ -17,6 +17,7 @@ import RecommandationScreen from './Screens/Recommandation';
 import Notifications from './Screens/Notifications';
 import Playlist from './Screens/Playlist';
 import SideBar from './components/SideBar';
+import SavedScreen from './Screens/Saved';
 
 
 
@@ -24,7 +25,7 @@ import SideBar from './components/SideBar';
 class App extends Component {
   render() {
     return (
-      <ProfileScreen/>
+      < AppContainer/>
     );
   }
 }
@@ -123,6 +124,12 @@ const MainStack = createStackNavigator({
       header: null,
     }
   },
+  Saved: {
+    screen: SavedScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
   Subscription: {
     screen: SubscriptionScreen,
     navigationOptions: {
@@ -166,5 +173,5 @@ const MainApp = createStackNavigator({
 
 });
 
-const AppContainer = createAppContainer(appDrawer);
+const AppContainer = createAppContainer(MainApp);
 export default App;

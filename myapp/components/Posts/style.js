@@ -5,11 +5,8 @@ const styles = StyleSheet.create({
      height:Dimensions.get('window').height-129 
     },
     video:{
-        position:'absolute',
-        top:0,
-        left:0,
-        bottom:0,
-        right:0
+       height:200,
+       width:'100%'
     },
     uiContainer:{
         height:'100%',
@@ -21,7 +18,7 @@ const styles = StyleSheet.create({
        alignSelf:'flex-end',
        height:300,
        justifyContent:'space-between',
-       marginRight:5
+       marginRight:10
     },
     bottomContainer:{
         padding:10
@@ -33,11 +30,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
       },
       mediaPlayer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        bottom: 0,
-        right: 0,
+      
         backgroundColor: 'black',
       },
       handle:{

@@ -32,7 +32,7 @@ module.exports.createVideo = async (req, res) => {
         await pipeline(
             req.file.stream,
             fs.createWriteStream(
-                `${__dirname}/../../myapp/uploads/videos/${fileName}`
+                `${__dirname}/../public/${fileName}`
             )
         );
     }
@@ -40,7 +40,7 @@ module.exports.createVideo = async (req, res) => {
         trainerId: req.body.trainerId,
         title: req.body.title,
         description: req.body.description,
-        link: req.file != null ? '/../../myapp/uploads/videos/' + fileName : "",
+        link: req.file != null ? 'http://192.168.1.14:3000/public/' + fileName : "",
         likers: [],
         dislikers: [],
         comments: [],

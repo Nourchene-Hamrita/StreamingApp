@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Touchable, TouchableOpacity } from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import { Container, Content, Form, Label, Item, List, ListItem, InputGroup, Input, Icon, Text, Picker, Button } from 'native-base';
 import FontAwesome5 from'react-native-vector-icons/FontAwesome5';
+import LinearGradient from 'react-native-linear-gradient';
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
@@ -22,7 +23,7 @@ class ProfileScreen extends Component {
       <View style={{ flex: 1 }}>
         <CustomHeader title='Profile' navigation={this.props.navigation} />
         <View style={{ height: 150, justifyContent: 'center', alignItems: 'center' }}>
-          <Image source={require('../components/img/Profile.png')} style={{ backgroundColor:'#4169e1',height: 120, width: 120, borderRadius: 60 }} />
+          <Image source={require('../components/img/Profile.png')} style={{ height: 120, width: 120, borderRadius: 60 }} />
           <Text>Username</Text>
         </View>
         <Container>
@@ -55,11 +56,13 @@ class ProfileScreen extends Component {
               </Item>
               
             </Form>
-            <View style={{ marginTop:40,paddingLeft:140,justifyContent: 'center', alignItems: 'center' }}>
-              <Button rounded iconLeft style={{ backgroundColor: "#4169e1" }}  >
-                <FontAwesome5 name='user-edit'style={{color:'white',fontSize:15,paddingLeft:10}} />
-                <Text style={{}}>Edit</Text>
-              </Button>
+            <View style={{ marginTop:40,justifyContent: 'center', alignItems: 'center' }}>
+              <TouchableOpacity>
+            <LinearGradient style={{ flexDirection:'row', height: 50, width: 100 ,padding: 10, borderRadius: 20,}} colors={['#4169e1', '#fa8072']}> 
+                <FontAwesome5 name='user-edit'style={{color:'white',fontSize:15,marginTop:5}} />
+                <Text style={{color:'white',fontSize:20,paddingLeft:10}}>Edit</Text>
+              </LinearGradient>
+              </TouchableOpacity>
               </View>
           </Content>
         </Container>
