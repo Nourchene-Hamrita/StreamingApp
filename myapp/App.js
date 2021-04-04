@@ -18,6 +18,7 @@ import Notifications from './Screens/Notifications';
 import Playlist from './Screens/Playlist';
 import SideBar from './components/SideBar';
 import SavedScreen from './Screens/Saved';
+import FirstTab from './Screens/FirstTab';
 
 
 
@@ -25,7 +26,7 @@ import SavedScreen from './Screens/Saved';
 class App extends Component {
   render() {
     return (
-      < AppContainer/>
+      <AppContainer/>
     );
   }
 }

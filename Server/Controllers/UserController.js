@@ -72,19 +72,19 @@ module.exports.uploadProfil = async (req, res) => {
         const errors = uploadErrors(err);
         return res.status(201).json({ errors });
     }
-    const fileName = req.body.name + ".jpg";
+    const fileName = req.body.userId + Date.now() + ".jpg";
 
     await pipeline(
         req.file.stream,
         fs.createWriteStream(
-            `${__dirname}/../../myapp/uploads/profil/${fileName}`
+            `${__dirname}/../public/${fileName}`
         )
     );
 
     try {
         await UserModel.findByIdAndUpdate(
             req.body.userId,
-            { $set: { picture: "./uploads/profil/" + fileName } },
+            { $set: { picture:'http://192.168.1.17:3000/public/' + fileName } },
             { new: true, upsert: true, setDefaultsOnInsert: true },
             (err, docs) => {
                 if (!err) return res.send(docs);

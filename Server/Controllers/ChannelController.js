@@ -1,6 +1,7 @@
 const morgan = require('morgan');
 const ObjectID = require('mongoose').Types.ObjectId;
 const ChannelModel = require('../Models/channel.model');
+const UserModel = require('../Models/user.model');
 const { uploadErrors } = require("../utils/errors.util");
 const fs = require('fs');
 const { promisify } = require('util');
@@ -27,7 +28,7 @@ module.exports.createChannel = async (req, res) => {
         await pipeline(
             req.file.stream,
             fs.createWriteStream(
-                `${__dirname}/../../myapp/uploads/profil/${fileName}`
+                `${__dirname}/../public/${fileName}`
             )
         );
     }
@@ -36,7 +37,7 @@ module.exports.createChannel = async (req, res) => {
         trainerId: req.body.trainerId,
         channelname: req.body.channelname,
         theme: req.body.theme,
-        picture: req.file != null ? '/../../myapp/uploads/profil/' + fileName : "",
+        picture: req.file != null ? 'http://192.168.1.17:3000/public/' + fileName : "",
     });
     channel.save((err, docs) => {
         if (!err) res.send(docs);
@@ -76,7 +77,7 @@ module.exports.follow = async (req, res) => {
 
     try {
         // add to the follower list
-        await ChannelModel.findByIdAndUpdate(
+        await UserModel.findByIdAndUpdate(
             req.params.id,
             { $addToSet: { following: req.body.idToFollow } },
             { new: true, upsert: true },
@@ -104,24 +105,26 @@ module.exports.follow = async (req, res) => {
 module.exports.unfollow = async (req, res) => {
     if (
         !ObjectID.isValid(req.params.id) ||
-        !ObjectID.isValid(req.body.idToUnfollow)
+        !ObjectID.isValid(req.body.idToUnFollow)
     )
         return res.status(400).send("ID unknown : " + req.params.id);
 
     try {
-        await ChannelModel.findByIdAndUpdate(
+        // remove from the follower list
+        await UserModel.findByIdAndUpdate(
             req.params.id,
-            { $pull: { following: req.body.idToUnfollow } },
+            { $pull: { following: req.body.idToUnFollow } },
             { new: true, upsert: true },
             (err, docs) => {
                 if (!err) res.status(201).json(docs);
-                else return res.status(400).jsos(err);
+                else return res.status(400).json(err);
             }
         );
-        // remove to following list
+        // remove from the following list
         await ChannelModel.findByIdAndUpdate(
-            req.body.idToUnfollow,
-            { $pull: { followers: req.params.id } },
+            req.body.idToUnFollow, {
+            $pull: { followers: req.params.id }
+        },
             { new: true, upsert: true },
             (err, docs) => {
                 if (!err) res.status(201).json(docs);
@@ -131,4 +134,5 @@ module.exports.unfollow = async (req, res) => {
     } catch (err) {
         return res.status(500).json({ message: err });
     }
+   
 };

@@ -66,7 +66,7 @@ class FirstTab extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View>
 
         <Video
           onEnd={this.onEnd}
@@ -78,7 +78,7 @@ class FirstTab extends Component {
           resizeMode={this.state.screenType}
           onFullScreen={this.state.isFullScreen}
           source={require('../components/videos/video.mp4')}
-          style={styles.mediaPlayer}
+          style={styles.video}
           volume={10}  />
     
         <MediaControls

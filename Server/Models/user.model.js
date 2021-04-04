@@ -57,7 +57,10 @@ const userSchema = new Schema(
             type: String,
         
 
-        }
+        }, 
+        following: {
+            type: [String]
+        },
     },
     { Timestamp: true }
 );

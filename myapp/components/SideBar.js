@@ -4,6 +4,8 @@ import { Container, Header, Left, Body, Right, Button, Icon, Title, Text,List,Li
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import  MaterialCommunityIcons from'react-native-vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
+import Cookie from 'react-native-cookie';
+import {deleteData} from'../services/apis';
 export default class SideBar extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +15,17 @@ export default class SideBar extends Component {
   }
 
   componentDidMount() {
+  }
+  
+  logout=()=>{
+    deleteData().then((res)=>{
+      console.log(res);
+      this.props.navigation.navigate('Login') ;
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+    
   }
 
    render() {
@@ -43,7 +56,7 @@ export default class SideBar extends Component {
            </List>
          </ScrollView>
          <List>
-           <ListItem  >
+           <ListItem onPress={()=>this.logout()} >
              <SimpleLineIcons  name={'logout'} size={20} color='#4169e1'/>
              <Text style={{color:'#4169e1',padding:5}}>LogOut</Text>
            </ListItem>

@@ -81,9 +81,9 @@ export default class Login extends Component {
           if (res.data.errors.login == "Unknown login") {
             alert('Unknown login ')
           }
-          else if (res.data.errors.password == "Incorrect password") {
+          else 
             alert("Incorrect password")
-          }
+          
         }
       }).catch(err => {
         console.log(err);

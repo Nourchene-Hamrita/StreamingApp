@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, SafeAreaView, FlatList,TouchableOpacity } from 'react-native';
+import { View, StyleSheet, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
 import Video from 'react-native-video';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
 import styles from './style';
@@ -7,7 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { getVideos } from "../../services/apis";
 import LinearGradient from 'react-native-linear-gradient';
-import { Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
+import { Container,Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 
 
 export default class Post extends Component {
@@ -45,7 +45,7 @@ export default class Post extends Component {
               </TouchableOpacity>
             </Right>
           </CardItem>
-          <CardItem cardBody>
+          <CardItem cardBody >
             <Video onEnd={this.onEnd}
               onLoad={this.onLoad}
               onLoadStart={this.onLoadStart}
@@ -60,7 +60,7 @@ export default class Post extends Component {
             <MediaControls
               duration={this.state.duration}
               isLoading={this.state.isLoading}
-              mainColor="#333"
+              mainColor="#332"
               onFullScreen={this.onFullScreen}
               onPaused={() => this.onPaused(index)}
               onReplay={this.onReplay}
@@ -68,8 +68,8 @@ export default class Post extends Component {
               onSeeking={this.onSeeking}
               playerState={this.state.playerState}
               progress={this.state.currentTime}
-              toolbar={this.renderToolbar()}>
-            </MediaControls>
+              toolbar={this.renderToolbar()} />
+
           </CardItem>
           <CardItem>
             <Text>{title}</Text>
@@ -111,14 +111,12 @@ export default class Post extends Component {
       /*<View style={styles.uiContainer}>
         <View style={styles.rightContainer}>
           <View style={styles.iconContainer}>
-
             <EvilIcons name='heart' size={40} color='white' />
             <Text style={styles.statsLabel}>123</Text>
             <Ionicons name='ios-heart-dislike-outline' size={30} color='white' />
             <Text style={styles.statsLabel}>123</Text>
             <EvilIcons name='comment' size={40} color='white' />
             <Text style={styles.statsLabel}>123</Text>
-
           </View>
         </View>
         <View style={styles.bottomContainer}>
@@ -126,8 +124,6 @@ export default class Post extends Component {
           <Text style={styles.description}>{description}</Text>
         </View>
       </View>
-
-
     </View>*/
     )
   }
@@ -166,10 +162,11 @@ export default class Post extends Component {
   onSeek = seek => {
     this.videoPlayer.seek(seek);
   };
-  onPaused(index) {
+  onPaused = (index) => {
     let { paused } = this.state
     paused[index] = !this.state.paused[index]
     this.setState({ paused })
+
   };
   onReplay = () => {
     this.setState({ playerState: PLAYER_STATES.PLAYING });

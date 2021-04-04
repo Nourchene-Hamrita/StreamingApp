@@ -1,5 +1,5 @@
 import axios from 'axios';
-let endPoint = 'http://192.168.1.12:3000/'
+let endPoint = 'http://192.168.1.17:3000/'
 import AsyncStorage from '@react-native-community/async-storage';
 let user = "token"
 let userInfo = null
@@ -36,10 +36,10 @@ export const getHeaders = async () => {
 
 export const registerUser = async (user) => {
   return await axios.post(`${endPoint}users/register`, user);
-}
+};
 export const LoginUser = async (user) => {
   return await axios.post(`${endPoint}users/login`, user);
-}
+};
 export const getVideos = async () => {
   return await axios.get(`${endPoint}videos`);
-}
+};

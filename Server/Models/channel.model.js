@@ -29,9 +29,7 @@ const channelSchema = new Schema(
         followers: {
             type: [String]
         },
-        following: {
-            type: [String]
-        },
+        
 
 
     },
