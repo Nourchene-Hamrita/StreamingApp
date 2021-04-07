@@ -1,67 +1,86 @@
 import React, { Component } from 'react';
-import { View,SafeAreaView,ScrollView ,Image} from 'react-native';
-import { Container, Header, Left, Body, Right, Button, Icon, Title, Text,List,ListItem } from 'native-base';
+import { View, SafeAreaView, ScrollView, Image } from 'react-native';
+import { Container, Header, Left, Body, Right, Button, Icon, Title, Text, List, ListItem } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import  MaterialCommunityIcons from'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import Cookie from 'react-native-cookie';
-import {deleteData} from'../services/apis';
+import { deleteData, getInfoUser } from '../services/apis';
 export default class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
+      profile: null
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    await this.getData()
   }
-  
-  logout=()=>{
-    deleteData().then((res)=>{
+  getData() {
+    getInfoUser().then((res) => {
+      console.log(res)
+      this.setState({
+        profile: res
+      })
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+  logout = () => {
+    deleteData().then((res) => {
       console.log(res);
-      this.props.navigation.navigate('Login') ;
+      this.props.navigation.navigate('Login');
     })
-    .catch((err)=>{
-      console.log(err)
-    })
-    
+      .catch((err) => {
+        console.log(err)
+      })
+
   }
 
-   render() {
-     return (
-       <SafeAreaView style={{ flex: 1 }}>
-         <View style={{height:150,justifyContent:'center',alignItems:'center'}}>
-           <Image  source={require('../components/img/Profile.png')}style={{height:120,width:120,borderRadius:60}}/>
-           <Text>Username</Text>
-         </View>
-         <ScrollView>
-           <List  style={{marginLeft:5}}>
-             <ListItem onPress={()=>this.props.navigation.navigate('Profile')}>
-             <Ionicons  name={'person'} size={20} color='#4169e1' />
-               <Text style={{color:'#4169e1',padding:5}}>Profile</Text>
-             </ListItem>
-             <ListItem  onPress={()=>this.props.navigation.navigate('History')} >
-               < MaterialCommunityIcons name={'history'} size={25} color='#4169e1'/>
-               <Text style={{color:'#4169e1',padding:5}}>History</Text>
-             </ListItem>
-             <ListItem  onPress={()=>this.props.navigation.navigate('Saved')}>
-             <Ionicons  name={'md-star-sharp'} size={20} color='#4169e1' />
-               <Text style={{color:'#4169e1',padding:5}}>Saved</Text>
-             </ListItem>
-             <ListItem onPress={()=>this.props.navigation.navigate('Subscription')}>
-             < MaterialCommunityIcons name={'clipboard-play-multiple'} size={20} color='#4169e1'/>
-               <Text style={{color:'#4169e1',padding:5}}>Subscription</Text>
-             </ListItem>
-           </List>
-         </ScrollView>
-         <List>
-           <ListItem onPress={()=>this.logout()} >
-             <SimpleLineIcons  name={'logout'} size={20} color='#4169e1'/>
-             <Text style={{color:'#4169e1',padding:5}}>LogOut</Text>
-           </ListItem>
-         </List>
-       </SafeAreaView>
-     );
-   }
+  render() {
+    let { profile } = this.state
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        {
+          profile != null ?
+            <View>
+              <View style={{ height: 150, justifyContent: 'center', alignItems: 'center' }}>
+                <Image source={{uri:profile.picture}} style={{ height: 120, width: 120, borderRadius: 60 }} />
+                <Text>{profile.login}</Text>
+              </View>
+              <ScrollView>
+                <List style={{ marginLeft: 5 }}>
+                  <ListItem onPress={() => this.props.navigation.navigate('Profile')}>
+                    <Ionicons name={'person'} size={20} color='#4169e1' />
+                    <Text style={{ color: '#4169e1', padding: 5 }}>Profile</Text>
+                  </ListItem>
+                  <ListItem onPress={() => this.props.navigation.navigate('History')} >
+                    < MaterialCommunityIcons name={'history'} size={25} color='#4169e1' />
+                    <Text style={{ color: '#4169e1', padding: 5 }}>History</Text>
+                  </ListItem>
+                  <ListItem onPress={() => this.props.navigation.navigate('Saved')}>
+                    <Ionicons name={'md-star-sharp'} size={20} color='#4169e1' />
+                    <Text style={{ color: '#4169e1', padding: 5 }}>Saved</Text>
+                  </ListItem>
+                  <ListItem onPress={() => this.props.navigation.navigate('Subscription')}>
+                    < MaterialCommunityIcons name={'clipboard-play-multiple'} size={20} color='#4169e1' />
+                    <Text style={{ color: '#4169e1', padding: 5 }}>Subscription</Text>
+                  </ListItem>
+                </List>
+              </ScrollView>
+              <List>
+                <ListItem onPress={() => this.logout()} >
+                  <SimpleLineIcons name={'logout'} size={20} color='#4169e1' />
+                  <Text style={{ color: '#4169e1', padding: 5 }}>LogOut</Text>
+                </ListItem>
+              </List>
+            </View>
+            :
+            null
+        }
+
+      </SafeAreaView>
+    );
+  }
 }

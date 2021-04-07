@@ -4,63 +4,81 @@ import CustomHeader from '../components/CustomHeader';
 import { Container, Content, Form, Label, Item, List, ListItem, InputGroup, Input, Icon, Text, Picker, Button } from 'native-base';
 import FontAwesome5 from'react-native-vector-icons/FontAwesome5';
 import LinearGradient from 'react-native-linear-gradient';
+import  {getInfoUser} from '../services/apis'
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
+      profile:null
 
 
     };
   }
-  componentDidMount() {
+  async componentDidMount() {
+    await this.getData()
+  }
+  getData() {
+    getInfoUser().then((res) => {
+      console.log(res)
+      this.setState({
+        profile: res
+      })
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
 
 
   render() {
+    let { profile } = this.state
     return (
       <ScrollView style={{ flex: 1 }}>
+         {
+          profile != null ?
+          <View>
         <CustomHeader title='Profile' navigation={this.props.navigation} />
         <View style={{justifyContent: 'center', alignItems: 'center' }}>
-          <Image source={require('../components/img/Profile.png')} style={{ height: 120, width: 120, borderRadius: 60 }} />
+          <Image source={{uri:profile.picture}} style={{ height: 120, width: 120, borderRadius: 60 }} />
         </View>
         <Container>
           <Content>
             <Form>
-            <Item floatingLabel>
+            <Item stackedLabel>
                 <Label>Username</Label>
-                <Input />
+                <Input> {profile.login}</Input>
               </Item>
-              <Item floatingLabel>
+              <Item stackedLabel>
                 <Label>Firstname</Label>
-                <Input />
+                <Input> {profile.fisrtname}</Input>
               </Item>
-              <Item floatingLabel>
+              <Item stackedLabel>
 
                 <Label>Lastname</Label>
-                <Input />
+                <Input> {profile.lastname}</Input>
               </Item>
-              <Item floatingLabel >
+              <Item stackedLabel >
                 <Label>Age
                     </Label>
                 <Input keyboardType="numeric" />
               </Item>
-              <Item floatingLabel >
+              <Item stackedLabel >
                 <Label>Country
                     </Label>
                 <Input/>
               </Item>
-              <Item floatingLabel>
+              <Item stackedLabel>
 
                 <Label>Email</Label>
-                <Icon active name='mail' style={{ color: "#4169e1" }} />
-                <Input keyboardType="email-address" />
+                <Icon active name='mail' style={{ color: "#4169e1" }} /> 
+                <Input keyboardType="email-address">{profile.email}</Input>
+               
               </Item>
-              <Item floatingLabel last >
+              <Item stackedLabel last >
                 <Label  >Password</Label>
                 <Icon active name='ios-lock-closed' style={{ color: "#4169e1" }} />
-                <Input />
+                <Input>{profile.password}</Input>
               </Item>
               
             </Form>
@@ -75,7 +93,10 @@ class ProfileScreen extends Component {
           </Content>
         </Container>
 
-
+        </View>
+          :
+          null
+      }
       </ScrollView>
     );
   }

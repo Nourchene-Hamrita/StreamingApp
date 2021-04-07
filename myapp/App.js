@@ -19,14 +19,21 @@ import Playlist from './Screens/Playlist';
 import SideBar from './components/SideBar';
 import SavedScreen from './Screens/Saved';
 import FirstTab from './Screens/FirstTab';
+import {Provider} from'react-redux';
+import { createStore } from 'redux';
+import rootReducer from'./reducers';
 
 
-
+/*const store=createStore({
+  rootReducer,
+})*/
 
 class App extends Component {
   render() {
     return (
+      
       <AppContainer/>
+    
     );
   }
 }

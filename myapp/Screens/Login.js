@@ -7,7 +7,7 @@ import { styles } from '../Styles/style';
 import { Actions } from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
-import { LoginUser, getData } from "../services/apis";
+import { LoginUser, getData, getInfo } from "../services/apis";
 import AsyncStorage from '@react-native-community/async-storage';
 import { StackActions, NavigationActions } from 'react-navigation';
 
@@ -26,16 +26,25 @@ export default class Login extends Component {
 
     };
   }
-  storeToken = async (Token) => {
-    try {
-      await AsyncStorage.setItem("token", Token)
+  async getInfo(id) {
+    getInfo(id).then((res) => {
+      
+       AsyncStorage.setItem("user", JSON.stringify(res.data))
       const resetAction = StackActions.reset({
         index: 0,
         actions: [NavigationActions.navigate({ routeName: 'Acceuil' })],
       });
       this.props.navigation.dispatch(resetAction);
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+  storeToken = async (Token, id) => {
+    try {
+      await AsyncStorage.setItem("token", Token)
+      await this.getInfo(id)
     } catch (e) {
-      // error reading value
+
     }
   }
   getData() {
@@ -75,15 +84,15 @@ export default class Login extends Component {
         password
       }).then((res) => {
         if (res.data.token != null || res.data.token != undefined) {
-          this.storeToken(res.data.token)
+          this.storeToken(res.data.token, res.data.user)
         }
         else {
           if (res.data.errors.login == "Unknown login") {
             alert('Unknown login ')
           }
-          else 
+          else
             alert("Incorrect password")
-          
+
         }
       }).catch(err => {
         console.log(err);

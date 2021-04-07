@@ -4,17 +4,17 @@ import CustomHeader from'../components/CustomHeader';
 import LinearGradient from 'react-native-linear-gradient';
 import { Container, Header,Button, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
 const cards = [
-  {
+  {  id:'1',
     text: 'Card One',
     name: 'One',
     video: require('../components/videos/video.mp4'),
   },
-  {
+  {id:'2',
     text: 'Card two',
     name: 'One',
     video: require('../components/videos/video.mp4'),
   },
-  {
+  { id:'3',
     text: 'Card three',
     name: 'One',
     video: require('../components/videos/video.mp4'),
@@ -37,7 +37,7 @@ class SubscriptionScreen extends Component {
             </Left>
             <Body>
               <Text>Channelname</Text>
-              <Text note numberOfLines={1}>Its time to build a difference . .</Text>
+              <Text note numberOfLines={1}> 83 Followers</Text>
             </Body>
             <Right>
               <TouchableOpacity>

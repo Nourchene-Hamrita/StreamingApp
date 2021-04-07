@@ -37,7 +37,7 @@ module.exports.createChannel = async (req, res) => {
         trainerId: req.body.trainerId,
         channelname: req.body.channelname,
         theme: req.body.theme,
-        picture: req.file != null ? 'http://192.168.1.17:3000/public/' + fileName : "",
+        picture: req.file != null ? 'http://192.168.1.11:3000/public/' + fileName : "",
     });
     channel.save((err, docs) => {
         if (!err) res.send(docs);

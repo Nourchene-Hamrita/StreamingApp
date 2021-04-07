@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, SafeAreaView, FlatList, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, SafeAreaView, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Video from 'react-native-video';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
 import styles from './style';
+import {dateParser} from '../utils';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import { getVideos } from "../../services/apis";
@@ -15,6 +16,7 @@ export default class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      Loading: false,
       currentTime: 0,
       duration: 0,
       isFullScreen: false,
@@ -100,7 +102,7 @@ export default class Post extends Component {
               </Button>
             </Body>
             <Right>
-              <Text >11h ago</Text>
+              <Text style={{color:'#aaa'}} >{dateParser(PublishedAt)}</Text>
             </Right>
 
           </CardItem>
@@ -131,7 +133,7 @@ export default class Post extends Component {
   renderItem = ({ item, index }) => (
     this.Item(item.link, item.title, item.description, item.PublishedAt, index)
   );
-  componentWillMount() {
+  componentDidMount() {
     let isLoading = []
     let paused = []
     let isFullScreen = []
@@ -139,6 +141,7 @@ export default class Post extends Component {
     let duration = []
     let playerState = []
     let screenType = []
+    this.setState({Loading:true})
     getVideos()
       .then((resJson) => {
         console.log(resJson)
@@ -147,7 +150,8 @@ export default class Post extends Component {
         })
         this.setState({
           paused: paused,
-          dataSource: resJson.data
+          dataSource: resJson.data,
+          Loading:false
         })
 
 
@@ -157,7 +161,15 @@ export default class Post extends Component {
 
   }
 
-
+   DisplayLoading(){
+     if(this.state.loading){
+       return(
+         <View style={styles.loading_container}>
+           <ActivityIndicator size='large'/>
+         </View>
+       )
+     }
+   }
 
   onSeek = seek => {
     this.videoPlayer.seek(seek);
@@ -197,8 +209,7 @@ export default class Post extends Component {
   };
 
 
-  componentDidMount() {
-  }
+ 
   renderToolbar = () => (
     <View >
       <Text> toolbar </Text>
@@ -209,14 +220,15 @@ export default class Post extends Component {
   render() {
     return (
       <SafeAreaView style={Styles.container}>
+         {this.DisplayLoading()}
         <FlatList
           data={this.state.dataSource}
           renderItem={this.renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item._id}
         />
 
 
-
+        
       </SafeAreaView>
     );
   }

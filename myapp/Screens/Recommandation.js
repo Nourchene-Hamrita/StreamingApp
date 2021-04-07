@@ -40,7 +40,7 @@ class RecommandationScreen extends React.Component {
     };
   }
   
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     let isLoading = []
     let paused = []
     let isFullScreen = []
@@ -102,10 +102,7 @@ class RecommandationScreen extends React.Component {
   };
 
 
-  componentDidMount() {
-   
-
-  }
+ 
   
   renderToolbar = () => (
     <View >
