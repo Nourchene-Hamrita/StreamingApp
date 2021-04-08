@@ -47,7 +47,7 @@ export default class SideBar extends Component {
             <ScrollView>
               <View style={{ height: 160, justifyContent: 'center', alignItems: 'center' }}>
                 <Image source={{ uri: profile.picture }} style={{ height: 100, width: 100, borderRadius: 60 }} />
-                <Text style={{padding:5}}
+                <Text style={{padding:5,color:'#4169e1'}}
                 >{profile.login}</Text>
               </View>
 

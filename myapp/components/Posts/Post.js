@@ -6,9 +6,9 @@ import styles from './style';
 import {dateParser} from '../utils';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { getVideos,likeVideo,getInfoUser } from "../../services/apis";
+import { getVideos,likeVideo,getInfoUser,dislikeVideo} from "../../services/apis";
 import LinearGradient from 'react-native-linear-gradient';
-import { Container,Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
+import {Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right} from 'native-base';
 
 
 export default class Post extends Component {
@@ -26,6 +26,7 @@ export default class Post extends Component {
       screenType: 'content',
       dataSource: [],
       likers:[],
+      dislikers:[],
       profile:null
     };
   }
@@ -98,7 +99,7 @@ export default class Post extends Component {
 
             </Left>
             <Left>
-              <Button transparent>
+              <Button transparent  onPress={()=>this.dislike(id)}>
                 <Icon active name="thumbs-down" />
                 <Text style={{ marginLeft: 5 }}>{dislikers}</Text>
               </Button>
@@ -189,9 +190,19 @@ getVideos(){
   }
   like(id) {
     likeVideo(id,{id:this.state.profile._id}).then((res) => {
-      this.getVideos()
+      this.getVideos();
       this.setState({
         likers: res.data
+      })
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+  dislike(id) {
+    dislikeVideo(id,{id:this.state.profile._id}).then((res) => {
+      this.getVideos();
+      this.setState({
+        dislikers: res.data
       })
     }).catch(err => {
       console.log(err);
