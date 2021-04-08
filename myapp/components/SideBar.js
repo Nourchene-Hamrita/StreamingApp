@@ -44,43 +44,48 @@ export default class SideBar extends Component {
       <SafeAreaView style={{ flex: 1 }}>
         {
           profile != null ?
-            <View>
-              <View style={{ height: 150, justifyContent: 'center', alignItems: 'center' }}>
-                <Image source={{uri:profile.picture}} style={{ height: 120, width: 120, borderRadius: 60 }} />
-                <Text>{profile.login}</Text>
+            <ScrollView>
+              <View style={{ height: 160, justifyContent: 'center', alignItems: 'center' }}>
+                <Image source={{ uri: profile.picture }} style={{ height: 100, width: 100, borderRadius: 60 }} />
+                <Text style={{padding:5}}
+                >{profile.login}</Text>
               </View>
-              <ScrollView>
-                <List style={{ marginLeft: 5 }}>
-                  <ListItem onPress={() => this.props.navigation.navigate('Profile')}>
-                    <Ionicons name={'person'} size={20} color='#4169e1' />
-                    <Text style={{ color: '#4169e1', padding: 5 }}>Profile</Text>
-                  </ListItem>
-                  <ListItem onPress={() => this.props.navigation.navigate('History')} >
-                    < MaterialCommunityIcons name={'history'} size={25} color='#4169e1' />
-                    <Text style={{ color: '#4169e1', padding: 5 }}>History</Text>
-                  </ListItem>
-                  <ListItem onPress={() => this.props.navigation.navigate('Saved')}>
-                    <Ionicons name={'md-star-sharp'} size={20} color='#4169e1' />
-                    <Text style={{ color: '#4169e1', padding: 5 }}>Saved</Text>
-                  </ListItem>
-                  <ListItem onPress={() => this.props.navigation.navigate('Subscription')}>
-                    < MaterialCommunityIcons name={'clipboard-play-multiple'} size={20} color='#4169e1' />
-                    <Text style={{ color: '#4169e1', padding: 5 }}>Subscription</Text>
-                  </ListItem>
-                </List>
-              </ScrollView>
-              <List>
-                <ListItem onPress={() => this.logout()} >
-                  <SimpleLineIcons name={'logout'} size={20} color='#4169e1' />
-                  <Text style={{ color: '#4169e1', padding: 5 }}>LogOut</Text>
+
+              <List style={{ marginLeft: 5 }}>
+                <ListItem onPress={() => this.props.navigation.navigate('Profile')}>
+                  <Ionicons name={'person'} size={20} color='#4169e1' />
+                  <Text style={{ color: '#4169e1', padding: 5 }}>Profile</Text>
+                </ListItem>
+                <ListItem onPress={() => this.props.navigation.navigate('History')} >
+                  < MaterialCommunityIcons name={'history'} size={25} color='#4169e1' />
+                  <Text style={{ color: '#4169e1', padding: 5 }}>History</Text>
+                </ListItem>
+                <ListItem onPress={() => this.props.navigation.navigate('Saved')}>
+                  <Ionicons name={'md-star-sharp'} size={20} color='#4169e1' />
+                  <Text style={{ color: '#4169e1', padding: 5 }}>Saved</Text>
+                </ListItem>
+                <ListItem onPress={() => this.props.navigation.navigate('Subscription')}>
+                  < MaterialCommunityIcons name={'clipboard-play-multiple'} size={20} color='#4169e1' />
+                  <Text style={{ color: '#4169e1', padding: 5 }}>Subscription</Text>
                 </ListItem>
               </List>
-            </View>
+              <View style={{ marginTop: 200 }}>
+                <List>
+                  <ListItem noBorder onPress={() => this.logout()} >
+                    <SimpleLineIcons name={'logout'} size={20} color='#4169e1' />
+                    <Text style={{ color: '#4169e1', padding: 5 }}>LogOut</Text>
+                  </ListItem>
+                </List>
+              </View>
+            </ScrollView>
+
+
             :
             null
         }
 
       </SafeAreaView>
+
     );
   }
 }

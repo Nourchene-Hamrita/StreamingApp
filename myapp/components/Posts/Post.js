@@ -6,7 +6,7 @@ import styles from './style';
 import {dateParser} from '../utils';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { getVideos } from "../../services/apis";
+import { getVideos,likeVideo,getInfoUser } from "../../services/apis";
 import LinearGradient from 'react-native-linear-gradient';
 import { Container,Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 
@@ -24,10 +24,13 @@ export default class Post extends Component {
       paused: false,
       playerState: PLAYER_STATES.PLAYING,
       screenType: 'content',
-      dataSource: []
+      dataSource: [],
+      likers:[],
+      profile:null
     };
   }
-  Item(link, title, description, PublishedAt, index) {
+  Item(id,link, title, description, PublishedAt,likers,dislikers,comments,index) {
+    console.log(id)
     return (
       <Content >
         <Card>
@@ -75,30 +78,36 @@ export default class Post extends Component {
           </CardItem>
           <CardItem>
             <Text>{title}</Text>
+            <Right style={{marginLeft:260}}>
+              <TouchableOpacity>
+              <Ionicons name='bookmark-outline'size={25}style={{color: "#4169e1"}}/>
+              </TouchableOpacity>
+            </Right>
           </CardItem>
           <CardItem>
-            <Text>{description}</Text>
+            <Text note>{description}</Text>
           </CardItem>
+
           <CardItem >
 
             <Left>
-              <Button transparent>
+              <Button transparent onPress={()=>this.like(id)}>
                 <Icon active name="thumbs-up" />
-                <Text style={{ marginLeft: 5 }}>12</Text>
+                <Text style={{ marginLeft: 5 }}>{likers}</Text>
               </Button>
 
             </Left>
             <Left>
               <Button transparent>
                 <Icon active name="thumbs-down" />
-                <Text style={{ marginLeft: 5 }}>12</Text>
+                <Text style={{ marginLeft: 5 }}>{dislikers}</Text>
               </Button>
 
             </Left>
             <Body>
               <Button transparent>
                 <Icon active name="chatbubbles" />
-                <Text>4</Text>
+                <Text>{comments}</Text>
               </Button>
             </Body>
             <Right>
@@ -131,38 +140,66 @@ export default class Post extends Component {
   }
 
   renderItem = ({ item, index }) => (
-    this.Item(item.link, item.title, item.description, item.PublishedAt, index)
+    this.Item(item._id,item.link, item.title,item.description,item.PublishedAt,
+      item.likers.length,item.dislikers.length,item.comments.length,index)
   );
-  componentDidMount() {
-    let isLoading = []
-    let paused = []
-    let isFullScreen = []
-    let currentTime = []
-    let duration = []
-    let playerState = []
-    let screenType = []
-    this.setState({Loading:true})
-    getVideos()
-      .then((resJson) => {
-        console.log(resJson)
-        resJson.data.map((t) => {
-          paused.push(true)
-        })
-        this.setState({
-          paused: paused,
-          dataSource: resJson.data,
-          Loading:false
-        })
+  componentWillMount() {
+  
+this.getVideos()
+  }
+  async componentDidMount() {
+    await this.getData()
+  }
+getVideos(){
+  let isLoading = []
+  let paused = []
+  let isFullScreen = []
+  let currentTime = []
+  let duration = []
+  let playerState = []
+  let screenType = []
+  this.setState({Loading:true})
+  getVideos()
+  .then((resJson) => {
+    console.log(resJson)
+    resJson.data.map((t) => {
+      paused.push(true)
+    })
+    this.setState({
+      paused: paused,
+      dataSource: resJson.data,
+      Loading:false
+    })
 
 
-      }).catch((err) => {
-        console.log(err);
-      });
+  }).catch((err) => {
+    console.log(err);
+  });
 
+}
+  getData() {
+    getInfoUser().then((res) => {
+      console.log(res)
+      this.setState({
+        profile: res
+      })
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+  like(id) {
+    likeVideo(id,{id:this.state.profile._id}).then((res) => {
+      this.getVideos()
+      this.setState({
+        likers: res.data
+      })
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
    DisplayLoading(){
-     if(this.state.loading){
+     if(this.state.Loading){
        return(
          <View style={styles.loading_container}>
            <ActivityIndicator size='large'/>

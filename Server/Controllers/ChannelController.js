@@ -7,6 +7,23 @@ const fs = require('fs');
 const { promisify } = require('util');
 const pipeline = promisify(require("stream").pipeline);
 
+module.exports.getAllChannel = async (req, res) => {
+    ChannelModel.find((err, docs) => {
+        if (!err) res.send(docs);
+        else console.log('Error to get Data: ' + err);
+    }).sort({ createdAt: -1 });
+
+}
+module.exports.ChannelInfo = async (req, res) => {
+    console.log(req.params);
+    if (!ObjectID.isValid(req.params.id))
+        return res.status(400).send('ID unknown: ' + req.params.id)
+    ChannelModel.findById(req.params.id, (err, docs) => {
+        if (!err) res.send(docs);
+        else console.log('ID unknown: ' + err);
+    });
+};
+
 module.exports.createChannel = async (req, res) => {
     let fileName;
     if (req.file != null) {
@@ -37,7 +54,7 @@ module.exports.createChannel = async (req, res) => {
         trainerId: req.body.trainerId,
         channelname: req.body.channelname,
         theme: req.body.theme,
-        picture: req.file != null ? 'http://192.168.1.11:3000/public/' + fileName : "",
+        picture: req.file != null ? 'http://192.168.137.133:3000/public/' + fileName : "",
     });
     channel.save((err, docs) => {
         if (!err) res.send(docs);

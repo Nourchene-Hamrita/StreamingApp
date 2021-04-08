@@ -7,9 +7,13 @@ const videoSchema = new Schema(
             required: true
 
         },
-        channelId: {
-            type: String,
-            required: true
+        channel: {
+            type: [{
+                channelId: String,
+                channelname: String,
+                username:String,
+                picture:String
+            }],
 
         },
         title: {

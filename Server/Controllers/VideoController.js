@@ -41,7 +41,7 @@ module.exports.createVideo = async (req, res) => {
         channelId:req.body.channelId,
         title: req.body.title,
         description: req.body.description,
-        link: req.file != null ? 'http://192.168.1.11:3000/public/' + fileName : "",
+        link: req.file != null ? 'http://192.168.137.133:3000/public/' + fileName : "",
         likers: [],
         dislikers: [],
         comments: [],
