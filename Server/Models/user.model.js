@@ -43,7 +43,7 @@ const userSchema = new Schema(
         },
         picture: {
             type: String,
-            default:"http://192.168.1.9:3000/public/605b0abf022908280c811bca1617801073904.jpg"
+            default:"http://192.168.1.13:3000/public/605b0abf022908280c811bca1617801073904.jpg"
             
           },
         likes: {
