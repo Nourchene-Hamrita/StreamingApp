@@ -1,5 +1,5 @@
 import axios from 'axios';
-let endPoint = 'http://192.168.1.17:3000/'
+let endPoint = 'http://192.168.1.13:3000/'
 import AsyncStorage from '@react-native-community/async-storage';
 let user = "token"
 let userInfo = null
@@ -50,20 +50,27 @@ export const registerUser = async (user) => {
 export const LoginUser = async (user) => {
   return await axios.post(`${endPoint}users/login`, user);
 };
+export const UpdateUser = async (id,data) => {
+  return await axios.put(`${endPoint}users/`+id,data);
+};
 export const getVideos = async () => {
   return await axios.get(`${endPoint}videos`);
 };
+
 export const getInfo = async (id) => {
   return await axios.get(`${endPoint}users/`+id,);
 };
+export const getInfochannel = async (id) => {
+  return await axios.get(`${endPoint}channels/`+id,);
+};
 export const likeVideo = async (id,data) => {
-  //console.log(data);
+  console.log(data);
   return await axios.patch(`${endPoint}videos/like-video/`+id,data);
    
 
 };
 export const dislikeVideo = async (id,data) => {
-  //console.log(data);
+  console.log(data);
   return await axios.patch(`${endPoint}videos/dislike-video/`+id,data);
 };
 

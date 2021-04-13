@@ -39,6 +39,7 @@ export default class Login extends Component {
       console.log(err);
     });
   }
+  
   storeToken = async (Token, id) => {
     try {
       await AsyncStorage.setItem("token", Token)

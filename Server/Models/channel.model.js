@@ -2,11 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const channelSchema = new Schema(
     {
-        trainerId: {
-            type: String,
+        trainerId:{
+            type:String,
             required: true
-
         },
+          
+
+        
         channelname: {
             type: String,
 
@@ -29,6 +31,21 @@ const channelSchema = new Schema(
         followers: {
             type: [String]
         },
+         videos: {
+            type: [{
+                title: String,
+                description:String,
+                link:String,
+                likers:[],
+                dislikers:[],
+                comments: [],
+                note:[]
+            }]}
+               
+
+           
+
+       
         
 
 

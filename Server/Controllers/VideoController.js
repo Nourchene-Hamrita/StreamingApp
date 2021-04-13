@@ -1,6 +1,7 @@
 const ObjectID = require('mongoose').Types.ObjectId;
 const VideoModel = require('../Models/video.model');
 const UserModel = require('../Models/user.model');
+const ChannelModel=require('../Models/channel.model');
 const { uploadErrors } = require("../utils/errors.util");
 const fs = require('fs');
 const { promisify } = require('util');
@@ -28,7 +29,7 @@ module.exports.createVideo = async (req, res) => {
             const errors = uploadErrors(err);
             return res.status(201).json({ errors });
         }
-        fileName = req.body.trainerId + Date.now() + ".mp4";
+        fileName = req.body.channelId + Date.now() + ".mp4";
         await pipeline(
             req.file.stream,
             fs.createWriteStream(
@@ -37,19 +38,33 @@ module.exports.createVideo = async (req, res) => {
         );
     }
     const newVideo = new VideoModel({
-        trainerId: req.body.trainerId,
         channelId:req.body.channelId,
+        channelname:req.body.channelname,
+        theme:req.body.theme,
         title: req.body.title,
         description: req.body.description,
-        link: req.file != null ? 'http://192.168.1.17:3000/public/' + fileName : "",
+        link: req.file != null ? 'http://192.168.1.13:3000/public/' + fileName : "",
         likers: [],
         dislikers: [],
         comments: [],
         note:[]
     });
     try {
-        const video = await newVideo.save();
+        console.log(req.body.channelId)
+
+        await ChannelModel.findByIdAndUpdate(req.body.channelId, {
+            $addToSet: { videos: newVideo}
+        },
+            { new: true },
+            (err, docs) => {
+                if (!err) res.send(docs);
+                else return res.status(400).send(err);
+
+
+            })
+       const video = await newVideo.save();
         return res.status(201).json(video);
+       
     } catch (err) {
         return res.status(400).send(err);
     }
@@ -90,10 +105,30 @@ module.exports.DeleteVideo = (req, res) => {
 };
 module.exports.likeVideo = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
-        return res.status(400).send('ID unknown ' + req.params.id);
-    try {
+    return res.status(400).send('ID unknown ' + req.params.id);
+try {
+    await VideoModel.findByIdAndUpdate(req.params.id, {
+        $addToSet: { likers: req.body.id }
+    },
+        { new: true },
+        (err, docs) => {
+            if (err) res.status(400).send(err);
+
+
+        }
+    );
+    await UserModel.findOneAndUpdate(req.params.id, {
+        $addToSet: { likes: req.body.id }
+    },
+        { new: true },
+        (err, docs) => {
+            if (!err) res.send(docs);
+            else return res.status(400).send(err);
+
+
+        });
         await VideoModel.findByIdAndUpdate(req.params.id, {
-            $addToSet: { likers: req.body.id }
+            $pull: { dislikers: req.body.id }
         },
             { new: true },
             (err, docs) => {
@@ -103,7 +138,7 @@ module.exports.likeVideo = async (req, res) => {
             }
         );
         await UserModel.findOneAndUpdate(req.params.id, {
-            $addToSet: { likes: req.body.id }
+            $pull: { dislikes: req.body.id }
         },
             { new: true },
             (err, docs) => {
@@ -113,10 +148,10 @@ module.exports.likeVideo = async (req, res) => {
 
             })
 
-    } catch (err) {
-        res.status(400).send(err);
+} catch (err) {
+    res.status(400).send(err);
 
-    }
+}
 
 };
 module.exports.dislikeVideo = async (req, res) => {
@@ -142,7 +177,27 @@ module.exports.dislikeVideo = async (req, res) => {
                 else return res.status(400).send(err);
 
 
-            })
+            });
+            await VideoModel.findByIdAndUpdate(req.params.id, {
+                $pull: { likers: req.body.id }
+            },
+                { new: true },
+                (err, docs) => {
+                    if (err) res.status(400).send(err);
+    
+    
+                }
+            );
+            await UserModel.findOneAndUpdate(req.params.id, {
+                $pull: { likes: req.body.id }
+            },
+                { new: true },
+                (err, docs) => {
+                    if (!err) res.send(docs);
+                    else return res.status(400).send(err);
+    
+    
+                })
 
     } catch (err) {
         res.status(400).send(err);

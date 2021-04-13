@@ -2,18 +2,19 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const videoSchema = new Schema(
     {
-        trainerId: {
-            type: String,
-            required: true
+        channelId: {type:String
+          
 
         },
-        channel: {
-            type: [{
-                channelId: String,
-                channelname: String,
-                username:String,
-                picture:String
-            }],
+        channelname: {type:String
+          
+
+        },
+        picture: {
+            type: String,
+        },
+        theme: {
+            type: String,
 
         },
         title: {
@@ -59,7 +60,7 @@ const videoSchema = new Schema(
                 text: String,
                 Timestamp: Number
             }],
-            require: true
+            required: true
         },
 
 

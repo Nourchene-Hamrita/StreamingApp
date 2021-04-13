@@ -3,12 +3,12 @@ import { View, StyleSheet, SafeAreaView, FlatList, TouchableOpacity, ActivityInd
 import Video from 'react-native-video';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
 import styles from './style';
-import {dateParser} from '../utils';
+import { dateParser } from '../utils';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { getVideos,likeVideo,getInfoUser,dislikeVideo} from "../../services/apis";
+import { getVideos, likeVideo, getInfoUser, dislikeVideo, getInfoChannel } from "../../services/apis";
 import LinearGradient from 'react-native-linear-gradient';
-import {Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right} from 'native-base';
+import { Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 
 
 export default class Post extends Component {
@@ -25,22 +25,25 @@ export default class Post extends Component {
       playerState: PLAYER_STATES.PLAYING,
       screenType: 'content',
       dataSource: [],
-      likers:[],
-      dislikers:[],
-      profile:null
+      likers: [],
+      dislikers: [],
+      profile: null,
+      channel: [],
     };
   }
-  Item(id,link, title, description, PublishedAt,likers,dislikers,comments,index) {
-    console.log(id)
+  Item(id, channelname,picture,theme,link, title, description, PublishedAt, likers, dislikers, comments, index) {
+    //console.log(id)
     return (
+
       <Content >
+
         <Card>
           <CardItem>
             <Left>
-              <Thumbnail source={require('../img/Profile.png')} />
+              <Thumbnail source={{uri:picture}} />
               <Body>
-                <Text>Channel name</Text>
-                <Text note>Username</Text>
+                <Text>{channelname}</Text>
+                <Text note>{theme}</Text>
               </Body>
             </Left>
             <Right>
@@ -79,9 +82,9 @@ export default class Post extends Component {
           </CardItem>
           <CardItem>
             <Text>{title}</Text>
-            <Right style={{marginLeft:260}}>
+            <Right style={{ marginLeft: 260 }}>
               <TouchableOpacity>
-              <Ionicons name='bookmark-outline'size={25}style={{color: "#4169e1"}}/>
+                <Ionicons name='bookmark-outline' size={25} style={{ color: "#4169e1" }} />
               </TouchableOpacity>
             </Right>
           </CardItem>
@@ -92,31 +95,38 @@ export default class Post extends Component {
           <CardItem >
 
             <Left>
-              <Button transparent onPress={()=>this.like(id)}>
+
+              <Button transparent onPress={() => this.like(id)}>
                 <Icon active name="thumbs-up" />
                 <Text style={{ marginLeft: 5 }}>{likers}</Text>
               </Button>
 
+
             </Left>
             <Left>
-              <Button transparent  onPress={()=>this.dislike(id)}>
+
+              <Button transparent onPress={() => this.dislike(id)}>
                 <Icon active name="thumbs-down" />
                 <Text style={{ marginLeft: 5 }}>{dislikers}</Text>
               </Button>
 
+
             </Left>
             <Body>
-              <Button transparent>
+
+              <Button transparent onPress={() => this.props.navigation.navigate('AddComment')}>
                 <Icon active name="chatbubbles" />
                 <Text>{comments}</Text>
               </Button>
+
             </Body>
             <Right>
-              <Text style={{color:'#aaa'}} >{dateParser(PublishedAt)}</Text>
+              <Text style={{ color: '#aaa' }} >{dateParser(PublishedAt)}</Text>
             </Right>
 
           </CardItem>
         </Card>
+
       </Content>
 
 
@@ -141,43 +151,44 @@ export default class Post extends Component {
   }
 
   renderItem = ({ item, index }) => (
-    this.Item(item._id,item.link, item.title,item.description,item.PublishedAt,
-      item.likers.length,item.dislikers.length,item.comments.length,index)
+    this.Item(item._id, item.channelname,item.picture,item.theme, item.link, item.title, item.description, item.PublishedAt,
+      item.likers.length, item.dislikers.length, item.comments.length, index)
   );
   componentWillMount() {
-  
-this.getVideos()
+
+    this.getVideos()
   }
   async componentDidMount() {
-    await this.getData()
+    await this.getData();
+
   }
-getVideos(){
-  let isLoading = []
-  let paused = []
-  let isFullScreen = []
-  let currentTime = []
-  let duration = []
-  let playerState = []
-  let screenType = []
-  this.setState({Loading:true})
-  getVideos()
-  .then((resJson) => {
-    console.log(resJson)
-    resJson.data.map((t) => {
-      paused.push(true)
-    })
-    this.setState({
-      paused: paused,
-      dataSource: resJson.data,
-      Loading:false
-    })
+  getVideos() {
+    let isLoading = []
+    let paused = []
+    let isFullScreen = []
+    let currentTime = []
+    let duration = []
+    let playerState = []
+    let screenType = []
+    this.setState({ Loading: true })
+    getVideos()
+      .then((resJson) => {
+        console.log({ resJson })
+        resJson.data.map((t) => {
+          paused.push(true)
+        })
+        this.setState({
+          paused: paused,
+          dataSource: resJson.data,
+          Loading: false
+        })
 
 
-  }).catch((err) => {
-    console.log(err);
-  });
+      }).catch((err) => {
+        console.log(err);
+      });
 
-}
+  }
   getData() {
     getInfoUser().then((res) => {
       console.log(res)
@@ -188,8 +199,9 @@ getVideos(){
       console.log(err);
     });
   }
+
   like(id) {
-    likeVideo(id,{id:this.state.profile._id}).then((res) => {
+    likeVideo(id, { id: this.state.profile._id }).then((res) => {
       this.getVideos();
       this.setState({
         likers: res.data
@@ -199,7 +211,7 @@ getVideos(){
     });
   }
   dislike(id) {
-    dislikeVideo(id,{id:this.state.profile._id}).then((res) => {
+    dislikeVideo(id, { id: this.state.profile._id }).then((res) => {
       this.getVideos();
       this.setState({
         dislikers: res.data
@@ -209,15 +221,15 @@ getVideos(){
     });
   }
 
-   DisplayLoading(){
-     if(this.state.Loading){
-       return(
-         <View style={styles.loading_container}>
-           <ActivityIndicator size='large'/>
-         </View>
-       )
-     }
-   }
+  DisplayLoading() {
+    if (this.state.Loading) {
+      return (
+        <View style={styles.loading_container}>
+          <ActivityIndicator size='large' />
+        </View>
+      )
+    }
+  }
 
   onSeek = seek => {
     this.videoPlayer.seek(seek);
@@ -257,7 +269,7 @@ getVideos(){
   };
 
 
- 
+
   renderToolbar = () => (
     <View >
       <Text> toolbar </Text>
@@ -268,7 +280,7 @@ getVideos(){
   render() {
     return (
       <SafeAreaView style={Styles.container}>
-         {this.DisplayLoading()}
+        {this.DisplayLoading()}
         <FlatList
           data={this.state.dataSource}
           renderItem={this.renderItem}
@@ -276,7 +288,7 @@ getVideos(){
         />
 
 
-        
+
       </SafeAreaView>
     );
   }

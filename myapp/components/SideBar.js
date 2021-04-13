@@ -52,9 +52,17 @@ export default class SideBar extends Component {
               </View>
 
               <List style={{ marginLeft: 5 }}>
+              <ListItem onPress={() => this.props.navigation.navigate('AddChannel')}>
+                  <MaterialCommunityIcons name={'video-plus'} size={25} color='#4169e1' />
+                  <Text style={{ color: '#4169e1', padding: 5 }}>Create My Channel</Text>
+                </ListItem>
                 <ListItem onPress={() => this.props.navigation.navigate('Profile')}>
                   <Ionicons name={'person'} size={20} color='#4169e1' />
                   <Text style={{ color: '#4169e1', padding: 5 }}>Profile</Text>
+                </ListItem>
+                <ListItem onPress={() => this.props.navigation.navigate('Subscription')}>
+                  < MaterialCommunityIcons name={'clipboard-play-multiple'} size={20} color='#4169e1' />
+                  <Text style={{ color: '#4169e1', padding: 5 }}>Following</Text>
                 </ListItem>
                 <ListItem onPress={() => this.props.navigation.navigate('History')} >
                   < MaterialCommunityIcons name={'history'} size={25} color='#4169e1' />
@@ -64,18 +72,16 @@ export default class SideBar extends Component {
                   <Ionicons name={'md-star-sharp'} size={20} color='#4169e1' />
                   <Text style={{ color: '#4169e1', padding: 5 }}>Saved</Text>
                 </ListItem>
-                <ListItem onPress={() => this.props.navigation.navigate('Subscription')}>
-                  < MaterialCommunityIcons name={'clipboard-play-multiple'} size={20} color='#4169e1' />
-                  <Text style={{ color: '#4169e1', padding: 5 }}>Subscription</Text>
-                </ListItem>
+               
               </List>
-              <View style={{ marginTop: 200 }}>
-                <List>
+              <List>
                   <ListItem noBorder onPress={() => this.logout()} >
-                    <SimpleLineIcons name={'logout'} size={20} color='#4169e1' />
-                    <Text style={{ color: '#4169e1', padding: 5 }}>LogOut</Text>
+                    <SimpleLineIcons name={'logout'} size={20} color='#fa8072' />
+                    <Text style={{ color: '#fa8072', padding: 5 }}>LogOut</Text>
                   </ListItem>
                 </List>
+              <View style={{ marginTop: 200 }}>
+               
               </View>
             </ScrollView>
 
@@ -83,7 +89,6 @@ export default class SideBar extends Component {
             :
             null
         }
-
       </SafeAreaView>
 
     );

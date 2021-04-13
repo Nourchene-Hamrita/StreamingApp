@@ -46,7 +46,7 @@ render(){
   return (
     <View style={{flex:1}}>
        <CustomHeader title='Home' isHome={true} navigation={this.props.navigation}  />
-      <Post/>
+      <Post navigation={this.props.navigation}/>
       </View>)
 }}
 
