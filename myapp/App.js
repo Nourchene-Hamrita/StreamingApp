@@ -22,6 +22,9 @@ import FirstTab from './Screens/FirstTab';
 import {Provider} from'react-redux';
 import { createStore } from 'redux';
 import rootReducer from'./reducers';
+import AddComment from './Screens/AddComment';
+import AddChannel from'./Screens/AddChannel';
+import Channel from './Screens/Channel';
 
 
 /*const store=createStore({
@@ -59,6 +62,12 @@ const HomeStack = createStackNavigator({
   },
   Playlist: {
     screen: Playlist,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  AddComment: {
+    screen: AddComment,
     navigationOptions: {
       header: null,
     }
@@ -140,6 +149,18 @@ const MainStack = createStackNavigator({
   },
   Subscription: {
     screen: SubscriptionScreen,
+    navigationOptions: {
+      header: null,
+    }
+  },
+ AddChannel: {
+    screen: AddChannel,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Channel: {
+    screen:Channel,
     navigationOptions: {
       header: null,
     }
