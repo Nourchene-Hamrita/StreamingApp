@@ -7,7 +7,7 @@ import { styles } from '../Styles/style';
 import { Actions } from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
-import { LoginUser, getData, getInfo } from "../services/apis";
+import { LoginUser, getData,getInfo,getChannel} from "../services/apis";
 import AsyncStorage from '@react-native-community/async-storage';
 import { StackActions, NavigationActions } from 'react-navigation';
 
@@ -26,6 +26,14 @@ export default class Login extends Component {
 
     };
   }
+  async getChannel(id) {
+    getChannel(id).then((res) => {
+      console.log({res})
+       AsyncStorage.setItem("channel", JSON.stringify(res.data))
+    }).catch(err => {
+      console.log(err);
+    });
+  }
   async getInfo(id) {
     getInfo(id).then((res) => {
       
@@ -40,10 +48,12 @@ export default class Login extends Component {
     });
   }
   
-  storeToken = async (Token, id) => {
+  storeToken = async (Token, user) => {
+    console.log(user)
     try {
       await AsyncStorage.setItem("token", Token)
-      await this.getInfo(id)
+      await this.getInfo(user),
+      await this.getChannel(user)
     } catch (e) {
 
     }

@@ -24,6 +24,20 @@ module.exports.ChannelInfo = async (req, res) => {
         else console.log('ID unknown: ' + err);
     });
 };
+module.exports.UserChannelInfo = async (req, res) => {
+    console.log(req.params);
+    if (!ObjectID.isValid(req.params.id))
+        return res.status(400).send('ID unknown: ' + req.params.id)
+        
+        ChannelModel.find({trainerId:req.params.id},(err,docs) => {
+            if (!err) res.send(docs);
+            else return res.status(400).send(err);
+    })
+
+
+
+   
+};
 module.exports.createChannel= async (req, res) => {
 const newChannel = new ChannelModel({
     trainerId: req.body.trainerId,
@@ -69,7 +83,7 @@ module.exports.uploadChannel = async (req, res) => {
         try {
             await ChannelModel.findByIdAndUpdate(
                 req.body.channelId,
-                { $set: { picture:'http://192.168.1.13:3000/public/' + fileName } },
+                { $set: { picture:'http://192.168.1.14:3000/public/' + fileName } },
                 { new: true, upsert: true, setDefaultsOnInsert: true },
                 (err, docs) => {
                     if (!err) return res.send(docs);
@@ -78,7 +92,7 @@ module.exports.uploadChannel = async (req, res) => {
             );
             await VideoModel.findByIdAndUpdate(
                 req.body.videoId,
-                { $set: { picture:'http://192.168.1.13:3000/public/' + fileName } },
+                { $set: { picture:'http://192.168.1.14:3000/public/' + fileName } },
                 {new: true},
                 (err, docs) => {
                     if (!err) return res.send(docs);

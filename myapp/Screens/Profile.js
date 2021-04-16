@@ -4,7 +4,8 @@ import CustomHeader from '../components/CustomHeader';
 import { Container, Content, Form, Label, Item, List, ListItem, InputGroup, Input, Icon, Text, Picker, Button } from 'native-base';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import LinearGradient from 'react-native-linear-gradient';
-import { getInfoUser, UpdateUser } from '../services/apis'
+import { getInfoUser, UpdateUser } from '../services/apis';
+import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 class ProfileScreen extends Component {
   constructor(props) {
     super(props);
@@ -17,6 +18,7 @@ class ProfileScreen extends Component {
     };
   }
   async componentDidMount() {
+    AndroidKeyboardAdjust.setAdjustPan();
     await this.getData()
   }
   getData() {

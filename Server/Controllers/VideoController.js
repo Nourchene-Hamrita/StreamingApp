@@ -43,7 +43,7 @@ module.exports.createVideo = async (req, res) => {
         theme:req.body.theme,
         title: req.body.title,
         description: req.body.description,
-        link: req.file != null ? 'http://192.168.1.13:3000/public/' + fileName : "",
+        link: req.file != null ? 'http://192.168.1.14:3000/public/' + fileName : "",
         likers: [],
         dislikers: [],
         comments: [],

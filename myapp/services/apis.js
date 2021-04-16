@@ -1,5 +1,5 @@
 import axios from 'axios';
-let endPoint = 'http://192.168.1.13:3000/'
+let endPoint = 'http://192.168.1.14:3000/'
 import AsyncStorage from '@react-native-community/async-storage';
 let user = "token"
 let userInfo = null
@@ -44,6 +44,15 @@ export const getInfoUser = async () => {
     // error reading value
   }
 }
+export const getInfoChannel = async () => {
+  try {
+    const data = await AsyncStorage.getItem("channel")
+    console.log(data)
+    return JSON.parse(data)
+  } catch (e) {
+    // error reading value
+  }
+}
 export const registerUser = async (user) => {
   return await axios.post(`${endPoint}users/register`, user);
 };
@@ -60,8 +69,8 @@ export const getVideos = async () => {
 export const getInfo = async (id) => {
   return await axios.get(`${endPoint}users/`+id,);
 };
-export const getInfochannel = async (id) => {
-  return await axios.get(`${endPoint}channels/`+id,);
+export const getChannel = async (id) => {
+  return await axios.get(`${endPoint}channels/userchannel/`+id,);
 };
 export const likeVideo = async (id,data) => {
   console.log(data);
@@ -73,4 +82,7 @@ export const dislikeVideo = async (id,data) => {
   console.log(data);
   return await axios.patch(`${endPoint}videos/dislike-video/`+id,data);
 };
-
+export const createChannel = async(data) => {
+ console.log(data)
+  return await axios.post(`${endPoint}channels/create-channel/`,data);
+};

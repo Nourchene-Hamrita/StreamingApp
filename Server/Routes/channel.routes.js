@@ -4,6 +4,7 @@ const multer=require('multer');
 const upload=multer();
 router.get('/', ChannelController.getAllChannel);
 router.get('/:id', ChannelController.ChannelInfo);
+router.get('/userchannel/:id',ChannelController.UserChannelInfo);
 router.post('/create-channel',ChannelController.createChannel);
 router.post('/upload',upload.single('file'),ChannelController.uploadChannel);
 router.put('/:id', ChannelController.UpdateChannel);

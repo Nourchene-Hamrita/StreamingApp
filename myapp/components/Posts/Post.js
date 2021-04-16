@@ -31,7 +31,7 @@ export default class Post extends Component {
       channel: [],
     };
   }
-  Item(id, channelname,picture,theme,link, title, description, PublishedAt, likers, dislikers, comments, index) {
+  Item(id, channelname, picture, theme, link, title, description, PublishedAt, likers, dislikers, comments, index) {
     //console.log(id)
     return (
 
@@ -40,7 +40,7 @@ export default class Post extends Component {
         <Card>
           <CardItem>
             <Left>
-              <Thumbnail source={{uri:picture}} />
+              <Thumbnail source={{ uri: picture }} />
               <Body>
                 <Text>{channelname}</Text>
                 <Text note>{theme}</Text>
@@ -151,7 +151,7 @@ export default class Post extends Component {
   }
 
   renderItem = ({ item, index }) => (
-    this.Item(item._id, item.channelname,item.picture,item.theme, item.link, item.title, item.description, item.PublishedAt,
+    this.Item(item._id, item.channelname, item.picture, item.theme, item.link, item.title, item.description, item.PublishedAt,
       item.likers.length, item.dislikers.length, item.comments.length, index)
   );
   componentWillMount() {

@@ -52,7 +52,7 @@ export default class SideBar extends Component {
               </View>
 
               <List style={{ marginLeft: 5 }}>
-              <ListItem onPress={() => this.props.navigation.navigate('AddChannel')}>
+              <ListItem onPress={() => this.props.navigation.navigate('Channel')}>
                   <MaterialCommunityIcons name={'video-plus'} size={25} color='#4169e1' />
                   <Text style={{ color: '#4169e1', padding: 5 }}>Create My Channel</Text>
                 </ListItem>

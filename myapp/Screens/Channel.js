@@ -6,6 +6,7 @@ import { Container, Header, Tab, Tabs, TabHeading, Icon, Text } from 'native-bas
 import Tab1 from'../components/Tab1';
 import Tab2 from '../components/Tab2';
 import Tab3 from '../components/Tab3';
+import { getInfoChannel } from '../services/apis';
 
 
 export default class Channel extends Component {
@@ -19,8 +20,19 @@ export default class Channel extends Component {
 
   componentDidMount() {
   }
+  getData() {
+    getInfoChannel().then((res) => {
+      console.log(res)
+      this.setState({
+        channel: res
+      })
+    }).catch(err => {
+      console.log(err);
+    });
+  };
 
    render() {
+    let { channel } = this.state
      return (
        <View style={{ flex: 1 }}>
             <CustomHeader title='My Channel' isHome={true} navigation={this.props.navigation} />
