@@ -2,6 +2,7 @@ const express = require('express');
 const UserRoutes = require('./Routes/user.routes');
 const VideoRoutes = require('./Routes/video.routes');
 const ChannelRoutes=require('./Routes/channel.routes');
+const CommentRoutes=require('./Routes/comment.route');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 require('dotenv').config({ path: './config/.env' });
@@ -27,6 +28,7 @@ app.get('/jwtid',requireAuth,(req,res)=>{
 app.use('/users', UserRoutes);
 app.use('/videos', VideoRoutes);
 app.use('/channels', ChannelRoutes);
+app.use('/comments', CommentRoutes);
 
 app.use(morgan('dev'));
 app.use((req, res, next) => {

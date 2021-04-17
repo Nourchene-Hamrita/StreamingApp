@@ -2,6 +2,7 @@ const ObjectID = require('mongoose').Types.ObjectId;
 const VideoModel = require('../Models/video.model');
 const UserModel = require('../Models/user.model');
 const ChannelModel=require('../Models/channel.model');
+const CommentModel=require('../Models/comment.model');
 const { uploadErrors } = require("../utils/errors.util");
 const fs = require('fs');
 const { promisify } = require('util');
@@ -262,12 +263,20 @@ module.exports.noteVideo = (req, res) => {
     }
 
 };
-module.exports.commentVideo = (req, res) => {
-    if (!ObjectID.isValid(req.params.id))
+module.exports.commentVideo = async (req, res) => {
+    const newComment = new CommentModel({
+        videoId:req.params.id,
+        commenterId:req.body.commenterId,
+        commenterPseudo:req.body.commenterPseudo,
+        text: req.body.text,
+      
+    });
+   if (!ObjectID.isValid(req.params.id))
         return res.status(400).send('ID unknown ' + req.params.id);
+       
     try {
-        return VideoModel.findByIdAndUpdate(req.params.id, {
-            $push: {
+        await VideoModel.findByIdAndUpdate(req.params.id, {
+             $addToSet: {
                 comments: {
                     commenterId: req.body.commenterId,
                     commenterPseudo: req.body.commenterPseudo,
@@ -281,6 +290,9 @@ module.exports.commentVideo = (req, res) => {
                 if (!err) res.send(docs);
                 else return res.status(400).send(err);
             })
+            const comment = await newComment.save();
+            return res.status(201).json(comment);
+
 
     } catch (err) {
         res.status(400).send(err);
