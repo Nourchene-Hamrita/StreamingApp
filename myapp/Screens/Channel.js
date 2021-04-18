@@ -14,25 +14,16 @@ export default class Channel extends Component {
     super(props);
     this.state = {
       loading: true,
-      channel:null
+      
     };
   }
 
   componentDidMount() {
   }
-  getData() {
-    getInfoChannel().then((res) => {
-      console.log(res)
-      this.setState({
-        channel: res
-      })
-    }).catch(err => {
-      console.log(err);
-    });
-  };
+ 
 
    render() {
-    let { channel } = this.state
+   
      return (
        <View style={{ flex: 1 }}>
             <CustomHeader title='My Channel' isHome={true} navigation={this.props.navigation} />

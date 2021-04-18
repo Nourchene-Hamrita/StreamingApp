@@ -6,7 +6,7 @@ import styles from './style';
 import { dateParser } from '../utils';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { getVideos, likeVideo, getInfoUser, dislikeVideo, getInfoChannel } from "../../services/apis";
+import { getVideos, likeVideo, getInfoUser, dislikeVideo, getComments } from "../../services/apis";
 import LinearGradient from 'react-native-linear-gradient';
 import { Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 
@@ -28,6 +28,7 @@ export default class Post extends Component {
       likers: [],
       dislikers: [],
       profile: null,
+      comments: [],
       channel: [],
     };
   }
@@ -36,7 +37,6 @@ export default class Post extends Component {
     return (
 
       <Content >
-
         <Card>
           <CardItem>
             <Left>
@@ -89,7 +89,7 @@ export default class Post extends Component {
             </Right>
           </CardItem>
           <CardItem>
-            <Text note>{description}</Text>
+            <Text  note numberOfLines={2}>{description}</Text>
           </CardItem>
 
           <CardItem >
@@ -114,7 +114,7 @@ export default class Post extends Component {
             </Left>
             <Body>
 
-              <Button transparent onPress={() => this.props.navigation.navigate('AddComment')}>
+              <Button transparent onPress={() => this.commentVideo(id)}>
                 <Icon active name="chatbubbles" />
                 <Text>{comments}</Text>
               </Button>
@@ -220,7 +220,17 @@ export default class Post extends Component {
       console.log(err);
     });
   }
-
+  commentVideo(id) {
+    getComments(id).then((res) => {
+      console.log({ res })
+      this.setState({
+        comments: res.data
+      })
+      this.props.navigation.navigate('AddComment',{comments:res.data})
+    }).catch(err => {
+      console.log(err);
+    });
+  }
   DisplayLoading() {
     if (this.state.Loading) {
       return (

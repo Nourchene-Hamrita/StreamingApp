@@ -3,6 +3,7 @@ const VideoController = require('../Controllers/VideoController');
 const multer=require('multer');
 const upload=multer();
 router.get('/', VideoController.listVideo);
+router.get('/:id', VideoController.VideoInfo);
 router.post('/',upload.single('file'), VideoController.createVideo);
 router.put('/:id', VideoController.UpdateVideo);
 router.delete('/:id', VideoController.DeleteVideo);

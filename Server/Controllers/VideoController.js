@@ -15,6 +15,15 @@ module.exports.listVideo = (req, res) => {
     }).sort({ createdAt: -1 });
 
 }
+module.exports.VideoInfo = async (req, res) => {
+    console.log(req.params);
+    if (!ObjectID.isValid(req.params.id))
+        return res.status(400).send('ID unknown: ' + req.params.id)
+    VideoModel.findById(req.params.id, (err, docs) => {
+        if (!err) res.send(docs);
+        else console.log('ID unknown: ' + err);
+    });
+};
 module.exports.createVideo = async (req, res) => {
     let fileName;
     if (req.file != null) {

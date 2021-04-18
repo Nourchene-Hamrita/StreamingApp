@@ -62,6 +62,9 @@ export const LoginUser = async (user) => {
 export const UpdateUser = async (id,data) => {
   return await axios.put(`${endPoint}users/`+id,data);
 };
+export const UpdateChannel = async (id,data) => {
+  return await axios.put(`${endPoint}channels/`+id,data);
+};
 export const getVideos = async () => {
   return await axios.get(`${endPoint}videos`);
 };
@@ -69,8 +72,15 @@ export const getVideos = async () => {
 export const getInfo = async (id) => {
   return await axios.get(`${endPoint}users/`+id,);
 };
+export const getInfoVideo = async (id) => {
+  return await axios.get(`${endPoint}videos/`+id,);
+};
 export const getChannel = async (id) => {
   return await axios.get(`${endPoint}channels/userchannel/`+id,);
+};
+export const getComments = async (id) => {
+  console.log(id)
+  return await axios.get(`${endPoint}comments/`+id,);
 };
 export const likeVideo = async (id,data) => {
   console.log(data);
