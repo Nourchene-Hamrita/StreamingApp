@@ -4,13 +4,14 @@ import { Container, Header, Left, Body, Right, Button, Icon, Title, Text, List, 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import { deleteData, getInfoUser } from '../services/apis';
+import { deleteData, getInfoUser,getFollowing } from '../services/apis';
 export default class SideBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      profile: null
+      profile: null,
+      following:[],
     };
   }
 
@@ -36,6 +37,18 @@ export default class SideBar extends Component {
         console.log(err)
       })
 
+  };
+  userFollowing(id) {
+    getFollowing(id).then((res) => {
+      console.log({ res })
+      this.setState({
+       
+        following: res.data
+      })
+      this.props.navigation.navigate('Subscription',{following:res.data})
+    }).catch(err => {
+      console.log(err);
+    });
   }
 
   render() {
@@ -60,7 +73,7 @@ export default class SideBar extends Component {
                   <Ionicons name={'person'} size={20} color='#4169e1' />
                   <Text style={{ color: '#4169e1', padding: 5 }}>Profile</Text>
                 </ListItem>
-                <ListItem onPress={() => this.props.navigation.navigate('Subscription')}>
+                <ListItem onPress={() => this.userFollowing(profile._id)}>
                   < MaterialCommunityIcons name={'clipboard-play-multiple'} size={20} color='#4169e1' />
                   <Text style={{ color: '#4169e1', padding: 5 }}>Following</Text>
                 </ListItem>

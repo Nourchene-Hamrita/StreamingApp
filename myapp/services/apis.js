@@ -85,14 +85,20 @@ export const getComments = async (id) => {
 export const likeVideo = async (id,data) => {
   console.log(data);
   return await axios.patch(`${endPoint}videos/like-video/`+id,data);
-   
-
 };
 export const dislikeVideo = async (id,data) => {
   console.log(data);
   return await axios.patch(`${endPoint}videos/dislike-video/`+id,data);
 };
+export const CommentVideo = async (id,data) => {
+  console.log(data);
+  return await axios.patch(`${endPoint}videos/comment-video/`+id,data);
+};
 export const createChannel = async(data) => {
  console.log(data)
   return await axios.post(`${endPoint}channels/create-channel/`,data);
+};
+export const getFollowing = async (id) => {
+  console.log(id)
+  return await axios.get(`${endPoint}following/`+id,);
 };

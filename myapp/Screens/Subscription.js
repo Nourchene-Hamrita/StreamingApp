@@ -22,22 +22,25 @@ const cards = [
 class SubscriptionScreen extends Component {
   constructor(props) {
     super(props);
+    const { navigation } = this.props;
+    console.log(navigation.getParam('following', null))
     this.state = {
       loading: true,
       dataSource:[],
+      following: navigation.getParam('following', null),
     };
   }
-  Item(link, title, description, PublishedAt, index) {
+  Item(channelname,followers,picture){
     return (
       <Content>
         <List>
           <ListItem thumbnail>
             <Left>
-              <Thumbnail square source={require('../components/img/Profile.png')} />
+              <Thumbnail square source={{uri:picture}} />
             </Left>
             <Body>
-              <Text>Channelname</Text>
-              <Text note numberOfLines={1}> 83 Followers</Text>
+              <Text>{channelname}</Text>
+              <Text note numberOfLines={1}>{followers} followers</Text>
             </Body>
             <Right>
               <TouchableOpacity>
@@ -51,7 +54,7 @@ class SubscriptionScreen extends Component {
       </Content>
     )}
     renderItem = ({ item, index }) => (
-      this.Item(item.link, item.title, item.description, item.PublishedAt, index)
+      this.Item(item.channelname, item.followers.length,item.picture)
     );
 
   componentDidMount() {
@@ -59,13 +62,15 @@ class SubscriptionScreen extends Component {
 
 
   render() {
+    let { following } = this.state
+    console.log({ following })
     return (
       <View style={{ flex: 1 }}>
          <CustomHeader title='Subscription' navigation={this.props.navigation} />
          <FlatList
-          data={cards}
+          data={following}
           renderItem={this.renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item._id}
         />
 
 

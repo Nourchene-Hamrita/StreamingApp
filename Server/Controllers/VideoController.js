@@ -278,6 +278,7 @@ module.exports.commentVideo = async (req, res) => {
         commenterId:req.body.commenterId,
         commenterPseudo:req.body.commenterPseudo,
         text: req.body.text,
+        picture:req.body.picture
       
     });
    if (!ObjectID.isValid(req.params.id))
@@ -307,6 +308,20 @@ module.exports.commentVideo = async (req, res) => {
         res.status(400).send(err);
     }
 
+};
+module.exports.ChannelVideoList = async (req, res) => {
+    console.log(req.params);
+    if (!ObjectID.isValid(req.params.id))
+        return res.status(400).send('ID unknown: ' + req.params.id)
+        
+        VideoModel.find({channelId:req.params.id},(err,docs) => {
+            if (!err) res.send(docs);
+            else return res.status(400).send(err);
+    })
+
+
+
+   
 };
 
 module.exports.DeleteComment = (req, res) => {

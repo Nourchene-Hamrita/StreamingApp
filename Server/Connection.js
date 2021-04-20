@@ -4,6 +4,7 @@ const VideoRoutes = require('./Routes/video.routes');
 const ChannelRoutes=require('./Routes/channel.routes');
 const CommentRoutes=require('./Routes/comment.routes');
 const SavedRoutes=require('./Routes/saved.routes');
+const FollowingRoutes=require('./Routes/following.routes');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 require('dotenv').config({ path: './config/.env' });
@@ -31,6 +32,7 @@ app.use('/videos', VideoRoutes);
 app.use('/channels', ChannelRoutes);
 app.use('/comments', CommentRoutes);
 app.use('/saved', SavedRoutes);
+app.use('/following',FollowingRoutes);
 
 app.use(morgan('dev'));
 app.use((req, res, next) => {

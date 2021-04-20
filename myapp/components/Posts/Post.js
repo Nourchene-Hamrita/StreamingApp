@@ -154,7 +154,7 @@ export default class Post extends Component {
     this.Item(item._id, item.channelname, item.picture, item.theme, item.link, item.title, item.description, item.PublishedAt,
       item.likers.length, item.dislikers.length, item.comments.length, index)
   );
-  componentWillMount() {
+  UNSAFE_componentWillMount() {
 
     this.getVideos()
   }
@@ -223,7 +223,9 @@ export default class Post extends Component {
   commentVideo(id) {
     getComments(id).then((res) => {
       console.log({ res })
+      this.getVideos();
       this.setState({
+       
         comments: res.data
       })
       this.props.navigation.navigate('AddComment',{comments:res.data})

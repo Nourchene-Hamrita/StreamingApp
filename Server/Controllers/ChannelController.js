@@ -3,6 +3,7 @@ const ObjectID = require('mongoose').Types.ObjectId;
 const ChannelModel = require('../Models/channel.model');
 const UserModel = require('../Models/user.model');
 const VideoModel=require('../Models/video.model');
+const FollowingModel=require('../Models/following.model');
 const { uploadErrors } = require("../utils/errors.util");
 const fs = require('fs');
 const { promisify } = require('util');
@@ -128,6 +129,14 @@ module.exports.UpdateChannel = (req, res) => {
 
 };
 module.exports.follow = async (req, res) => {
+    const newFollowing = new FollowingModel({
+        userId:req.params.id,
+        channelId:req.body.idToFollow,
+        channelname:req.body.channelname,
+
+        followers:[]
+      
+    });
     if (
         !ObjectID.isValid(req.params.id) ||
         !ObjectID.isValid(req.body.idToFollow)
@@ -156,6 +165,21 @@ module.exports.follow = async (req, res) => {
                 if (err) return res.status(400).jsos(err);
             }
         );
+        await FollowingModel.findOneAndUpdate(
+            {channelId:req.body.idToFollow},{
+            $addToSet: { followers: req.params.id }
+        },
+            { new: true, upsert: true },
+            (err, docs) => {
+                if (!err) res.status(201).json(docs);
+                if (err) return res.status(400).jsos(err);
+            }
+        );
+
+
+        const following = await newFollowing.save();
+            return res.status(201).json(following);
+
     } catch (err) {
         return res.status(500).json({ message: err });
     }
