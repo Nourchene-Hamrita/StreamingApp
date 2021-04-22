@@ -27,7 +27,8 @@ const videoSchema = new Schema(
 
         },
         tag: {
-            type: String,
+            type: [String],
+            required: true
 
         },
 
@@ -66,9 +67,14 @@ const videoSchema = new Schema(
             }],
             required: true
         },
+        category: {
+            type: String,
+    
+        },
       
 
     },
+   
     { Timestamp: true }
 );
 const VideoModel = mongoose.model('video', videoSchema)

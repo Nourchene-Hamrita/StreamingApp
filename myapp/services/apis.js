@@ -74,7 +74,9 @@ export const SearchVideos = async (data) => {
   
 );
 };
-
+export const DeleteVideo = async (id) => {
+  return await axios.delete(`${endPoint}videos/`+id,);
+};
 export const getInfo = async (id) => {
   return await axios.get(`${endPoint}users/`+id,);
 };
@@ -90,7 +92,7 @@ export const getComments = async (id) => {
 };
 export const getVideosList = async (id) => {
   console.log(id)
-  return await axios.get(`${endPoint}videos/`+id,);
+  return await axios.get(`${endPoint}videos/videolist/`+id,);
 };
 export const followChannel = async (id,data) => {
   console.log(data);

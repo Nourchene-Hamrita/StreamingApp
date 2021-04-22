@@ -5,7 +5,6 @@ const ChannelRoutes=require('./Routes/channel.routes');
 const CommentRoutes=require('./Routes/comment.routes');
 const SavedRoutes=require('./Routes/saved.routes');
 const FollowingRoutes=require('./Routes/following.routes');
-const TagRoutes = require('./Routes/tag.routes');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 require('dotenv').config({ path: './config/.env' });
@@ -34,7 +33,7 @@ app.use('/channels', ChannelRoutes);
 app.use('/comments', CommentRoutes);
 app.use('/saved', SavedRoutes);
 app.use('/following',FollowingRoutes);
-app.use('/searchtag',TagRoutes);
+
 
 app.use(morgan('dev'));
 app.use((req, res, next) => {
@@ -52,11 +51,11 @@ app.use((err, req, res, next) => {
   })
 
 });
-/*app.get('/', function (req, res,next) {
-  res.send('Hello World')
-})*/
+
 app.listen(process.env.PORT, () => {
   console.log(`Server started on port ${process.env.PORT}`);
 });
 
-
+/*app.get('/', function (req, res,next) {
+  res.send('Hello World')
+})*/
