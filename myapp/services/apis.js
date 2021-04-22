@@ -69,8 +69,10 @@ export const getVideos = async () => {
   return await axios.get(`${endPoint}videos`);
 };
 export const SearchVideos = async (data) => {
-  console.log(data)
-  return await axios.get(`${endPoint}videos/search/`,data);
+  console.log(data);
+  return await axios.get(`${endPoint}videos/search?tag=`+data.tag,
+  
+);
 };
 
 export const getInfo = async (id) => {

@@ -30,7 +30,7 @@ class SubscriptionScreen extends Component {
               <Text note numberOfLines={1}>{theme}</Text>
             </Body>
             <Right>
-              <TouchableOpacity onPress={()=>this.Unfollow(this.state.profile._id,channelId,userId)}>
+              <TouchableOpacity onPress={()=>this.Unfollow(userId,channelId,userId)}>
                 <LinearGradient style={{ padding: 10, borderRadius: 20, }} colors={['#4169e1', '#fa8072']}>
                   <Text style={{ color: 'white' }} >Unfollow</Text>
                 </LinearGradient>

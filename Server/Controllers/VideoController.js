@@ -358,8 +358,10 @@ module.exports.DeleteComment = (req, res) => {
 
 };
 module.exports.SearchVideo = async (req, res) => {
-   try{
-        VideoModel.find({"tag":req.body.tag},(err,docs) => {
+  
+    console.log(req.query.tag);
+       try{
+        VideoModel.find({"tag":'#'+req.query.tag},(err,docs) => {
             if (!err) res.send(docs);
             else return res.status(400).send(err);
     })
