@@ -25,6 +25,7 @@ import rootReducer from'./reducers';
 import AddComment from './Screens/AddComment';
 import AddChannel from'./Screens/AddChannel';
 import Channel from './Screens/Channel';
+import Tab2 from './components/Tab2';
 
 
 /*const store=createStore({
@@ -72,6 +73,13 @@ const HomeStack = createStackNavigator({
       header: null,
     }
   },
+  videosList: {
+    screen: Tab2,
+    navigationOptions: {
+      header: null,
+    }
+  },
+
 })
 const RecommandationStack = createStackNavigator({
   Recommandations: {
@@ -165,6 +173,7 @@ const MainStack = createStackNavigator({
       header: null,
     }
   },
+  
 }, { initialRouteName: 'Home' })
 const appDrawer = createDrawerNavigator({
   drawer: MainStack

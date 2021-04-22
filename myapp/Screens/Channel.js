@@ -34,7 +34,7 @@ export default class Channel extends Component {
             <Tab1 />
           </Tab>
           <Tab heading={ <TabHeading style={{backgroundColor:'#4169e1'}}><Icon name="apps" style={{fontSize:18}} /><Text>My Videos</Text></TabHeading>}>
-            <Tab2 />
+            <Tab2  navigation={this.props.navigation}/>
           </Tab>
           <Tab heading={ <TabHeading style={{backgroundColor:'#4169e1'}}><Icon name="pencil" style={{fontSize:15}} /><Text>Edit</Text></TabHeading>}>
             <Tab3 />

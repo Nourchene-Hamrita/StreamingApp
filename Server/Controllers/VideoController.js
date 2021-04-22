@@ -1,8 +1,8 @@
 const ObjectID = require('mongoose').Types.ObjectId;
 const VideoModel = require('../Models/video.model');
 const UserModel = require('../Models/user.model');
-const ChannelModel=require('../Models/channel.model');
-const CommentModel=require('../Models/comment.model');
+const ChannelModel = require('../Models/channel.model');
+const CommentModel = require('../Models/comment.model');
 const { uploadErrors } = require("../utils/errors.util");
 const fs = require('fs');
 const { promisify } = require('util');
@@ -48,22 +48,25 @@ module.exports.createVideo = async (req, res) => {
         );
     }
     const newVideo = new VideoModel({
-        channelId:req.body.channelId,
-        channelname:req.body.channelname,
-        theme:req.body.theme,
+        channelId: req.body.channelId,
+        channelname: req.body.channelname,
+        theme: req.body.theme,
+        picture: req.body.picture,
         title: req.body.title,
         description: req.body.description,
+        tag:req.body.tag,
         link: req.file != null ? 'http://192.168.1.14:3000/public/' + fileName : "",
         likers: [],
         dislikers: [],
         comments: [],
-        note:[]
+        note: [],
+        tags:[]
     });
     try {
         console.log(req.body.channelId)
 
-        await ChannelModel.findByIdAndUpdate(req.body.channelId, {
-            $addToSet: { videos: newVideo}
+       await ChannelModel.findByIdAndUpdate(req.body.channelId, {
+            $addToSet: { videos: newVideo }
         },
             { new: true },
             (err, docs) => {
@@ -72,9 +75,13 @@ module.exports.createVideo = async (req, res) => {
 
 
             })
-       const video = await newVideo.save();
+
+    
+              
+        const video = await newVideo.save();
         return res.status(201).json(video);
-       
+        
+
     } catch (err) {
         return res.status(400).send(err);
     }
@@ -103,40 +110,44 @@ module.exports.UpdateVideo = (req, res) => {
 
 
 }
-module.exports.DeleteVideo = (req, res) => {
+module.exports.DeleteVideo = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send('ID unknown ' + req.params.id)
-    VideoModel.findByIdAndRemove(req.params.id,
-        (err, docs) => {
-            if (!err) res.status(200).json({ message: 'successfully deleted' });
-            else console.log('Delete Error: ' + err);
+    try {
+        await VideoModel.findByIdAndRemove(req.params.id,
+            (err, docs) => {
+                if (!err) res.status(200).json({ message: 'successfully deleted' });
+                else console.log('Delete Error: ' + err);
+            });
+    } catch (err) {
+        res.status(400).send(err);
 
-        })
+    }
 };
 module.exports.likeVideo = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
-    return res.status(400).send('ID unknown ' + req.params.id);
-try {
-    await VideoModel.findByIdAndUpdate(req.params.id, {
-        $addToSet: { likers: req.body.id }
-    },
-        { new: true },
-        (err, docs) => {
-            if (err) res.status(400).send(err);
+        return res.status(400).send('ID unknown ' + req.params.id);
+    try {
+        await VideoModel.findByIdAndUpdate(req.params.id, {
+            $addToSet: { likers: req.body.id }
+        },
+            { new: true },
+            (err, docs) => {
+                if (err) res.status(400).send(err);
 
 
-        }
-    );
-    await UserModel.findOneAndUpdate(req.params.id, {
-        $addToSet: { likes: req.body.id }
-    },
-        { new: true },
-        (err, docs) => {
-            if (!err) res.send(docs);
-            else return res.status(400).send(err);
+            }
+        );
+        await UserModel.findOneAndUpdate(req.params.id, {
+            $addToSet: { likes: req.body.id }
+        },
+            { new: true },
+            (err, docs) => {
+                if (!err) res.send(docs);
+                else return res.status(400).send(err);
 
 
-        });
+            });
         await VideoModel.findByIdAndUpdate(req.params.id, {
             $pull: { dislikers: req.body.id }
         },
@@ -158,10 +169,10 @@ try {
 
             })
 
-} catch (err) {
-    res.status(400).send(err);
+    } catch (err) {
+        res.status(400).send(err);
 
-}
+    }
 
 };
 module.exports.dislikeVideo = async (req, res) => {
@@ -188,26 +199,26 @@ module.exports.dislikeVideo = async (req, res) => {
 
 
             });
-            await VideoModel.findByIdAndUpdate(req.params.id, {
-                $pull: { likers: req.body.id }
-            },
-                { new: true },
-                (err, docs) => {
-                    if (err) res.status(400).send(err);
-    
-    
-                }
-            );
-            await UserModel.findOneAndUpdate(req.params.id, {
-                $pull: { likes: req.body.id }
-            },
-                { new: true },
-                (err, docs) => {
-                    if (!err) res.send(docs);
-                    else return res.status(400).send(err);
-    
-    
-                })
+        await VideoModel.findByIdAndUpdate(req.params.id, {
+            $pull: { likers: req.body.id }
+        },
+            { new: true },
+            (err, docs) => {
+                if (err) res.status(400).send(err);
+
+
+            }
+        );
+        await UserModel.findOneAndUpdate(req.params.id, {
+            $pull: { likes: req.body.id }
+        },
+            { new: true },
+            (err, docs) => {
+                if (!err) res.send(docs);
+                else return res.status(400).send(err);
+
+
+            })
 
     } catch (err) {
         res.status(400).send(err);
@@ -274,19 +285,19 @@ module.exports.noteVideo = (req, res) => {
 };
 module.exports.commentVideo = async (req, res) => {
     const newComment = new CommentModel({
-        videoId:req.params.id,
-        commenterId:req.body.commenterId,
-        commenterPseudo:req.body.commenterPseudo,
+        videoId: req.params.id,
+        commenterId: req.body.commenterId,
+        commenterPseudo: req.body.commenterPseudo,
         text: req.body.text,
-        picture:req.body.picture
-      
+        picture: req.body.picture
+
     });
-   if (!ObjectID.isValid(req.params.id))
+    if (!ObjectID.isValid(req.params.id))
         return res.status(400).send('ID unknown ' + req.params.id);
-       
+
     try {
         await VideoModel.findByIdAndUpdate(req.params.id, {
-             $addToSet: {
+            $addToSet: {
                 comments: {
                     commenterId: req.body.commenterId,
                     commenterPseudo: req.body.commenterPseudo,
@@ -300,8 +311,8 @@ module.exports.commentVideo = async (req, res) => {
                 if (!err) res.send(docs);
                 else return res.status(400).send(err);
             })
-            const comment = await newComment.save();
-            return res.status(201).json(comment);
+        const comment = await newComment.save();
+        return res.status(201).json(comment);
 
 
     } catch (err) {
@@ -313,15 +324,15 @@ module.exports.ChannelVideoList = async (req, res) => {
     console.log(req.params);
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send('ID unknown: ' + req.params.id)
-        
-        VideoModel.find({channelId:req.params.id},(err,docs) => {
-            if (!err) res.send(docs);
-            else return res.status(400).send(err);
+
+    VideoModel.find({ channelId: req.params.id }, (err, docs) => {
+        if (!err) res.send(docs);
+        else return res.status(400).send(err);
     })
 
 
 
-   
+
 };
 
 module.exports.DeleteComment = (req, res) => {
@@ -345,7 +356,20 @@ module.exports.DeleteComment = (req, res) => {
         return res.status(400).send(err);
     }
 
+};
+module.exports.SearchVideo = async (req, res) => {
+   try{
+        VideoModel.find({"tag":req.body.tag},(err,docs) => {
+            if (!err) res.send(docs);
+            else return res.status(400).send(err);
+    })
+} catch (err) {
+    return res.status(400).send(err);
 }
+
+
+   
+};
 
 
 

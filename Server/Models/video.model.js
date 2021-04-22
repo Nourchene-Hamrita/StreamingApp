@@ -26,6 +26,10 @@ const videoSchema = new Schema(
             type: String,
 
         },
+        tag: {
+            type: String,
+
+        },
 
         link: {
             type: String,
@@ -62,7 +66,7 @@ const videoSchema = new Schema(
             }],
             required: true
         },
-
+      
 
     },
     { Timestamp: true }

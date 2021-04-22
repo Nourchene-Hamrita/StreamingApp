@@ -68,6 +68,10 @@ export const UpdateChannel = async (id,data) => {
 export const getVideos = async () => {
   return await axios.get(`${endPoint}videos`);
 };
+export const SearchVideos = async (data) => {
+  console.log(data)
+  return await axios.get(`${endPoint}videos/search/`,data);
+};
 
 export const getInfo = async (id) => {
   return await axios.get(`${endPoint}users/`+id,);
@@ -81,6 +85,18 @@ export const getChannel = async (id) => {
 export const getComments = async (id) => {
   console.log(id)
   return await axios.get(`${endPoint}comments/`+id,);
+};
+export const getVideosList = async (id) => {
+  console.log(id)
+  return await axios.get(`${endPoint}videos/`+id,);
+};
+export const followChannel = async (id,data) => {
+  console.log(data);
+  return await axios.patch(`${endPoint}channels/follow/`+id,data);
+};
+export const unfollowChannel = async (id,data) => {
+  console.log(data);
+  return await axios.patch(`${endPoint}channels/unfollow/`+id,data);
 };
 export const likeVideo = async (id,data) => {
   console.log(data);

@@ -6,7 +6,7 @@ import styles from './style';
 import { dateParser } from '../utils';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { getVideos, likeVideo, getInfoUser, dislikeVideo, getComments } from "../../services/apis";
+import { getVideos, likeVideo, getInfoUser, dislikeVideo, getComments,followChannel } from "../../services/apis";
 import LinearGradient from 'react-native-linear-gradient';
 import { Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 
@@ -27,12 +27,13 @@ export default class Post extends Component {
       dataSource: [],
       likers: [],
       dislikers: [],
+      following:[],
       profile: null,
       comments: [],
       channel: [],
     };
   }
-  Item(id, channelname, picture, theme, link, title, description, PublishedAt, likers, dislikers, comments, index) {
+  Item(id,channelId, channelname, picture, theme, link, title, description, PublishedAt, likers, dislikers, comments, index) {
     //console.log(id)
     return (
 
@@ -47,7 +48,7 @@ export default class Post extends Component {
               </Body>
             </Left>
             <Right>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=>this.follow(this.state.profile._id,channelId,channelname,this.state.profile._id,picture,theme)}>
                 <LinearGradient style={{ padding: 10, borderRadius: 20, }} colors={['#4169e1', '#fa8072']}>
                   <Text style={{ color: 'white' }}>Follow</Text>
                 </LinearGradient>
@@ -89,7 +90,7 @@ export default class Post extends Component {
             </Right>
           </CardItem>
           <CardItem>
-            <Text  note numberOfLines={2}>{description}</Text>
+            <Text note numberOfLines={2}>{description}</Text>
           </CardItem>
 
           <CardItem >
@@ -151,7 +152,7 @@ export default class Post extends Component {
   }
 
   renderItem = ({ item, index }) => (
-    this.Item(item._id, item.channelname, item.picture, item.theme, item.link, item.title, item.description, item.PublishedAt,
+    this.Item(item._id,item.channelId, item.channelname, item.picture, item.theme, item.link, item.title, item.description, item.PublishedAt,
       item.likers.length, item.dislikers.length, item.comments.length, index)
   );
   UNSAFE_componentWillMount() {
@@ -172,14 +173,14 @@ export default class Post extends Component {
     let screenType = []
     this.setState({ Loading: true })
     getVideos()
-      .then((resJson) => {
-        console.log({ resJson })
-        resJson.data.map((t) => {
+      .then((res) => {
+        console.log({ res })
+        res.data.map((t) => {
           paused.push(true)
         })
         this.setState({
           paused: paused,
-          dataSource: resJson.data,
+          dataSource: res.data,
           Loading: false
         })
 
@@ -194,6 +195,16 @@ export default class Post extends Component {
       console.log(res)
       this.setState({
         profile: res
+      })
+    }).catch(err => {
+      console.log(err);
+    });
+  };
+  follow(id,idToFollow,channelname,userId,picture,theme){
+    followChannel(id,{idToFollow,channelname,userId,picture,theme}).then((res) => {
+      this.getVideos();
+      this.setState({
+        following: res.data
       })
     }).catch(err => {
       console.log(err);
@@ -225,10 +236,10 @@ export default class Post extends Component {
       console.log({ res })
       this.getVideos();
       this.setState({
-       
+
         comments: res.data
       })
-      this.props.navigation.navigate('AddComment',{comments:res.data})
+      this.props.navigation.navigate('AddComment',{comments:res.data,dataSource: res.data})
     }).catch(err => {
       console.log(err);
     });
