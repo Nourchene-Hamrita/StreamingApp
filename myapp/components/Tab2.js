@@ -3,7 +3,7 @@ import { View, SafeAreaView, FlatList, TouchableOpacity, StyleSheet } from 'reac
 import { Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './Posts/style';
-import { getInfoChannel, getVideosList,getComments } from '../services/apis';
+import { getInfoChannel, getVideosList,getComments, getInfoVideo } from '../services/apis';
 import { dateParser } from './utils';
 import Video from 'react-native-video';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
@@ -22,7 +22,8 @@ export default class Tab2 extends Component {
       loading: true,
       channel: null,
       videos: [],
-      comments:[]
+      comments:[],
+      video:[]
     };
   };
   Item(id,channelname, link, title, description, picture, theme, PublishedAt,likers,dislikers,comments, index) {
@@ -38,7 +39,7 @@ export default class Tab2 extends Component {
             </Body>
           </Left>
           <Right>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>this.getVideo(id)}>
               <LinearGradient style={{ flexDirection: 'row', height: 40, width: 80, padding: 5, borderRadius: 30, justifyContent: 'center', alignItems: 'center' }} colors={['#4169e1', '#fa8072']}>
                 <Icon name='pencil' style={{ fontSize: 12, color: "white" }} />
                 <Text style={{ color: 'white', paddingLeft: 5, }}>Edit</Text>
@@ -152,6 +153,18 @@ export default class Tab2 extends Component {
         console.log(err);
     });
   };
+  getVideo(id){
+    getInfoVideo(id).then((res) => {
+      console.log({ res })
+      this.setState({
+        video: res.data   
+      })
+      this.props.navigation.navigate('EditVideo', { video: res.data }) 
+    }).catch(err => {
+      console.log(err);
+    });
+  };
+
   commentVideo(id) {
     getComments(id).then((res) => {
       console.log({ res })

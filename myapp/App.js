@@ -26,6 +26,7 @@ import AddComment from './Screens/AddComment';
 import AddChannel from'./Screens/AddChannel';
 import Channel from './Screens/Channel';
 import Tab2 from './components/Tab2';
+import EditPost from './components/Posts/EditPost';
 
 
 /*const store=createStore({
@@ -75,6 +76,12 @@ const HomeStack = createStackNavigator({
   },
   videosList: {
     screen: Tab2,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  EditVideo: {
+    screen: EditPost,
     navigationOptions: {
       header: null,
     }
@@ -169,6 +176,12 @@ const MainStack = createStackNavigator({
   },
   Channel: {
     screen:Channel,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  EditVideo: {
+    screen: EditPost,
     navigationOptions: {
       header: null,
     }

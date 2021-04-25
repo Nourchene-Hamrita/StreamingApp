@@ -87,6 +87,9 @@ export const SaveVideos = async (data) => {
 export const DeleteVideo = async (id) => {
   return await axios.delete(`${endPoint}videos/`+id,);
 };
+export const DeleteFromSave = async (id) => {
+  return await axios.delete(`${endPoint}saved/`+id,);
+};
 export const getInfo = async (id) => {
   return await axios.get(`${endPoint}users/`+id,);
 };

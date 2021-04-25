@@ -13,10 +13,6 @@ module.exports.SavedList = async (req, res) => {
         if (!err) res.send(docs);
         else return res.status(400).send(err);
     })
-
-
-
-
 };
 module.exports.AddToSave = async (req, res) => {
 const newSave = new SavedModel({
@@ -41,4 +37,18 @@ try {
     res.status(200).send(err)
 }
 
+};
+module.exports.DeleteVideo = async (req, res) => {
+    if (!ObjectID.isValid(req.params.id))
+        return res.status(400).send('ID unknown ' + req.params.id)
+    try {
+        await SavedModel.findByIdAndRemove(req.params.id,
+            (err, docs) => {
+                if (!err) res.status(200).json({ message: 'successfully deleted' });
+                else console.log('Delete Error: ' + err);
+            });
+    } catch (err) {
+        res.status(400).send(err);
+
+    }
 };

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { View,FlatList,TouchableOpacity } from 'react-native';
 import CustomHeader from'../components/CustomHeader';
-import {getInfoUser, getSavedVideos} from'../services/apis';
+import {getInfoUser, getSavedVideos,DeleteFromSave} from'../services/apis';
 import styles from '../components/Posts/style';
 import Video from 'react-native-video';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
 import { Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class SavedScreen extends Component {
   videoPlayer;
@@ -26,12 +27,12 @@ export default class SavedScreen extends Component {
       profile:null
     };
   }
-
+ 
   async componentDidMount() {
     await this.getData();
     await this.SavedVideo(this.state.profile._id)
   }
-  Item( channelname, picture, theme, link, title, description,index) {
+  Item(id, channelname, picture, theme, link, title, description,index) {
     //console.log(id)
     return (
 
@@ -45,6 +46,14 @@ export default class SavedScreen extends Component {
                 <Text note>{theme}</Text>
               </Body>
             </Left>
+            <Right>
+            <TouchableOpacity onPress={()=>this.DeleteSaved(id)} >
+                <LinearGradient style={{ padding: 10, flexDirection: 'row', height: 40, width: 90, padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}} colors={['#4169e1', '#fa8072']}>
+                  <MaterialCommunityIcons name='delete'style={{ color: 'white', fontSize: 15 }}/>
+                  <Text style={{ color: 'white' }}>Delete</Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </Right>
            
           </CardItem>
           <CardItem cardBody >
@@ -76,7 +85,7 @@ export default class SavedScreen extends Component {
           <CardItem>
             <Text>{title}</Text>
             <Right style={{ marginLeft: 260 }}>
-              <TouchableOpacity onPress={()=>this.SaveVideos(channelname,picture,theme,title,description,link,category)}>
+              <TouchableOpacity onPress={()=>this.DeleteSaved(id)}>
                 <Ionicons name='bookmark' size={25} style={{ color: "#fa8072" }} />
               </TouchableOpacity>
             </Right>
@@ -93,7 +102,7 @@ export default class SavedScreen extends Component {
   }
 
   renderItem = ({ item, index }) => (
-    this.Item(item.channelname, item.picture, item.theme, item.link, item.title, item.description,index)
+    this.Item(item._id,item.channelname, item.picture, item.theme, item.link, item.title, item.description,index)
   );
  async getData() {
    await getInfoUser().then((res) => {
@@ -120,7 +129,19 @@ export default class SavedScreen extends Component {
       console.log(err);
     });
   };
-  onSeek = seek => {
+  DeleteSaved(id){
+   DeleteFromSave(id).then((res) => {
+    console.log({ res })
+    this.setState({
+      saved: res.data   
+    })
+    alert('Successfully deleted !')
+  }).catch(err => {
+    console.log(err);
+  });
+};
+
+onSeek = seek => {
     this.videoPlayer.seek(seek);
   };
   onPaused = (index) => {
