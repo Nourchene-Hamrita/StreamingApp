@@ -12,6 +12,7 @@ export default class SideBar extends Component {
       loading: true,
       profile: null,
       following: [],
+      saved:[],
     };
   }
 
@@ -49,7 +50,8 @@ export default class SideBar extends Component {
     }).catch(err => {
       console.log(err);
     });
-  }
+  };
+ 
 
   render() {
     let { profile } = this.state
@@ -58,33 +60,41 @@ export default class SideBar extends Component {
         {
           profile != null ?
             <ScrollView>
-              <View style={{ height: 160, justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{padding:10, height: 160, justifyContent: 'center', alignItems: 'center' }}>
                 <Image source={{ uri: profile.picture }} style={{ height: 100, width: 100, borderRadius: 60 }} />
-                <Text style={{ padding: 5, color: '#4169e1' }}
+                <Text style={{padding: 5, color: '#4169e1' }}
                 >{profile.login}</Text>
+                 <Text style={{  color: '#fa8072' }}
+                >{profile.email}</Text>
               </View>
 
               <List style={{ marginLeft: 5 }}>
-                <ListItem onPress={() => this.props.navigation.navigate('Channel')}>
-                  <MaterialCommunityIcons name={'video-plus'} size={25} color='#4169e1' />
-                  <Text style={{ color: '#4169e1', padding: 5 }}>Create My Channel</Text>
+              <ListItem onPress={() => this.props.navigation.navigate('Home')}>
+                  <MaterialCommunityIcons name={'home'} size={25} color='#4169e1' />
+                  <Text style={{ color: '#4169e1', padding: 5 }}>Home</Text>
                 </ListItem>
                 <ListItem onPress={() => this.props.navigation.navigate('Profile')}>
                   <Ionicons name={'person'} size={20} color='#4169e1' />
                   <Text style={{ color: '#4169e1', padding: 5 }}>Profile</Text>
                 </ListItem>
+                <ListItem onPress={() => this.props.navigation.navigate('Channel')}>
+                  <MaterialCommunityIcons name={'video-plus'} size={25} color='#4169e1' />
+                  <Text style={{ color: '#4169e1', padding: 5 }}>Create My Channel</Text>
+                </ListItem>
+               
                 <ListItem onPress={() => this.userFollowing(profile._id)}>
                   < MaterialCommunityIcons name={'clipboard-play-multiple'} size={20} color='#4169e1' />
                   <Text style={{ color: '#4169e1', padding: 5 }}>Subscription</Text>
-                </ListItem>
-                <ListItem onPress={() => this.props.navigation.navigate('History')} >
-                  < MaterialCommunityIcons name={'history'} size={25} color='#4169e1' />
-                  <Text style={{ color: '#4169e1', padding: 5 }}>History</Text>
                 </ListItem>
                 <ListItem onPress={() => this.props.navigation.navigate('Saved')}>
                   <Ionicons name={'md-star-sharp'} size={20} color='#4169e1' />
                   <Text style={{ color: '#4169e1', padding: 5 }}>Saved</Text>
                 </ListItem>
+                <ListItem onPress={() => this.props.navigation.navigate('History')} >
+                  < MaterialCommunityIcons name={'history'} size={25} color='#4169e1' />
+                  <Text style={{ color: '#4169e1', padding: 5 }}>History</Text>
+                </ListItem>
+              
 
               </List>
               <List>
