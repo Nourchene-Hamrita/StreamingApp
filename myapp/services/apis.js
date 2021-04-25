@@ -74,6 +74,16 @@ export const SearchVideos = async (data) => {
   
 );
 };
+export const getSavedVideos = async (id) => {
+ 
+  return await axios.get(`${endPoint}saved/savedvideos/`+id);
+};
+export const SaveVideos = async (data) => {
+  console.log(data);
+  return await axios.post(`${endPoint}saved/`,data
+  
+);
+};
 export const DeleteVideo = async (id) => {
   return await axios.delete(`${endPoint}videos/`+id,);
 };

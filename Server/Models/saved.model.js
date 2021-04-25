@@ -36,6 +36,11 @@ const savedSchema = new Schema(
             type: [String],
             required: true
         },
+        tags: {
+            type: [String],
+            required: true
+
+        },
         dislikers: {
             type: [String],
             required: true
@@ -58,6 +63,11 @@ const savedSchema = new Schema(
             }],
             required: true
         },
+        category: {
+            type: String,
+    
+        },
+      
 
 
     },

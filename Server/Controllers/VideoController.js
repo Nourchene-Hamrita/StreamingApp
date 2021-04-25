@@ -372,6 +372,25 @@ module.exports.SearchVideo = async (req, res) => {
 
    
 };
+module.exports.SearchVideos = async (req, res) => {
+    for (const key in req.query) {
+        console.log(key, req.query[key])
+      }
+    try{
+        VideoModel.find({
+        "tags":{$in:['#'+req.query.tag,'#'+req.query.tag1]},
+        "category":req.query.category,
+        "channelname":req.query.channelname},(err,docs) => {
+            if (!err) res.send(docs);
+            else return res.status(400).send(err);
+    })
+} catch (err) {
+    return res.status(400).send(err);
+}
+
+
+   
+};
 
 
 

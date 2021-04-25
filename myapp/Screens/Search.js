@@ -44,7 +44,7 @@ class Search extends Component {
           <Header searchBar rounded>
             <Item>
               <Icon name="ios-search" />
-              <Input placeholder="Enter a tag" onChangeText={(text) => this.setState({ tag: text })} />
+              <Input placeholder="Enter a tag" onChangeText={(text) => this.setState({ tag:text })} />
 
             </Item>
 

@@ -26,7 +26,7 @@ const videoSchema = new Schema(
             type: String,
 
         },
-        tag: {
+        tags: {
             type: [String],
             required: true
 

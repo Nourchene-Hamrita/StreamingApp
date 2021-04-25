@@ -26,7 +26,11 @@ const newSave = new SavedModel({
     theme: req.body.theme,
     title: req.body.title,
     description:req.body.description,
+    category:req.body.category,
     link:req.body.link,
+    comments:[],
+    tags:[],
+  
 
 
 });
@@ -34,7 +38,7 @@ try {
     const save = await newSave.save();
     return res.status(201).json(save);
 } catch (err) {
-    res.status(200).send({ MSMediaKeyError })
+    res.status(200).send(err)
 }
 
 };

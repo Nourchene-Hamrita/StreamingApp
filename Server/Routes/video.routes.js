@@ -3,7 +3,7 @@ const VideoController = require('../Controllers/VideoController');
 const multer=require('multer');
 const upload=multer();
 router.get('/', VideoController.listVideo);
-router.get('/search', VideoController.SearchVideo);
+router.get('/search', VideoController.SearchVideos);
 router.get('/:id', VideoController.VideoInfo);
 router.get('/videolist/:id',VideoController.ChannelVideoList);
 router.post('/',upload.single('file'), VideoController.createVideo);
