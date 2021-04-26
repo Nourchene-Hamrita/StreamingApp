@@ -6,9 +6,10 @@ import styles from './style';
 import { dateParser } from '../utils';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import { getVideos, likeVideo, getInfoUser, dislikeVideo, getComments,followChannel,SaveVideos } from "../../services/apis";
+import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
+import { getVideos, likeVideo, getInfoUser, dislikeVideo, getComments, CommentVideo,followChannel,SaveVideos } from "../../services/apis";
 import LinearGradient from 'react-native-linear-gradient';
-import { Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
+import { Content, Card, CardItem, Thumbnail, Text, Button,Item,Input, Icon, Left, Body, Right } from 'native-base';
 
 
 export default class Post extends Component {
@@ -28,6 +29,7 @@ export default class Post extends Component {
       likers: [],
       dislikers: [],
       following:[],
+      text: '',
       profile: null,
       comments: [],
       channel: [],
@@ -124,8 +126,14 @@ export default class Post extends Component {
 
             </Body>
             <Right>
-              <Text style={{ color: '#aaa' }} >{dateParser(PublishedAt)}</Text>
+              <Text note >{dateParser(PublishedAt)}</Text>
             </Right>
+          </CardItem>
+          <CardItem>
+          <Item rounded style={{ marginBottom: 10 }} >
+          <Input style={{fontSize:15}}placeholder='Add a comment' onChangeText={(text) => this.setState({ text: text })} />
+          <Icon style={{ color: "#fa8072" }} active name='send' onPress={() => this.AddComment(id)} />
+        </Item>
 
           </CardItem>
         </Card>
@@ -144,6 +152,7 @@ export default class Post extends Component {
   }
   async componentDidMount() {
     await this.getData();
+    AndroidKeyboardAdjust.setAdjustPan();
 
   }
   getVideos() {
@@ -227,11 +236,31 @@ export default class Post extends Component {
       console.log(err);
     });
   };
+  AddComment(id) {
+    let { text, profile} = this.state
+    console.log({
+      id,
+      CommenterId:profile._id,
+      commenterPseudo:profile.login,
+      picture:profile.picture,
+      text,
+    })
+    CommentVideo(id, { CommenterId: profile._id, commenterPseudo: profile.login, picture: profile.picture, text })
+      .then((res) => {
+        console.log(res);
+        this.getVideos();
+      }
+      ).catch(err => {
+        console.log(err);
+
+      });
+
+  }
   SaveVideos(channelname,picture,theme,title,description,link,category){
     SaveVideos({ UserId: this.state.profile._id,channelname,picture,theme,title,description,link,category}).then((res) => {
       this.getVideos();
       this.setState(prevState => ({
-        icon: prevState.icon === 'bookmark' ? 'bookmark-outline' : 'bookmark',
+        icon:prevState.icon === 'bookmark' ? 'bookmark-outline' : 'bookmark',
         saved:res.data
       }))
        
