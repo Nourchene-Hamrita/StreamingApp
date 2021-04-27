@@ -54,7 +54,7 @@ module.exports.createVideo = async (req, res) => {
         picture: req.body.picture,
         title: req.body.title,
         description: req.body.description,
-        link: req.file != null ? 'http://192.168.1.14:3000/public/' + fileName : "",
+        link: req.file != null ? 'http://192.168.1.9:3000/public/' + fileName : "",
         likers: [],
         dislikers: [],
         comments: [],
@@ -305,8 +305,7 @@ module.exports.commentVideo = async (req, res) => {
         },
             { new: true },
             (err, docs) => {
-                if (!err)return res.send(docs);
-                else return res.status(400).send(err);
+                if (err) return res.status(400).send(err);
             })
         const comment = await newComment.save();
         return res.status(201).json(comment);
@@ -379,17 +378,19 @@ module.exports.SearchVideos = async (req, res) => {
             "tags": { $in: ['#'+req.query.tag,'#'+req.query.tag1] },
         }, (err, docs) => {
             if (!err) return res.send(docs);
-            else return res.status(400).send(err);
+            else res.status(400).send(err);
         })}
-        if (req.query.category==''&&req.query.tag==''){
+       else if (req.query.category==''&&req.query.tag==''){
             VideoModel.find({
                 "channelname": req.query.channelname
             }, (err, docs) => {
                 if (!err) return res.send(docs);
                 else return res.status(400).send(err);
 
+            
+
         })}
-        if (req.query.channelname==''&&req.query.tag==''){
+      else  if (req.query.channelname==''&&req.query.tag==''){
             VideoModel.find({
                 "category": req.query.category
             }, (err, docs) => {
@@ -397,7 +398,7 @@ module.exports.SearchVideos = async (req, res) => {
                 else return res.status(400).send(err);
 
         })}
-         if (req.query.category==''){
+        else if (req.query.category==''){
             VideoModel.find({
                 "tags": { $in: ['#'+req.query.tag,'#'+req.query.tag1] },
                 "channelname": req.query.channelname
@@ -415,7 +416,7 @@ module.exports.SearchVideos = async (req, res) => {
                 else return res.status(400).send(err);
 
         })}
-        if (req.query.tag==''){
+      else  if (req.query.tag==''){
             VideoModel.find({
                 "category": req.query.category,
                 "channelname":req.query.channelname

@@ -84,7 +84,7 @@ module.exports.uploadChannel = async (req, res) => {
     try {
         await ChannelModel.findByIdAndUpdate(
             req.body.channelId,
-            { $set: { picture: 'http://192.168.1.14:3000/public/' + fileName } },
+            { $set: { picture: 'http://192.168.1.9:3000/public/' + fileName } },
             { new: true, upsert: true, setDefaultsOnInsert: true },
             (err, docs) => {
                 if (!err) return res.send(docs);
@@ -93,7 +93,7 @@ module.exports.uploadChannel = async (req, res) => {
         );
         await VideoModel.findByIdAndUpdate(
             req.body.videoId,
-            { $set: { picture: 'http://192.168.1.14:3000/public/' + fileName } },
+            { $set: { picture: 'http://192.168.1.9:3000/public/' + fileName } },
             { new: true },
             (err, docs) => {
                 return res.status(500).send({ message: err });
@@ -189,14 +189,14 @@ module.exports.unfollow = async (req, res) => {
         },
             { new: true, upsert: true },
             (err, docs) => {
-                return res.status(400).json(err);
+                if (!err) return res.status(201).json(docs);
+                else return res.status(400).json(err);
             }
         );
         await FollowingModel.findOneAndRemove(
             { channelId: req.body.idToUnFollow,userId: req.params.id },
             (err, docs) => {
-                if (!err) return res.status(201).json(docs);
-              else return res.status(400).json(err);
+                if (err) return res.status(400).send(err);
             }
         );
 
