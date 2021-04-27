@@ -27,6 +27,7 @@ import AddChannel from'./Screens/AddChannel';
 import Channel from './Screens/Channel';
 import Tab2 from './components/Tab2';
 import EditPost from './components/Posts/EditPost';
+import Result from'./Screens/Result';
 
 
 /*const store=createStore({
@@ -52,6 +53,12 @@ const HomeStack = createStackNavigator({
   },
   Search: {
     screen: Search,
+    navigationOptions: {
+      header: null,
+    }
+  },
+  Result: {
+    screen: Result,
     navigationOptions: {
       header: null,
     }

@@ -70,6 +70,12 @@ export const getVideos = async () => {
 };
 export const SearchVideos = async (data) => {
   console.log(data);
+  return await axios.get(`${endPoint}videos/search?tag=`+data.tag+`&category=`+data.category+`&channelname=`+data.channelname
+  
+);
+};
+export const SearchVideosTag = async (data) => {
+  console.log(data);
   return await axios.get(`${endPoint}videos/search?tag=`+data.tag,
   
 );

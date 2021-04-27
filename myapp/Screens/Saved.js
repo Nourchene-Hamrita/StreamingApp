@@ -24,7 +24,7 @@ export default class SavedScreen extends Component {
       playerState: PLAYER_STATES.PLAYING,
       screenType: 'content',
       saved: [],
-      saves:[],
+      newSaved:[],
       profile:null,
     };
   }
@@ -134,7 +134,7 @@ export default class SavedScreen extends Component {
    DeleteFromSave(id).then((res) => {
     console.log({ res })
     this.setState({
-      saves: res.data   
+      newSaved: res.data   
     })
     alert('Successfully deleted !')
   }).catch(err => {

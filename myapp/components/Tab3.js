@@ -29,6 +29,16 @@ export default class Tab3 extends Component {
           console.log(err);
         });
       };
+      like(id) {
+        likeVideo(id, { id: this.state.profile._id }).then((res) => {
+          this.getVideos();
+          this.setState({
+            likers: res.data
+          })
+        }).catch(err => {
+          console.log(err);
+        });
+      }
 
     render() {
         let { channel } = this.state

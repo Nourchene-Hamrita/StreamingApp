@@ -11,7 +11,7 @@ const pipeline = promisify(require("stream").pipeline);
 
 module.exports.getAllChannel = async (req, res) => {
     ChannelModel.find((err, docs) => {
-        if (!err) res.send(docs);
+        if (!err) return res.send(docs);
         else console.log('Error to get Data: ' + err);
     }).sort({ createdAt: -1 });
 
@@ -21,7 +21,7 @@ module.exports.ChannelInfo = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send('ID unknown: ' + req.params.id)
     ChannelModel.findById(req.params.id, (err, docs) => {
-        if (!err) res.send(docs);
+        if (!err) return  res.send(docs);
         else console.log('ID unknown: ' + err);
     });
 };
@@ -31,7 +31,7 @@ module.exports.UserChannelInfo = async (req, res) => {
         return res.status(400).send('ID unknown: ' + req.params.id)
 
     ChannelModel.find({ trainerId: req.params.id }, (err, docs) => {
-        if (!err) res.send(docs);
+        if (!err) return res.send(docs);
         else return res.status(400).send(err);
     })
 
@@ -96,8 +96,7 @@ module.exports.uploadChannel = async (req, res) => {
             { $set: { picture: 'http://192.168.1.14:3000/public/' + fileName } },
             { new: true },
             (err, docs) => {
-                if (!err) return res.send(docs);
-                else return res.status(500).send({ message: err });
+                return res.status(500).send({ message: err });
             }
         );
     } catch (err) {
@@ -154,8 +153,8 @@ module.exports.follow = async (req, res) => {
         },
             { new: true, upsert: true },
             (err, docs) => {
-                if (!err) res.status(201).json(docs);
-                if (err) return res.status(400).json(err);
+                if (!err) return res.status(201).json(docs);
+                else return res.status(400).json(err);
             }
         );
         const following = await newFollowing.save();
@@ -190,15 +189,14 @@ module.exports.unfollow = async (req, res) => {
         },
             { new: true, upsert: true },
             (err, docs) => {
-                if (!err) res.status(201).json(docs);
-                if (err) return res.status(400).json(err);
+                return res.status(400).json(err);
             }
         );
         await FollowingModel.findOneAndRemove(
             { channelId: req.body.idToUnFollow,userId: req.params.id },
             (err, docs) => {
-                if (!err) res.status(201).json(docs);
-                if (err) return res.status(400).json(err);
+                if (!err) return res.status(201).json(docs);
+              else return res.status(400).json(err);
             }
         );
 
