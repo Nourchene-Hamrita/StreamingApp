@@ -5,13 +5,16 @@ import LinearGradient from 'react-native-linear-gradient';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 import { ChanneldateParser } from './utils';
 import { Container, Content, Form, Label, Item, List, ListItem, InputGroup, Input, Icon, Text, Picker, Button } from 'native-base';
-import { getInfoChannel } from '../services/apis';
+import { getInfoChannel,UpdateChannel } from '../services/apis';
 export default class Tab3 extends Component {
     constructor(props) {
         super(props);
         this.state = {
             loading: true,
             channel:null,
+            newchannel:[],
+            channelname:'', theme:''
+           
         };
     }
 
@@ -29,16 +32,20 @@ export default class Tab3 extends Component {
           console.log(err);
         });
       };
-      like(id) {
-        likeVideo(id, { id: this.state.profile._id }).then((res) => {
-          this.getVideos();
-          this.setState({
-            likers: res.data
-          })
-        }).catch(err => {
+      Updatechannel(id){let {channelname, theme} = this.state
+      console.log({
+        theme,channelname
+      })
+      UpdateChannel(id, {theme,channelname })
+        .then((res) => {
+          console.log(res);
+        }
+        ).catch(err => {
           console.log(err);
+  
         });
-      }
+  
+    }
 
     render() {
         let { channel } = this.state
@@ -61,15 +68,15 @@ export default class Tab3 extends Component {
                 <Form>
                   <Item stackedLabel>
                     <Label>Channel Name</Label>
-                    <Input>{channel.channelname}</Input>
+                    <Input  onChangeText={(text) => this.setState({ channelname: text })}>{channel.channelname}</Input>
                   </Item>
                   <Item stackedLabel>
                     <Label>Theme</Label>
-                    <Input> {channel.theme}</Input>
+                    <Input  onChangeText={(text) => this.setState({ theme: text })}> {channel.theme}</Input>
                   </Item>
                         </Form>
                         <View style={{marginTop:20,justifyContent: 'center', alignItems: 'center' }}>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={()=>this.Updatechannel(this.state.channel._id)}>
                                 <LinearGradient style={{ flexDirection: 'row', height: 50, width: 150, padding: 10, marginTop: 30, borderRadius: 30, justifyContent: 'center', alignItems: 'center' }} colors={['#4169e1', '#fa8072']}>
                                     <FontAwesome5 name='user-edit' style={{ color: 'white', fontSize: 15 }} />
                                     <Text style={{ color: 'white', fontSize: 20, paddingLeft: 5 }}>Edit</Text>

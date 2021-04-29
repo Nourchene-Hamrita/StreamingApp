@@ -7,7 +7,7 @@ const { uploadErrors } = require("../utils/errors.util");
 const fs = require('fs');
 const { promisify } = require('util');
 const pipeline = promisify(require("stream").pipeline);
-
+let endPoint = 'http://192.168.1.14:3000/public/'
 module.exports.listVideo = (req, res) => {
     VideoModel.find((err, docs) => {
         if (!err)return res.send(docs);
@@ -54,7 +54,7 @@ module.exports.createVideo = async (req, res) => {
         picture: req.body.picture,
         title: req.body.title,
         description: req.body.description,
-        link: req.file != null ? 'http://192.168.1.9:3000/public/' + fileName : "",
+        link: req.file != null ? `${endPoint}` + fileName : "",
         likers: [],
         dislikers: [],
         comments: [],

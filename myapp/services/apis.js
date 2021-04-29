@@ -1,5 +1,5 @@
 import axios from 'axios';
-let endPoint = 'http://192.168.1.9:3000/'
+let endPoint = 'http://192.168.1.14:3000/'
 import AsyncStorage from '@react-native-community/async-storage';
 let user = "token"
 let userInfo = null
@@ -63,6 +63,7 @@ export const UpdateUser = async (id,data) => {
   return await axios.put(`${endPoint}users/`+id,data);
 };
 export const UpdateChannel = async (id,data) => {
+  console.log(data);
   return await axios.put(`${endPoint}channels/`+id,data);
 };
 export const getVideos = async () => {

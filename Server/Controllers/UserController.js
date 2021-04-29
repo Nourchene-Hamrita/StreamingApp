@@ -4,6 +4,7 @@ const UserModel = require('../Models/user.model');
 const fs = require('fs');
 const { promisify } = require('util');
 const pipeline = promisify(require("stream").pipeline);
+let endPoint = 'http://192.168.1.14:3000/public/'
 
 module.exports.getAllUsers = async (req, res) => {
     const users = await UserModel.find().select('-password');
@@ -84,7 +85,7 @@ module.exports.uploadProfil = async (req, res) => {
     try {
         await UserModel.findByIdAndUpdate(
             req.body.userId,
-            { $set: { picture:'http://192.168.1.9:3000/public/' + fileName } },
+            { $set: { picture: `${endPoint}` + fileName } },
             { new: true, upsert: true, setDefaultsOnInsert: true },
             (err, docs) => {
                 if (!err) return res.send(docs);

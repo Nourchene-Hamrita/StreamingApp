@@ -8,6 +8,7 @@ const { uploadErrors } = require("../utils/errors.util");
 const fs = require('fs');
 const { promisify } = require('util');
 const pipeline = promisify(require("stream").pipeline);
+let endPoint = 'http://192.168.1.14:3000/public/'
 
 module.exports.getAllChannel = async (req, res) => {
     ChannelModel.find((err, docs) => {
@@ -84,21 +85,21 @@ module.exports.uploadChannel = async (req, res) => {
     try {
         await ChannelModel.findByIdAndUpdate(
             req.body.channelId,
-            { $set: { picture: 'http://192.168.1.9:3000/public/' + fileName } },
+            { $set: { picture:  `${endPoint}` + fileName } },
             { new: true, upsert: true, setDefaultsOnInsert: true },
             (err, docs) => {
                 if (!err) return res.send(docs);
                 else return res.status(500).send({ message: err });
             }
         );
-        await VideoModel.findByIdAndUpdate(
+       /* await VideoModel.findByIdAndUpdate(
             req.body.videoId,
-            { $set: { picture: 'http://192.168.1.9:3000/public/' + fileName } },
+            { $set: { picture:  `${endPoint}` + fileName } },
             { new: true },
             (err, docs) => {
                 return res.status(500).send({ message: err });
             }
-        );
+        );*/
     } catch (err) {
         return res.status(500).send({ message: err });
     }

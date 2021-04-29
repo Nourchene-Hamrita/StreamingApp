@@ -101,15 +101,15 @@ class Search extends Component {
           <Content padder>
             <View style={{ justifyContent: 'center', alignItems: 'center', marginTop: 40 }}>
               <Item>
-                <Icon name="ios-search" />
+                <Icon name="ios-search" style={{ color: '#fa8072' }} />
                 <Input placeholder="Enter a tag" onChangeText={(text) => this.setState({ tag: text })} />
               </Item>
               <Item>
-                <Icon name="ios-search" />
+                <Icon name="ios-search" style={{ color: '#fa8072' }} />
                 <Input placeholder="Enter category" onChangeText={(text) => this.setState({ category: text })} />
               </Item>
               <Item>
-                <Icon name="ios-search" />
+                <Icon name="ios-search" style={{ color: '#fa8072' }} />
                 <Input placeholder="Enter channelname" onChangeText={(text) => this.setState({ channelname: text })} />
               </Item>
 
