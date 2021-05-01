@@ -62,6 +62,9 @@ export const LoginUser = async (user) => {
 export const UpdateUser = async (id,data) => {
   return await axios.put(`${endPoint}users/`+id,data);
 };
+export const UpdateVideo = async (id,data) => {
+  return await axios.put(`${endPoint}videos/`+id,data);
+};
 export const UpdateChannel = async (id,data) => {
   console.log(data);
   return await axios.put(`${endPoint}channels/`+id,data);

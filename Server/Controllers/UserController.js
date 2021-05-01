@@ -32,7 +32,6 @@ module.exports.UpdateUser = async (req, res) => {
                     age: req.body.age,
                     email: req.body.email,
                     login: req.body.login,
-                    password: req.body.password,
                     country: req.body.country,
                 }
 

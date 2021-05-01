@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { View, SafeAreaView, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
-import { Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
+import { Content, Card, CardItem, Thumbnail, Text, Button, Item, Input, Icon, Left, Body, Right } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import styles from './Posts/style';
-import { getInfoChannel, getVideosList,getComments, getInfoVideo } from '../services/apis';
+import { getInfoChannel, getInfoUser, CommentVideo, getVideosList, getComments, getInfoVideo, dislikeVideo, likeVideo } from '../services/apis';
 import { dateParser } from './utils';
 import Video from 'react-native-video';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
@@ -21,12 +21,16 @@ export default class Tab2 extends Component {
       screenType: 'content',
       loading: true,
       channel: null,
+      profile: null,
       videos: [],
-      comments:[],
-      video:[]
+      comments: [],
+      video: [],
+      likers: [],
+      dislikers: [],
+      text: ''
     };
   };
-  Item(id,channelname, link, title, description, picture, theme, PublishedAt,likers,dislikers,comments, index) {
+  Item(id, channelname, link, title, description, picture, theme, PublishedAt, likers, dislikers, comments, index) {
     return (<Content >
 
       <Card>
@@ -39,7 +43,7 @@ export default class Tab2 extends Component {
             </Body>
           </Left>
           <Right>
-            <TouchableOpacity onPress={()=>this.getVideo(id)}>
+            <TouchableOpacity onPress={() => this.getVideo(id)}>
               <LinearGradient style={{ flexDirection: 'row', height: 40, width: 80, padding: 5, borderRadius: 30, justifyContent: 'center', alignItems: 'center' }} colors={['#4169e1', '#fa8072']}>
                 <Icon name='pencil' style={{ fontSize: 12, color: "white" }} />
                 <Text style={{ color: 'white', paddingLeft: 5, }}>Edit</Text>
@@ -79,69 +83,88 @@ export default class Tab2 extends Component {
         </CardItem>
         <CardItem>
           <Text note>{description}</Text>
-          </CardItem>
-          <CardItem >
+        </CardItem>
+        <CardItem >
 
-            <Left>
+          <Left>
 
-              <Button transparent onPress={() => this.like(id)}>
-                <Icon active name="thumbs-up" />
-                <Text style={{ marginLeft: 5 }}>{likers}</Text>
-              </Button>
-
-
-            </Left>
-            <Left>
-
-              <Button transparent onPress={() => this.dislike(id)}>
-                <Icon active name="thumbs-down" />
-                <Text style={{ marginLeft: 5 }}>{dislikers}</Text>
-              </Button>
+            <Button transparent onPress={() => this.like(id)}>
+              <Icon active name="thumbs-up" />
+              <Text style={{ marginLeft: 5 }}>{likers}</Text>
+            </Button>
 
 
-            </Left>
-            <Body>
+          </Left>
+          <Left>
 
-              <Button transparent onPress={() => this.commentVideo(id)}>
-                <Icon active name="chatbubbles" />
-                <Text>{comments}</Text>
-              </Button>
+            <Button transparent onPress={() => this.dislike(id)}>
+              <Icon active name="thumbs-down" />
+              <Text style={{ marginLeft: 5 }}>{dislikers}</Text>
+            </Button>
 
-            </Body>
-            <Right>
-              <Text style={{ color: '#aaa' }} >{dateParser(PublishedAt)}</Text>
-            </Right>
-          </CardItem>
+
+          </Left>
+          <Body>
+
+            <Button transparent onPress={() => this.commentVideo(id)}>
+              <Icon active name="chatbubbles" />
+              <Text>{comments}</Text>
+            </Button>
+
+          </Body>
+          <Right>
+            <Text style={{ color: '#aaa' }} >{dateParser(PublishedAt)}</Text>
+          </Right>
+        </CardItem>
+        <CardItem>
+          <Item rounded style={{ marginBottom: 10 }} >
+            <Input style={{ fontSize: 15 }} placeholder='Add a comment' onChangeText={(text) => this.setState({ text: text })} />
+            <Icon style={{ color: "#fa8072" }} active name='send' onPress={() => this.AddComment(id)} />
+          </Item>
+
+        </CardItem>
       </Card>
 
     </Content>
 
 
 
-    )}
-    renderItem = ({ item, index}) => (
-      this.Item(item._id,item.channelname,item.link, item.title, item.description,item.picture,item.theme,item.PublishedAt,item.likers.length,item.dislikers.length,item.comments.length,index)
-    );
+    )
+  }
+  renderItem = ({ item, index }) => (
+    this.Item(item._id, item.channelname, item.link, item.title, item.description, item.picture, item.theme, item.PublishedAt, item.likers.length, item.dislikers.length, item.comments.length, index)
+  );
 
 
- async componentDidMount() {
-        await this.getData(),
-        await this.VideoList(this.state.channel._id)
-      };
+  async componentDidMount() {
+    await this.getData(),
+      await this.VideoList(this.state.channel._id)
+    await this.getUser()
+  };
   async getData() {
-        await getInfoChannel().then((res) => {
-          console.log({ res })
-          this.setState({
-            channel: res[0]
-          })
-        }).catch(err => {
-          console.log(err);
-        });
+    await getInfoChannel().then((res) => {
+      console.log({ res })
+      this.setState({
+        channel: res[0]
+      })
+    }).catch(err => {
+      console.log(err);
+    });
+  };
+  getUser() {
+    getInfoUser().then((res) => {
+      console.log(res)
+      this.setState({
+        profile: res
+      })
+    }).catch(err => {
+      console.log(err);
+    });
   };
   async VideoList(id) {
-        let paused = []
-   await getVideosList(id).then((res) => {
-        console.log({ res })
+    let paused = []
+    await getVideosList(id).then((res) => {
+      console.log({ res })
       res.data.map((t) => {
         paused.push(true)
       })
@@ -150,25 +173,45 @@ export default class Tab2 extends Component {
         videos: res.data
       })
     }).catch(err => {
-        console.log(err);
+      console.log(err);
     });
   };
-  getVideo(id){
+  getVideo(id) {
     getInfoVideo(id).then((res) => {
       console.log({ res })
       this.setState({
-        video: res.data   
+        video: res.data
       })
-      this.props.navigation.navigate('EditVideo', { video: res.data }) 
+      this.props.navigation.navigate('EditVideo', { video: res.data })
     }).catch(err => {
       console.log(err);
     });
   };
+  like(id) {
+    likeVideo(id, { id: this.state.profile._id }).then((res) => {
+
+      this.setState({
+        likers: res.data
+      })
+    }).catch(err => {
+      console.log(err);
+    });
+  }
+  dislike(id) {
+    dislikeVideo(id, { id: this.state.profile._id }).then((res) => {
+
+      this.setState({
+        dislikers: res.data
+      })
+    }).catch(err => {
+      console.log(err);
+    });
+  }
 
   commentVideo(id) {
     getComments(id).then((res) => {
       console.log({ res })
-     
+
       this.setState({
 
         comments: res.data
@@ -178,35 +221,54 @@ export default class Tab2 extends Component {
       console.log(err);
     });
   }
+  AddComment(id) {
+    let { text, profile } = this.state
+    console.log({
+      id,
+      CommenterId: profile._id,
+      commenterPseudo: profile.login,
+      picture: profile.picture,
+      text,
+    })
+    CommentVideo(id, { CommenterId: profile._id, commenterPseudo: profile.login, picture: profile.picture, text })
+      .then((res) => {
+        console.log(res);
+      }
+      ).catch(err => {
+        console.log(err);
+
+      });
+
+  }
   onSeek = seek => {
-        this.videoPlayer.seek(seek);
+    this.videoPlayer.seek(seek);
   };
   onPaused = (index) => {
-        let { paused} = this.state
+    let { paused } = this.state
     paused[index] = !this.state.paused[index]
-    this.setState({ paused})
+    this.setState({ paused })
 
   };
   onReplay = () => {
-        this.setState({ playerState: PLAYER_STATES.PLAYING });
+    this.setState({ playerState: PLAYER_STATES.PLAYING });
     this.videoPlayer.seek(0);
   };
   onProgress = data => {
-    const { isLoading, playerState} = this.state;
+    const { isLoading, playerState } = this.state;
     if (!isLoading && playerState !== PLAYER_STATES.ENDED) {
-        this.setState({ currentTime: data.currentTime });
+      this.setState({ currentTime: data.currentTime });
     }
   };
   onLoad = data => this.setState({
-        duration: data.duration, isLoading: false
+    duration: data.duration, isLoading: false
   });
   onLoadStart = data => this.setState({
-        isLoading: true
+    isLoading: true
   });
   onEnd = () => this.setState({ playerState: PLAYER_STATES.ENDED });
   onError = () => alert('Oh! ', error);
   exitFullScreen = () => {
-        alert("Exit full screen");
+    alert("Exit full screen");
   };
   enterFullScreen = () => {
     if (this.state.screenType == 'content')
@@ -218,17 +280,17 @@ export default class Tab2 extends Component {
 
 
   renderToolbar = () => (
-      <View >
-        <Text> toolbar </Text>
-      </View>
+    <View >
+      <Text> toolbar </Text>
+    </View>
   );
-  onSeeking = currentTime => this.setState({ currentTime});
+  onSeeking = currentTime => this.setState({ currentTime });
 
 
 
   render() {
-        let { videos} = this.state
-    console.log({ videos})
+    let { videos } = this.state
+    console.log({ videos })
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <FlatList
@@ -242,12 +304,12 @@ export default class Tab2 extends Component {
   }
 }
 const Styles = StyleSheet.create({
-        container: {
-        flex: 1,
+  container: {
+    flex: 1,
 
   },
   item: {
-        backgroundColor: "white",
+    backgroundColor: "white",
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 10,
@@ -255,6 +317,6 @@ const Styles = StyleSheet.create({
     marginTop: 20
   },
   title: {
-        fontSize: 32,
+    fontSize: 32,
   },
 });

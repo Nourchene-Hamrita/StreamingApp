@@ -9,9 +9,9 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 import styles from './style';
-import { dateParser,ChanneldateParser } from '../utils';
-import {DeleteVideo} from'../../services/apis';
-export default class MyScreen extends Component {
+import { dateParser, ChanneldateParser } from '../utils';
+import { DeleteVideo, UpdateVideo } from '../../services/apis';
+export default class EditPost extends Component {
     videoPlayer;
     constructor(props) {
         super(props);
@@ -27,24 +27,46 @@ export default class MyScreen extends Component {
             playerState: PLAYER_STATES.PLAYING,
             screenType: 'content',
             video: navigation.getParam('video', null),
+            newvideo: [],
+            title: '',
+            description: ''
         };
     }
 
     componentDidMount() {
         AndroidKeyboardAdjust.setAdjustPan();
     };
-    DeleteVideo(id){
+    Updatevideo(id) {
+        let { title, description } = this.state
+        console.log({
+            title, description
+        })
+        UpdateVideo(id, { title, description })
+            .then((res) => {
+                console.log(res);
+                this.setState({
+                    newvideo: res.data
+                })
+                alert('Successfully Updated !')
+            }
+            ).catch(err => {
+                console.log(err);
+
+            });
+
+    }
+    DeleteVideo(id) {
         DeleteVideo(id).then((res) => {
-         console.log({ res })
-         this.setState({
-           video: res.data   
-         })
-         alert('Successfully deleted !');
-         this.props.navigation.navigate('Channel') 
-       }).catch(err => {
-         console.log(err);
-       });
-     };
+            console.log({ res })
+            this.setState({
+                video: res.data
+            })
+            alert('Successfully deleted !');
+            this.props.navigation.navigate('Channel')
+        }).catch(err => {
+            console.log(err);
+        });
+    };
     onSeek = seek => {
         this.videoPlayer.seek(seek);
     };
@@ -106,16 +128,13 @@ export default class MyScreen extends Component {
                                 <Body>
                                     <Text>{video.channelname}</Text>
                                     <Text note>{video.theme}</Text>
-                                   
+
                                 </Body>
-                               
+
                             </Left>
                             <Right>
                                 <TouchableOpacity onPress={() => this.DeleteVideo(video._id)} >
-                                    <LinearGradient style={{ padding: 10, flexDirection: 'row', height: 40, width: 90, padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center' }} colors={['#4169e1', '#fa8072']}>
-                                        <MaterialCommunityIcons name='delete' style={{ color: 'white', fontSize: 15 }} />
-                                        <Text style={{ color: 'white' }}>Delete</Text>
-                                    </LinearGradient>
+                                    <MaterialCommunityIcons name='delete' style={{ color: '#fa8072', fontSize: 35 }} />
                                 </TouchableOpacity>
 
                             </Right>
@@ -150,19 +169,27 @@ export default class MyScreen extends Component {
 
                         <Form>
                             <Item >
-                                <Input >{video.title}</Input>
+                                <Input onChangeText={(text) => this.setState({ title: text })}>{video.title}</Input>
                                 <Icon name='pencil' style={{ fontSize: 15, color: "#4169e1" }} />
                             </Item>
                             <Item >
-                                <Input numberOfLines={2}>{video.description}</Input>
+                                <Input onChangeText={(text) => this.setState({ description: text })} numberOfLines={2}>{video.description}</Input>
                                 <Icon name='pencil' style={{ fontSize: 15, color: "#4169e1" }} />
                             </Item>
                         </Form>
                         <CardItem>
                             <View style={{ justifyContent: 'center', alignItems: 'center', marginBottom: 50 }}>
-                            <Text note >Published At : {ChanneldateParser(video.PublishedAt)}</Text>
+                                <Text note >Published At : {ChanneldateParser(video.PublishedAt)}</Text>
                             </View>
                         </CardItem>
+                        <View style={{ marginBottom: 35, justifyContent: 'center', alignItems: 'center' }}>
+                            <TouchableOpacity onPress={() => this.Updatevideo(video._id)} >
+                                <LinearGradient style={{ flexDirection: 'row', height: 50, width: 150, padding: 10, marginTop: 30, borderRadius: 30, justifyContent: 'center', alignItems: 'center' }} colors={['#4169e1', '#fa8072']}>
+                                    <Icon name="pencil" style={{ color: 'white', fontSize: 20 }} />
+                                    <Text style={{ color: 'white', fontSize: 20, paddingLeft: 5 }}>Edit</Text>
+                                </LinearGradient>
+                            </TouchableOpacity>
+                        </View>
                     </Card>
                 </Content>
 

@@ -60,7 +60,7 @@ export default class SideBar extends Component {
         {
           profile != null ?
             <ScrollView>
-              <View style={{padding:10, height: 160, justifyContent: 'center', alignItems: 'center' }}>
+              <View style={{padding:10, height: 180, justifyContent: 'center', alignItems: 'center' }}>
                 <Image source={{ uri: profile.picture }} style={{ height: 100, width: 100, borderRadius: 60 }} />
                 <Text style={{padding: 5, color: '#4169e1' }}
                 >{profile.login}</Text>

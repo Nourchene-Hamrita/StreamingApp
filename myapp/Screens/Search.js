@@ -74,7 +74,7 @@ class Search extends Component {
         <Container >
           <Header hasSegment style={{ backgroundColor: '#4169e1' }}>
             <Left>
-              <Button transparent>
+              <Button transparent onPress={() => this.props.navigation.goBack()}>
                 <Icon name="arrow-back" />
               </Button>
             </Left>
