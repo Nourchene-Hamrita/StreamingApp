@@ -1,5 +1,5 @@
 import axios from 'axios';
-let endPoint = 'http://192.168.1.14:3000/'
+let endPoint = 'http://192.168.1.14:5000/'
 import AsyncStorage from '@react-native-community/async-storage';
 let user = "token"
 let userInfo = null

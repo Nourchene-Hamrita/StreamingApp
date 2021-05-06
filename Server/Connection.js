@@ -5,6 +5,9 @@ const ChannelRoutes=require('./Routes/channel.routes');
 const CommentRoutes=require('./Routes/comment.routes');
 const SavedRoutes=require('./Routes/saved.routes');
 const FollowingRoutes=require('./Routes/following.routes');
+const AdminRoutes=require('./Routes/admin.routes');
+const bodyParser = require('body-parser');
+
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
 require('dotenv').config({ path: './config/.env' });
@@ -14,28 +17,28 @@ const path = require('path');
 const cors =require('cors')
 
 const app = express();
-const corsOptions={
+
+/*const corsOptions={
   origin:process.env.CLIENT_URL,
   credentials:true,
   'allowedHeaders':['sessionId','Content-Type'],
   'exposedHeaders':'Content-Range',
   'methods':'GET,HEAD,PUT,POST,PATCH,DELETE',
-  'prefLightContinue':false,
+  'prefLightContinue':false,}*/
+ 
 
 
-}
 app.use('/public',express.static(path.join(__dirname, 'public'))); 
 app.use(cors());
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-
-app.get('*',checkUser);
-app.get('/jwtid',requireAuth,(req,res)=>{
-  res.status(200).send(res.locals.user._id);
+app.use((req, res, next)=> {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Expose-Headers','Content-Range')
+  next();
 });
 
+app.use(express.json());
 
 
 app.use('/users', UserRoutes);
@@ -44,6 +47,14 @@ app.use('/channels', ChannelRoutes);
 app.use('/comments', CommentRoutes);
 app.use('/saved', SavedRoutes);
 app.use('/following',FollowingRoutes);
+app.use('/admin',AdminRoutes);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.get('*',checkUser);
+app.get('/jwtid',requireAuth,(req,res)=>{
+  res.status(200).send(res.locals.user._id);
+});
 
 
 app.use(morgan('dev'));
