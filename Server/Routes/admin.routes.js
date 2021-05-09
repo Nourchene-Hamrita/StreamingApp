@@ -4,7 +4,10 @@ const AdminBroMongoose = require('admin-bro-mongoose');
 const mongoose = require('mongoose');
 const User = require('../Models/user.model');
 const Video = require('../Models/video.model');
-const Channel=require('../Models/channel.model');
+const Channel = require('../Models/channel.model');
+const Save = require('../Models/saved.model');
+const Comments= require('../Models/comment.model');
+const Following= require('../Models/following.model');
 AdminBro.registerAdapter(AdminBroMongoose)
 const adminBro = new AdminBro({
     databases: [mongoose],
@@ -16,6 +19,7 @@ const adminBro = new AdminBro({
                     components: {
                         list: AdminBro.bundle('../components/picture'),
                         show: AdminBro.bundle('../components/picture'),
+                        edit:AdminBro.bundle('../components/picture'),
                     },
                 }
             }
@@ -29,30 +33,86 @@ const adminBro = new AdminBro({
                     components: {
                         list: AdminBro.bundle('../components/picture'),
                         show: AdminBro.bundle('../components/picture'),
+                        edit:AdminBro.bundle('../components/picture'),
                     },
                 },
                 link: {
                     components: {
                         show: AdminBro.bundle('../components/video'),
+                        edit:AdminBro.bundle('../components/video'),
 
                     }
                 }
             },
         }
     },
-    {resource: Channel,
-    options: {
-        properties: {
-            picture: {
-                components: {
-                    list: AdminBro.bundle('../components/picture'),
-                    show: AdminBro.bundle('../components/picture'),
-                },
+    {
+        resource: Comments,
+        options: {
+            properties: {
+                picture: {
+                    components: {
+                        list: AdminBro.bundle('../components/picture'),
+                        show: AdminBro.bundle('../components/picture'),
+                        edit:AdminBro.bundle('../components/picture'),
+                    },
+                }
             }
+        },
+
+    },
+    {
+        resource: Following,
+        options: {
+            properties: {
+                picture: {
+                    components: {
+                        list: AdminBro.bundle('../components/picture'),
+                        show: AdminBro.bundle('../components/picture'),
+                        edit:AdminBro.bundle('../components/picture'),
+                    },
+                }
+            }
+        },
+
+    },
+    {
+        resource: Channel,
+        options: {
+            properties: {
+                picture: {
+                    components: {
+                        list: AdminBro.bundle('../components/picture'),
+                        show: AdminBro.bundle('../components/picture'),
+                        edit:AdminBro.bundle('../components/picture'),
+                    },
+                }
+            }
+        },
+
+    },
+    {
+        resource: Save,
+        options: {
+            properties: {
+                picture: {
+                    components: {
+                        list: AdminBro.bundle('../components/picture'),
+                        show: AdminBro.bundle('../components/picture'),
+                        edit:AdminBro.bundle('../components/picture'),
+                    },
+                },
+                link: {
+                    components: {
+                        //list: AdminBro.bundle('../components/video'),
+                        show: AdminBro.bundle('../components/video'),
+                        edit:AdminBro.bundle('../components/video'),
+
+                    }
+                }
+            },
         }
     },
-
-},
     ],
     rootPath: '/admin',
     branding: {
