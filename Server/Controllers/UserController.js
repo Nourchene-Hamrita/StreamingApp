@@ -4,7 +4,7 @@ const UserModel = require('../Models/user.model');
 const fs = require('fs');
 const { promisify } = require('util');
 const pipeline = promisify(require("stream").pipeline);
-let endPoint = 'http://192.168.1.14:3000/public/'
+let endPoint = 'http://192.168.1.14:5000/public/'
 
 module.exports.getAllUsers = async (req, res) => {
     const users = await UserModel.find().select('-password');
