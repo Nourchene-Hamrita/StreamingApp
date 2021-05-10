@@ -10,7 +10,7 @@ const pipeline = promisify(require("stream").pipeline);
 let endPoint = 'http://192.168.1.14:3000/public/'
 module.exports.listVideo = (req, res) => {
     VideoModel.find((err, docs) => {
-        if (!err)return res.send(docs);
+        if (!err) return res.send(docs);
         else console.log('Error to get Data: ' + err);
     }).sort({ createdAt: -1 });
 
@@ -20,7 +20,7 @@ module.exports.VideoInfo = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send('ID unknown: ' + req.params.id)
     VideoModel.findById(req.params.id, (err, docs) => {
-        if (!err)return res.send(docs);
+        if (!err) return res.send(docs);
         else console.log('ID unknown: ' + err);
     });
 };
@@ -69,7 +69,7 @@ module.exports.createVideo = async (req, res) => {
         },
             { new: true },
             (err, docs) => {
-                if (!err)return res.send(docs);
+                if (!err) return res.send(docs);
                 else return res.status(400).send(err);
 
 
@@ -115,7 +115,7 @@ module.exports.DeleteVideo = async (req, res) => {
     try {
         await VideoModel.findByIdAndRemove(req.params.id,
             (err, docs) => {
-                if (!err)return res.status(200).json({ message: 'successfully deleted' });
+                if (!err) return res.status(200).json({ message: 'successfully deleted' });
                 else console.log('Delete Error: ' + err);
             });
     } catch (err) {
@@ -142,7 +142,7 @@ module.exports.likeVideo = async (req, res) => {
         },
             { new: true },
             (err, docs) => {
-                if (!err)return res.send(docs);
+                if (!err) return res.send(docs);
                 else return res.status(400).send(err);
 
 
@@ -152,7 +152,7 @@ module.exports.likeVideo = async (req, res) => {
         },
             { new: true },
             (err, docs) => {
-                if (err)res.status(400).send(err);
+                if (err) res.status(400).send(err);
 
 
             }
@@ -162,7 +162,7 @@ module.exports.likeVideo = async (req, res) => {
         },
             { new: true },
             (err, docs) => {
-                if (err)res.status(400).send(err);
+                if (err) res.status(400).send(err);
 
 
             })
@@ -193,7 +193,7 @@ module.exports.dislikeVideo = async (req, res) => {
             { new: true },
             (err, docs) => {
                 if (err) return res.status(400).send(err);
-               
+
 
             });
         await VideoModel.findByIdAndUpdate(req.params.id, {
@@ -211,7 +211,7 @@ module.exports.dislikeVideo = async (req, res) => {
         },
             { new: true },
             (err, docs) => {
-                if (!err)return res.send(docs);
+                if (!err) return res.send(docs);
                 else return res.status(400).send(err);
 
 
@@ -357,7 +357,7 @@ module.exports.SearchVideo = async (req, res) => {
 
     console.log(req.query.tag);
     try {
-        VideoModel.find({ "tag": '#' + req.query.tag }, (err, docs) => {
+        VideoModel.find({ "tags": '#' + req.query.tag }, (err, docs) => {
             if (!err) return res.send(docs);
             else return res.status(400).send(err);
         })
@@ -373,59 +373,77 @@ module.exports.SearchVideos = async (req, res) => {
         console.log(key, req.query[key])
     }
     try {
-        if (req.query.category==''&&req.query.channelname==''){
-        VideoModel.find({
-            "tags": { $in: ['#'+req.query.tag,'#'+req.query.tag1] },
-        }, (err, docs) => {
-            if (!err) return res.send(docs);
-            else res.status(400).send(err);
-        })}
-       else if (req.query.category==''&&req.query.tag==''){
+        if (req.query.category == '' && req.query.channelname == '') {
+            VideoModel.find({
+                "tags": { $in: ['#' + req.query.tag, '#' + req.query.tag1] },
+            }, (err, docs) => {
+                if (!err) return res.send(docs);
+                else return res.status(400).send(err);
+            })
+        }
+        else if (req.query.category == '' && req.query.tag == '') {
             VideoModel.find({
                 "channelname": req.query.channelname
             }, (err, docs) => {
                 if (!err) return res.send(docs);
                 else return res.status(400).send(err);
 
-            
 
-        })}
-      else  if (req.query.channelname==''&&req.query.tag==''){
+
+            })
+        }
+        else if (req.query.channelname == '' && req.query.tag == '') {
             VideoModel.find({
                 "category": req.query.category
             }, (err, docs) => {
-                if (!err) return res.send(docs);
+                if (!err) res.send(docs);
                 else return res.status(400).send(err);
 
-        })}
-        else if (req.query.category==''){
+            })
+        }
+        else if (req.query.category == '') {
             VideoModel.find({
-                "tags": { $in: ['#'+req.query.tag,'#'+req.query.tag1] },
+                "tags": { $in: ['#' + req.query.tag, '#' + req.query.tag1] },
                 "channelname": req.query.channelname
             }, (err, docs) => {
-                if (!err) return res.send(docs);
+                if (!err) res.send(docs);
                 else return res.status(400).send(err);
 
-        })}
-        if (req.query.channelname==''){
+            })
+        }
+        else if (req.query.channelname == '') {
             VideoModel.find({
-                "tags": { $in: ['#'+req.query.tag,'#'+req.query.tag1] },
+                "tags": { $in: ['#' + req.query.tag, '#' + req.query.tag1] },
                 "category": req.query.category
             }, (err, docs) => {
-                if (!err) return res.send(docs);
-                else return res.status(400).send(err);
-
-        })}
-      else  if (req.query.tag==''){
+                if (err) return res.status(400).send(err)
+            })
+        }
+        else if (req.query.tag == '') {
             VideoModel.find({
                 "category": req.query.category,
-                "channelname":req.query.channelname
+                "channelname": req.query.channelname
             }, (err, docs) => {
-                if (!err) return res.send(docs);
+                if (!err) res.send(docs);
                 else return res.status(400).send(err);
 
-        })}
-         
+
+            })
+        }
+        else  {
+            VideoModel.find({ "tags": { $in: ['#' + req.query.tag, '#' + req.query.tag1] },
+                "category": req.query.category,
+                "channelname": req.query.channelname
+            }, (err, docs) => {
+                if (!err) res.send(docs);
+                else return res.status(400).send(err);
+
+
+            })
+        }
+
+
+
     } catch (err) {
         return res.status(400).send(err);
     }
