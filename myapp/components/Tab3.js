@@ -74,7 +74,7 @@ export default class Tab3 extends Component {
           channel != null ?
             <View>
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Image source={{ uri: channel.picture }} style={{ height: 150, width: 360 }} />
+                <Image source={{ uri: channel.picture }} style={{ height: 150, width: 400 }} />
                 <TouchableOpacity onPress={() => this.ChoosePhoto()}>
                   <Text style={{ color: "#4169e1", padding: 10 }}><Icon active name='camera' style={{ color: "#4169e1", fontSize: 20 }} />Change Image</Text>
                 </TouchableOpacity>

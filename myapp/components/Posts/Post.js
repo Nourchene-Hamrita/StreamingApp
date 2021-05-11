@@ -85,13 +85,17 @@ export default class Post extends Component {
               toolbar={this.renderToolbar()} />
 
           </CardItem>
-          <CardItem>
-            <Text>{title}</Text>
-            <Right style={{ marginLeft: 260 }}>
-              <TouchableOpacity onPress={() => this.SaveVideos(channelname, picture, theme, title, description, link, category)}>
-                <Ionicons name={this.state.icon} size={25} style={{ color: "#fa8072" }} />
-              </TouchableOpacity>
-            </Right>
+
+            <CardItem>
+              <Right style={{ marginLeft: 260 }}>
+                <TouchableOpacity onPress={() => this.SaveVideos(channelname, picture, theme, title, description, link, category)}>
+                  <Ionicons name={this.state.icon} size={25} style={{ color: "#fa8072" }} />
+                </TouchableOpacity>
+              </Right>
+            </CardItem>
+            <CardItem>
+            <Text numberOfLines={1}>{title}</Text>
+
           </CardItem>
           <CardItem>
             <Text note numberOfLines={2}>{description}</Text>
@@ -363,19 +367,19 @@ const Styles = StyleSheet.create({
   },
 });
  /*<View style={styles.uiContainer}>
-       <View style={styles.rightContainer}>
-         <View style={styles.iconContainer}>
-           <EvilIcons name='heart' size={40} color='white' />
-           <Text style={styles.statsLabel}>123</Text>
-           <Ionicons name='ios-heart-dislike-outline' size={30} color='white' />
-           <Text style={styles.statsLabel}>123</Text>
-           <EvilIcons name='comment' size={40} color='white' />
-           <Text style={styles.statsLabel}>123</Text>
-         </View>
-       </View>
-       <View style={styles.bottomContainer}>
-         <Text style={styles.handle}>{title}</Text>
-         <Text style={styles.description}>{description}</Text>
-       </View>
-     </View>
-   </View>*/
+      <View style={styles.rightContainer}>
+        <View style={styles.iconContainer}>
+          <EvilIcons name='heart' size={40} color='white' />
+          <Text style={styles.statsLabel}>123</Text>
+          <Ionicons name='ios-heart-dislike-outline' size={30} color='white' />
+          <Text style={styles.statsLabel}>123</Text>
+          <EvilIcons name='comment' size={40} color='white' />
+          <Text style={styles.statsLabel}>123</Text>
+        </View>
+      </View>
+      <View style={styles.bottomContainer}>
+        <Text style={styles.handle}>{title}</Text>
+        <Text style={styles.description}>{description}</Text>
+      </View>
+    </View>
+  </View>*/

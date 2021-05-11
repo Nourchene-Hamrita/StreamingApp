@@ -141,18 +141,9 @@ class ProfileScreen extends Component {
                       <Input onChangeText={(text) => this.setState({ email: text })} keyboardType="email-address">{profile.email}
 
                       </Input>
-
-
                     </Item>
-                    <Item stackedLabel last >
-                      <Label  >Password</Label>
-                      <Icon active name='ios-lock-closed' style={{ color: "#4169e1", fontSize: 20 }} />
-                      <Input>{profile.password}
-                      </Input>
-                    </Item>
-
                   </Form>
-                  <View style={{ marginTop: 40, justifyContent: 'center', alignItems: 'center' }}>
+                  <View style={{ marginTop: 30, justifyContent: 'center', alignItems: 'center' }}>
                     <TouchableOpacity onPress={() => this.UpdateProfile(profile._id)}>
                       <LinearGradient style={{ flexDirection: 'row', height: 50, width: 150, padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center' }} colors={['#4169e1', '#fa8072']}>
                         <FontAwesome5 name='user-edit' style={{ color: 'white', fontSize: 15 }} />
@@ -173,3 +164,9 @@ class ProfileScreen extends Component {
 
 }
 export default ProfileScreen;
+/*<Item stackedLabel last >
+                      <Label  >Password</Label>
+                      <Icon active name='ios-lock-closed' style={{ color: "#4169e1", fontSize: 20 }} />
+                      <Input>{profile.password}
+                      </Input>
+                    </Item>*/

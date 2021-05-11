@@ -84,12 +84,14 @@ export default class SavedScreen extends Component {
 
           </CardItem>
           <CardItem>
+              <Right style={{ marginLeft: 260 }}>
+                <TouchableOpacity onPress={() => this.DeleteSaved(id)}>
+                  <Ionicons name='bookmark' size={25} style={{ color: "#fa8072" }} />
+                </TouchableOpacity>
+              </Right>
+            </CardItem>
+          <CardItem>
             <Text>{title}</Text>
-            <Right style={{ marginLeft: 260 }}>
-              <TouchableOpacity onPress={()=>this.DeleteSaved(id)}>
-                <Ionicons name='bookmark' size={25} style={{ color: "#fa8072" }} />
-              </TouchableOpacity>
-            </Right>
           </CardItem>
           <CardItem>
             <Text note numberOfLines={2}>{description}</Text>

@@ -29,10 +29,10 @@ export default class Tab1 extends Component {
         <IconButton
           icon="video-plus"
           color={Colors.red300}
-          size={100}
+          size={200}
           onPress={() => this.ChooseVideo()}
         />
-        <Text note >Add video</Text>
+        <Text note>Add video</Text>
 
 
       </View>
