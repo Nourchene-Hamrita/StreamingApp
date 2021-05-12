@@ -30,7 +30,7 @@ export default class Tab2 extends Component {
       text: ''
     };
   };
-  Item(id, channelname, link, title, description, picture, theme, PublishedAt, likers, dislikers, comments, index) {
+  Item(id, channelname, link, title, description, picture, theme, PublishedAt, likers, dislikers, comments,tags, index) {
     return (<Content >
 
       <Card>
@@ -77,6 +77,9 @@ export default class Tab2 extends Component {
             progress={this.state.currentTime}
             toolbar={this.renderToolbar()} />
         </CardItem>
+        <CardItem>
+          <Text numberOfLines={1} style={{ color: "#fa8072" }}>{tags}</Text>
+          </CardItem>
         <CardItem>
           <Text>{title}</Text>
 
@@ -132,7 +135,7 @@ export default class Tab2 extends Component {
     )
   }
   renderItem = ({ item, index }) => (
-    this.Item(item._id, item.channelname, item.link, item.title, item.description, item.picture, item.theme, item.PublishedAt, item.likers.length, item.dislikers.length, item.comments.length, index)
+    this.Item(item._id, item.channelname, item.link, item.title, item.description, item.picture, item.theme, item.PublishedAt, item.likers.length, item.dislikers.length, item.comments.length,item.tags,index)
   );
 
 

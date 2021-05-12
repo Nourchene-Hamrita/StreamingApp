@@ -37,7 +37,7 @@ export default class Post extends Component {
       icon: 'bookmark-outline'
     };
   }
-  Item(id, channelId, channelname, picture, theme, link, title, description, PublishedAt, likers, dislikers, comments, category, index) {
+  Item(id, channelId, channelname, picture, theme, link, title, description, PublishedAt, likers, dislikers, comments, category, tags, index) {
     //console.log(id)
     return (
 
@@ -86,19 +86,23 @@ export default class Post extends Component {
 
           </CardItem>
 
-            <CardItem>
-              <Right style={{ marginLeft: 260 }}>
-                <TouchableOpacity onPress={() => this.SaveVideos(channelname, picture, theme, title, description, link, category)}>
-                  <Ionicons name={this.state.icon} size={25} style={{ color: "#fa8072" }} />
-                </TouchableOpacity>
-              </Right>
-            </CardItem>
-            <CardItem>
+          <CardItem>
+          
+            <Right style={{ marginLeft: 260 }}>
+              <TouchableOpacity onPress={() => this.SaveVideos(channelname, picture, theme, title, description, link, category,tags)}>
+                <Ionicons name={this.state.icon} size={25} style={{ color: "#fa8072" }} />
+              </TouchableOpacity>
+            </Right>
+          </CardItem>
+          <CardItem>
+          <Text numberOfLines={1} style={{ color: "#fa8072" }}>{tags}</Text>
+          </CardItem>
+          <CardItem>
             <Text numberOfLines={1}>{title}</Text>
 
           </CardItem>
           <CardItem>
-            <Text note numberOfLines={2}>{description}</Text>
+            <Text note numberOfLines={1}>{description}</Text>
           </CardItem>
 
           <CardItem >
@@ -148,7 +152,7 @@ export default class Post extends Component {
 
   renderItem = ({ item, index }) => (
     this.Item(item._id, item.channelId, item.channelname, item.picture, item.theme, item.link, item.title, item.description, item.PublishedAt,
-      item.likers.length, item.dislikers.length, item.comments.length, item.category, index)
+      item.likers.length, item.dislikers.length, item.comments.length, item.category, item.tags, index)
   );
   UNSAFE_componentWillMount() {
 
@@ -261,8 +265,8 @@ export default class Post extends Component {
       });
 
   }
-  SaveVideos(channelname, picture, theme, title, description, link, category) {
-    SaveVideos({ UserId: this.state.profile._id, channelname, picture, theme, title, description, link, category }).then((res) => {
+  SaveVideos(channelname, picture, theme, title, description, link, category,tags) {
+    SaveVideos({ UserId: this.state.profile._id, channelname, picture, theme, title, description, link, category,tags }).then((res) => {
       this.getVideos();
       this.setState(prevState => ({
         icon: prevState.icon === 'bookmark' ? 'bookmark-outline' : 'bookmark',
@@ -367,19 +371,19 @@ const Styles = StyleSheet.create({
   },
 });
  /*<View style={styles.uiContainer}>
-      <View style={styles.rightContainer}>
-        <View style={styles.iconContainer}>
-          <EvilIcons name='heart' size={40} color='white' />
-          <Text style={styles.statsLabel}>123</Text>
-          <Ionicons name='ios-heart-dislike-outline' size={30} color='white' />
-          <Text style={styles.statsLabel}>123</Text>
-          <EvilIcons name='comment' size={40} color='white' />
-          <Text style={styles.statsLabel}>123</Text>
-        </View>
-      </View>
-      <View style={styles.bottomContainer}>
-        <Text style={styles.handle}>{title}</Text>
-        <Text style={styles.description}>{description}</Text>
-      </View>
-    </View>
-  </View>*/
+     <View style={styles.rightContainer}>
+       <View style={styles.iconContainer}>
+         <EvilIcons name='heart' size={40} color='white' />
+         <Text style={styles.statsLabel}>123</Text>
+         <Ionicons name='ios-heart-dislike-outline' size={30} color='white' />
+         <Text style={styles.statsLabel}>123</Text>
+         <EvilIcons name='comment' size={40} color='white' />
+         <Text style={styles.statsLabel}>123</Text>
+       </View>
+     </View>
+     <View style={styles.bottomContainer}>
+       <Text style={styles.handle}>{title}</Text>
+       <Text style={styles.description}>{description}</Text>
+     </View>
+   </View>
+ </View>*/

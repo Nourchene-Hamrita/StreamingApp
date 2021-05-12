@@ -33,7 +33,7 @@ export default class SavedScreen extends Component {
     await this.getData();
     await this.SavedVideo(this.state.profile._id)
   }
-  Item(id, channelname, picture, theme, link, title, description,index) {
+  Item(id, channelname, picture, theme, link, title, description,tags,index) {
     //console.log(id)
     return (
 
@@ -96,16 +96,14 @@ export default class SavedScreen extends Component {
           <CardItem>
             <Text note numberOfLines={2}>{description}</Text>
           </CardItem>
-
-        
-        </Card>
-
+          
+          </Card>
       </Content>
     )
   }
 
   renderItem = ({ item, index }) => (
-    this.Item(item._id,item.channelname, item.picture, item.theme, item.link, item.title, item.description,index)
+    this.Item(item._id,item.channelname, item.picture, item.theme, item.link, item.title, item.description,item.tags,index)
   );
  async getData() {
    await getInfoUser().then((res) => {

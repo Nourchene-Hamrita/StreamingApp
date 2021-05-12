@@ -40,7 +40,7 @@ export default class Result extends Component {
             icon: 'bookmark-outline'
         };
     }
-    Item(id, channelId, channelname, picture, theme, link, title, description, PublishedAt, likers, dislikers, comments, category, index) {
+    Item(id, channelId, channelname, picture, theme, link, title, description, PublishedAt, likers, dislikers, comments, category,tags, index) {
         //console.log(id)
         return (
 
@@ -89,12 +89,19 @@ export default class Result extends Component {
 
                     </CardItem>
                     <CardItem>
-                        <Text>{title}</Text>
+
                         <Right style={{ marginLeft: 260 }}>
-                            <TouchableOpacity onPress={() => this.SaveVideos(channelname, picture, theme, title, description, link, category)}>
+                            <TouchableOpacity onPress={() => this.SaveVideos(channelname, picture, theme, title, description, link, category, tags)}>
                                 <Ionicons name={this.state.icon} size={25} style={{ color: "#fa8072" }} />
                             </TouchableOpacity>
                         </Right>
+                    </CardItem>
+                    <CardItem>
+                        <Text numberOfLines={1} style={{ color: "#fa8072" }}>{tags}</Text>
+                    </CardItem>
+                    <CardItem>
+                        <Text>{title}</Text>
+
                     </CardItem>
                     <CardItem>
                         <Text note numberOfLines={2}>{description}</Text>
@@ -147,7 +154,7 @@ export default class Result extends Component {
 
     renderItem = ({ item, index }) => (
         this.Item(item._id, item.channelId, item.channelname, item.picture, item.theme, item.link, item.title, item.description, item.PublishedAt,
-            item.likers.length, item.dislikers.length, item.comments.length, item.category, index)
+            item.likers.length, item.dislikers.length, item.comments.length, item.category,item.tags, index)
     );
     UNSAFE_componentWillMount() {
         this.getVideos()
