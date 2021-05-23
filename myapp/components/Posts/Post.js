@@ -258,7 +258,8 @@ export default class Post extends Component {
       .then((res) => {
         console.log(res);
         this.getVideos();
-      }
+      },
+      alert('Successfully added')
       ).catch(err => {
         console.log(err);
 

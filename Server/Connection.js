@@ -6,7 +6,7 @@ const CommentRoutes=require('./Routes/comment.routes');
 const SavedRoutes=require('./Routes/saved.routes');
 const FollowingRoutes=require('./Routes/following.routes');
 const AdminRoutes=require('./Routes/admin.routes');
-const bodyParser = require('body-parser');
+
 
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');

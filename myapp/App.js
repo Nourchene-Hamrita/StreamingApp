@@ -27,6 +27,7 @@ import AddChannel from'./Screens/AddChannel';
 import Channel from './Screens/Channel';
 import Tab2 from './components/Tab2';
 import EditPost from './components/Posts/EditPost';
+import UploadPost from './components/Posts/UploadPost';
 import Result from'./Screens/Result';
 
 
@@ -193,6 +194,11 @@ const MainStack = createStackNavigator({
       header: null,
     }
   },
+  UploadPost: {
+    screen: UploadPost,
+    navigationOptions: {
+      header: null,
+    }},
   
 }, { initialRouteName: 'Home' })
 const appDrawer = createDrawerNavigator({

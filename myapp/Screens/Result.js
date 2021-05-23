@@ -41,10 +41,11 @@ export default class Result extends Component {
         };
     }
     Item(id, channelId, channelname, picture, theme, link, title, description, PublishedAt, likers, dislikers, comments, category,tags, index) {
-        //console.log(id)
         return (
-
+           
             <Content >
+                 {
+               this.state.result.length>0 ?
                 <Card>
                     <CardItem>
                         <Left>
@@ -147,8 +148,11 @@ export default class Result extends Component {
 
                     </CardItem>
                 </Card>
-
+          :
+          <Text note >Sorry!</Text>
+      }
             </Content>
+           
         )
     }
 
@@ -333,11 +337,19 @@ export default class Result extends Component {
             <SafeAreaView style={Styles.container}>
                 {this.DisplayLoading()}
                 <CustomHeader title='Results' navigation={this.props.navigation} />
-                <FlatList
+                {
+                    this.state.result.length>0?
+                    <FlatList
                     data={this.state.result}
                     renderItem={this.renderItem}
                     keyExtractor={item => item._id}
                 />
+                    :
+                    <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
+                    <Text note style={{fontSize:30}} >Sorry!</Text>
+                    </View>
+                }
+
 
 
 

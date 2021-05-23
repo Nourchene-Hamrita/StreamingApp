@@ -62,8 +62,9 @@ class SubscriptionScreen extends Component {
   Unfollow(id,idToUnFollow,userId){
     unfollowChannel(id,{idToUnFollow,userId}).then((res) => {
       this.setState({
-        following: res.data
+        following:this.state.following.filter(item=>item.channelId!==idToUnFollow) 
       })
+      alert('This channel has been removed from your followings')
     }).catch(err => {
       console.log(err);
     });

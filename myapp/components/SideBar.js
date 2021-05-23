@@ -4,7 +4,7 @@ import { Container, Header, Left, Body, Right, Button, Icon, Title, Text, List, 
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
-import { deleteData, getInfoUser, getFollowing } from '../services/apis';
+import { deleteData, getInfoUser, getFollowing,getChannel } from '../services/apis';
 export default class SideBar extends Component {
   constructor(props) {
     super(props);
@@ -13,15 +13,28 @@ export default class SideBar extends Component {
       profile: null,
       following: [],
       saved:[],
+      channel:[]
     };
   }
 
   async componentDidMount() {
     await this.getData()
   }
+  async getChannel(id){
+    console.log(id)
+    await getChannel(id).then((resx) => {
+      console.log(
+         resx.data)
+      this.setState({
+        channel: resx.data
+      })
+    }).catch(err => {
+      console.log(err);
+    });
+  }
   getData() {
     getInfoUser().then((res) => {
-      console.log(res)
+      this.getChannel(res._id)
       this.setState({
         profile: res
       })
@@ -54,7 +67,8 @@ export default class SideBar extends Component {
  
 
   render() {
-    let { profile } = this.state
+    let { profile ,channel} = this.state
+    console.log(channel)
     return (
       <SafeAreaView style={{ flex: 1 }}>
         {
@@ -77,7 +91,7 @@ export default class SideBar extends Component {
                   <Ionicons name={'person'} size={20} color='#4169e1' />
                   <Text style={{ color: '#4169e1', padding: 5 }}>Profile</Text>
                 </ListItem>
-                <ListItem onPress={() => this.props.navigation.navigate('Channel')}>
+                <ListItem onPress={() =>channel.length>0?this.props.navigation.navigate('Channel'):this.props.navigation.navigate('AddChannel')}>
                   <MaterialCommunityIcons name={'video-plus'} size={25} color='#4169e1' />
                   <Text style={{ color: '#4169e1', padding: 5 }}>Create My Channel</Text>
                 </ListItem>

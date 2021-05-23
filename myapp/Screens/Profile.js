@@ -4,7 +4,7 @@ import CustomHeader from '../components/CustomHeader';
 import { Container, Content, Form, Label, Item, List, ListItem, InputGroup, Input, Icon, Text, Picker, Button } from 'native-base';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import LinearGradient from 'react-native-linear-gradient';
-import { getInfoUser, UpdateUser } from '../services/apis';
+import { getInfoUser, UpdateUser, UploadImage } from '../services/apis';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 import ImagePicker from 'react-native-image-crop-picker';
 class ProfileScreen extends Component {
@@ -83,7 +83,7 @@ class ProfileScreen extends Component {
       height: 400,
       cropping: true
     }).then(image => {
-      console.log(image);
+      UploadImage(image)
     });
   }
 

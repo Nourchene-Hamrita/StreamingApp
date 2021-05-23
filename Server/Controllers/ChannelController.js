@@ -8,7 +8,7 @@ const { uploadErrors } = require("../utils/errors.util");
 const fs = require('fs');
 const { promisify } = require('util');
 const pipeline = promisify(require("stream").pipeline);
-let endPoint = 'http://192.168.1.14:3000/public/'
+let endPoint = 'http://192.168.1.13:3000/public/'
 
 module.exports.getAllChannel = async (req, res) => {
     ChannelModel.find((err, docs) => {

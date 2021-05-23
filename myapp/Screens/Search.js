@@ -49,7 +49,7 @@ class Search extends Component {
           result: res.data
 
         });
-
+        
         this.props.navigation.navigate('Result', { result: res.data })
       }).catch((err) => {
         console.log(err);

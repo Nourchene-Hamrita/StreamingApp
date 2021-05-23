@@ -3,6 +3,7 @@ import { View, } from 'react-native';
 import { Text } from 'native-base';
 import { IconButton, Colors } from 'react-native-paper';
 import ImagePicker from 'react-native-image-crop-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
 export default class Tab1 extends Component {
   constructor(props) {
@@ -16,7 +17,7 @@ export default class Tab1 extends Component {
   }
   ChooseVideo() {
     ImagePicker.openPicker({
-      mediaType: "video",
+      mediaType: "any",
     }).then((video) => {
       console.log(video);
     });
@@ -30,7 +31,7 @@ export default class Tab1 extends Component {
           icon="video-plus"
           color={Colors.red300}
           size={200}
-          onPress={() => this.ChooseVideo()}
+          onPress={() => launchImageLibrary()}
         />
         <Text note>Add video</Text>
 
