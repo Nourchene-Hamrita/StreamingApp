@@ -46,6 +46,7 @@ export default class AddChannel extends Component {
     }).then((res) => {
       console.log(res);
       this.props.navigation.navigate('Channel')
+      //alert('The channel has been successfully created')
     }
     ).catch(err => {
       console.log(err);

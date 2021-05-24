@@ -74,6 +74,7 @@ export default class AddComment extends Component {
       this.setState({
         comments: res.data
       })
+      
     }).catch(err => {
       console.log(err);
     });
@@ -90,6 +91,11 @@ export default class AddComment extends Component {
     CommentVideo(id, { CommenterId: profile._id, commenterPseudo: profile.login, picture: profile.picture, text })
       .then((res) => {
         console.log(res);
+        this.setState({
+          //comments: this.state.comments.filter(item=>item.videoId!==id)
+         
+        })
+        alert("The comment has been successfully added")
       }
       ).catch(err => {
         console.log(err);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, } from 'react-native';
+import { View,Image } from 'react-native';
 import { Text } from 'native-base';
 import { IconButton, Colors } from 'react-native-paper';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -10,6 +10,7 @@ export default class Tab1 extends Component {
     super(props);
     this.state = {
       loading: true,
+      fileUri:null
     };
   }
 
@@ -22,6 +23,43 @@ export default class Tab1 extends Component {
       console.log(video);
     });
   }
+  launchImageLibrary=()=>{
+    let options={
+      title: 'image Picker', 
+      mediaType: 'photo', 
+      storageOptions:{
+        skipBackup:true,
+        path:'images'}
+    };
+   
+    launchImageLibrary(options,(response)=>{
+       if(response.didCancel){
+         console.log('user cancelled image picker');
+       }
+       else if(response.error){
+        console.log('image picker error',response.error);
+
+       }else if(response.customButton){
+        console.log('user tapped custom button',response.customButton);
+       }
+       else {const source={uri:response.uri};
+       this.setState({fileUri:source})
+      }
+       
+    })
+  }
+  renderFileUri(){
+    if(this.state.fileUri){
+      return(
+        <View>
+          <Image source={{uri:this.state.fileUri}}/>
+
+        </View>
+      )
+    }
+  }
+
+  
 
   render() {
     return (
@@ -31,10 +69,10 @@ export default class Tab1 extends Component {
           icon="video-plus"
           color={Colors.red300}
           size={200}
-          onPress={() => launchImageLibrary()}
+          onPress={() => this.launchImageLibrary()}
         />
         <Text note>Add video</Text>
-
+        {this.renderFileUri()}
 
       </View>
     );

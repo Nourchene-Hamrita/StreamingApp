@@ -75,11 +75,18 @@ class SubscriptionScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <CustomHeader title='Subscription' navigation={this.props.navigation} />
+        {
+         this.state.following.length>0?
         <FlatList
           data={following}
           renderItem={this.renderItem}
           keyExtractor={item => item._id}
         />
+        :
+        <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
+        <Text note style={{fontSize:20,color:'#fa8072'}} >No followings yet!</Text>
+        </View>
+    }
 
 
       </View>

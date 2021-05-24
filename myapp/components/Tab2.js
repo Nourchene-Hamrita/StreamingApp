@@ -296,12 +296,19 @@ export default class Tab2 extends Component {
     console.log({ videos })
     return (
       <SafeAreaView style={{ flex: 1 }}>
+         {
+         this.state.videos.length>0?
         <FlatList
           data={videos}
           renderItem={this.renderItem}
 
           keyExtractor={item => item._id}
         />
+        :
+        <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
+        <Text note style={{fontSize:20,color:'#fa8072'}} >You haven't added content yet!</Text>
+        </View>
+    }
       </SafeAreaView>
     );
   }

@@ -33,7 +33,7 @@ export default class SavedScreen extends Component {
     await this.getData();
     await this.SavedVideo(this.state.profile._id)
   }
-  Item(id, channelname, picture, theme, link, title, description,tags,index) {
+  Item(id, channelname, picture, theme, link, title, description,index) {
     //console.log(id)
     return (
 
@@ -134,7 +134,7 @@ export default class SavedScreen extends Component {
    DeleteFromSave(id).then((res) => {
     console.log({ res })
     this.setState({
-      newSaved: res.data   
+      saved:this.state.saved.filter(item=>item._id!==id)  
     })
     alert('Successfully deleted !')
   }).catch(err => {
@@ -193,11 +193,18 @@ onSeek = seek => {
      return (
        <View style={{ flex: 1 }}>
              <CustomHeader title='Saved' navigation={this.props.navigation}  />
+             {
+         this.state.saved.length>0?
              <FlatList
           data={this.state.saved}
           renderItem={this.renderItem}
           keyExtractor={item => item._id}
         />
+        :
+        <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
+        <Text note style={{fontSize:20,color:'#fa8072'}} >There are no saved yet!</Text>
+        </View>
+    }
        </View>
      );
    }

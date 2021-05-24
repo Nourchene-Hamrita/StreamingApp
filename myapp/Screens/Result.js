@@ -346,7 +346,7 @@ export default class Result extends Component {
                 />
                     :
                     <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
-                    <Text note style={{fontSize:30}} >Sorry!</Text>
+                    <Text note style={{fontSize:20,color:'#fa8072'}} >Sorry! There is no result</Text>
                     </View>
                 }
 
