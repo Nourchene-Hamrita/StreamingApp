@@ -2,12 +2,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const videoSchema = new Schema(
     {
-        channelId: {type:String
-          
+        channelId: {
+            type: String
+
 
         },
-        channelname: {type:String
-          
+        channelname: {
+            type: String
+
 
         },
         picture: {
@@ -69,12 +71,12 @@ const videoSchema = new Schema(
         },
         category: {
             type: String,
-    
+
         },
-      
+
 
     },
-   
+
     { Timestamp: true }
 );
 const VideoModel = mongoose.model('video', videoSchema)

@@ -60,7 +60,7 @@ export default class Login extends Component {
   }
   getData() {
     getData().then((res) => {
-      if (res[0] == "e") {
+      if (res == "e") {
         const resetAction = StackActions.reset({
           index: 0,
           actions: [NavigationActions.navigate({ routeName: 'Acceuil' })],

@@ -18,16 +18,6 @@ const cors =require('cors')
 
 const app = express();
 
-/*const corsOptions={
-  origin:process.env.CLIENT_URL,
-  credentials:true,
-  'allowedHeaders':['sessionId','Content-Type'],
-  'exposedHeaders':'Content-Range',
-  'methods':'GET,HEAD,PUT,POST,PATCH,DELETE',
-  'prefLightContinue':false,}*/
- 
-
-
 app.use('/public',express.static(path.join(__dirname, 'public'))); 
 app.use(cors());
 app.use((req, res, next)=> {
@@ -37,6 +27,14 @@ app.use((req, res, next)=> {
   res.header('Access-Control-Expose-Headers','Content-Range')
   next();
 });
+/*const corsOptions={
+  origin:process.env.CLIENT_URL,
+  credentials:true,
+  'allowedHeaders':['sessionId','Content-Type'],
+  'exposedHeaders':'Content-Range',
+  'methods':'GET,HEAD,PUT,POST,PATCH,DELETE',
+  'prefLightContinue':false,}*/
+ 
 
 app.use(express.json());
 

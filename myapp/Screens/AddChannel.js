@@ -5,6 +5,7 @@ import { Container, Content, Form, Label, Item, List, ListItem, InputGroup, Inpu
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import LinearGradient from 'react-native-linear-gradient';
 import { createChannel, getInfoUser } from "../services/apis";
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 
@@ -45,8 +46,9 @@ export default class AddChannel extends Component {
       theme,
     }).then((res) => {
       console.log(res);
-      this.props.navigation.navigate('Channel')
-      //alert('The channel has been successfully created')
+      //this.props.navigation.navigate('Channel')
+      alert('The channel has been successfully created')
+      AsyncStorage.setItem("channel", JSON.stringify(res.data))
     }
     ).catch(err => {
       console.log(err);

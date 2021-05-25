@@ -34,8 +34,29 @@ export default class Post extends Component {
       comments: [],
       channel: [],
       saved: [],
-      icon: 'bookmark-outline'
+      savedBtn: [],
+      icon: 'bookmark-outline',
     };
+  }
+  changeSaved(index,channelname, picture, theme, title, description, link, category, tags){
+    console.log({index})
+    let {savedBtn}=this.state
+    savedBtn[index]=!savedBtn[index]
+    this.setState({savedBtn})
+    SaveVideos({ UserId: this.state.profile._id, channelname, picture, theme, title, description, link, category, tags }).then((res) => {
+        this.getVideos();
+        this.setState({
+          
+          saved: res.data
+        })
+  
+        this.props.navigation.navigate({ saved: res.data })
+  
+      }).catch(err => {
+        console.log(err);
+      });
+    console.log(savedBtn)
+
   }
   Item(id, channelId, channelname, picture, theme, link, title, description, PublishedAt, likers, dislikers, comments, category, tags, index) {
     //console.log(id)
@@ -87,15 +108,23 @@ export default class Post extends Component {
           </CardItem>
 
           <CardItem>
-          
+
             <Right style={{ marginLeft: 260 }}>
-              <TouchableOpacity onPress={() => this.SaveVideos(channelname, picture, theme, title, description, link, category,tags)}>
-                <Ionicons name={this.state.icon} size={25} style={{ color: "#fa8072" }} />
-              </TouchableOpacity>
+              {
+                this.state.savedBtn[index] == false ?
+                  <TouchableOpacity onPress={() => this.changeSaved(index,channelname, picture, theme, title, description, link, category, tags)}>
+                    <Ionicons name="bookmark" size={25} style={{ color: "#fa8072" }} />
+                  </TouchableOpacity>
+                  :
+                  <TouchableOpacity onPress={() => this.changeSaved(index,channelname, picture, theme, title, description, link, category, tags)}>
+                    <Ionicons name="bookmark-outline" size={25} style={{ color: "#fa8072" }} />
+                  </TouchableOpacity>
+              }
+
             </Right>
           </CardItem>
           <CardItem>
-          <Text numberOfLines={1} style={{ color: "#fa8072" }}>{tags}</Text>
+            <Text numberOfLines={1} style={{ color: "#fa8072" }}>{tags}</Text>
           </CardItem>
           <CardItem>
             <Text numberOfLines={1}>{title}</Text>
@@ -171,17 +200,20 @@ export default class Post extends Component {
     let duration = []
     let playerState = []
     let screenType = []
+    let saved = []
     this.setState({ Loading: true })
     getVideos()
       .then((res) => {
         console.log({ res })
         res.data.map((t) => {
           paused.push(true)
+          saved.push(true)
         })
         this.setState({
           paused: paused,
           dataSource: res.data,
-          Loading: false
+          Loading: false,
+          savedBtn: saved
         })
 
 
@@ -259,15 +291,15 @@ export default class Post extends Component {
         console.log(res);
         this.getVideos();
       },
-      alert('Successfully added')
+        alert('Successfully added')
       ).catch(err => {
         console.log(err);
 
       });
 
   }
-  SaveVideos(channelname, picture, theme, title, description, link, category,tags) {
-    SaveVideos({ UserId: this.state.profile._id, channelname, picture, theme, title, description, link, category,tags }).then((res) => {
+  SaveVideos(channelname, picture, theme, title, description, link, category, tags) {
+    SaveVideos({ UserId: this.state.profile._id, channelname, picture, theme, title, description, link, category, tags }).then((res) => {
       this.getVideos();
       this.setState(prevState => ({
         icon: prevState.icon === 'bookmark' ? 'bookmark-outline' : 'bookmark',
@@ -372,19 +404,19 @@ const Styles = StyleSheet.create({
   },
 });
  /*<View style={styles.uiContainer}>
-     <View style={styles.rightContainer}>
-       <View style={styles.iconContainer}>
-         <EvilIcons name='heart' size={40} color='white' />
-         <Text style={styles.statsLabel}>123</Text>
-         <Ionicons name='ios-heart-dislike-outline' size={30} color='white' />
-         <Text style={styles.statsLabel}>123</Text>
-         <EvilIcons name='comment' size={40} color='white' />
-         <Text style={styles.statsLabel}>123</Text>
-       </View>
-     </View>
-     <View style={styles.bottomContainer}>
-       <Text style={styles.handle}>{title}</Text>
-       <Text style={styles.description}>{description}</Text>
+   <View style={styles.rightContainer}>
+     <View style={styles.iconContainer}>
+       <EvilIcons name='heart' size={40} color='white' />
+       <Text style={styles.statsLabel}>123</Text>
+       <Ionicons name='ios-heart-dislike-outline' size={30} color='white' />
+       <Text style={styles.statsLabel}>123</Text>
+       <EvilIcons name='comment' size={40} color='white' />
+       <Text style={styles.statsLabel}>123</Text>
      </View>
    </View>
- </View>*/
+   <View style={styles.bottomContainer}>
+     <Text style={styles.handle}>{title}</Text>
+     <Text style={styles.description}>{description}</Text>
+   </View>
+ </View>
+</View>*/

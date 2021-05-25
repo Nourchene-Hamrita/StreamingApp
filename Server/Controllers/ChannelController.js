@@ -8,7 +8,7 @@ const { uploadErrors } = require("../utils/errors.util");
 const fs = require('fs');
 const { promisify } = require('util');
 const pipeline = promisify(require("stream").pipeline);
-let endPoint = 'http://192.168.1.13:3000/public/'
+let endPoint = 'http://192.168.1.14:3000/public/'
 
 module.exports.getAllChannel = async (req, res) => {
     ChannelModel.find((err, docs) => {
@@ -31,7 +31,7 @@ module.exports.UserChannelInfo = async (req, res) => {
     if (!ObjectID.isValid(req.params.id))
         return res.status(400).send('ID unknown: ' + req.params.id)
 
-    ChannelModel.find({ trainerId: req.params.id }, (err, docs) => {
+    ChannelModel.findOne({ trainerId: req.params.id }, (err, docs) => {
         if (!err) return res.send(docs);
         else return res.status(400).send(err);
     })
@@ -47,8 +47,6 @@ module.exports.createChannel = async (req, res) => {
         channelname: req.body.channelname,
         videos: [],
         followers: [],
-
-
 
     });
     try {
@@ -168,12 +166,7 @@ module.exports.follow = async (req, res) => {
     } catch (err) {
         return res.status(500).json({ message: err});
     }
-
-
-
-
-}
-
+};
 
 module.exports.unfollow = async (req, res) => {
     if (

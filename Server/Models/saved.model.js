@@ -65,9 +65,9 @@ const savedSchema = new Schema(
         },
         category: {
             type: String,
-    
+
         },
-      
+
 
 
     },

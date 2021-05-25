@@ -120,7 +120,8 @@ export default class SavedScreen extends Component {
     await  getSavedVideos(id).then((res) => {
       console.log({ res} )
       res.data.map((t) => {
-        paused.push(true)})
+        paused.push(true)
+      })
       this.setState({
         paused: paused,
         saved: res.data

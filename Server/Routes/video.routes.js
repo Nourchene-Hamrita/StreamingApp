@@ -14,7 +14,7 @@ router.patch('/unlike-video/:id', VideoController.unlikeVideo);
 router.patch('/dislike-video/:id',VideoController.dislikeVideo);
 router.patch('/note-video/:id',VideoController.noteVideo);
 router.patch('/comment-video/:id', VideoController.commentVideo);
-router.patch('delete-comment-video/:id', VideoController.DeleteComment);
+
 
 
 module.exports = router;

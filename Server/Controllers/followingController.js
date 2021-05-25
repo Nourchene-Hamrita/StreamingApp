@@ -1,8 +1,7 @@
 const morgan = require('morgan');
 const ObjectID = require('mongoose').Types.ObjectId;
 const FollowingModel = require('../Models/following.model');
-const UserModel = require('../Models/user.model');
-const VideoModel=require('../Models/video.model');
+
 
 module.exports.followingList = async (req, res) => {
     console.log(req.params);

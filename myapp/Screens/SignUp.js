@@ -46,7 +46,8 @@ export default class signUp extends Component {
       alert("Passwords are not the same")
       return false
     }
-    else return true
+    else 
+    return true
   }
   handleRegister = () => {
     let { login, email, password } = this.state
@@ -60,21 +61,21 @@ export default class signUp extends Component {
         console.log(res)
         
         if (res.data.errors.login == "Login incorrect or already taken") {
-          alert('Login incorrect or already taken')
+           return alert('Login incorrect or already taken')
         }
         else if (res.data.errors.email == "Incorrect email") {
-          alert("Incorrect email")
+          return alert("Incorrect email")
         }
         else if (res.data.errors.email == "This email is already registered") {
-          alert("This email is already registered")
+          return alert("This email is already registered")
         }
         else if (res.data.errors.login == "This login is already taken") {
-          alert("This login is already taken")
+          return alert("This login is already taken")
         }
         else if (res.data.errors.password == "Password must be 6 characters minimum") {
-          alert("Password must be 6 characters minimum")
+          return alert("Password must be 6 characters minimum")
         }
-        else return alert('Successfully SignUp');
+        alert('Successfully SignUp')
       }
      
 

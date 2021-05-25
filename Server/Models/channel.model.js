@@ -2,13 +2,13 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const channelSchema = new Schema(
     {
-        trainerId:{
-            type:String,
+        trainerId: {
+            type: String,
             required: true
         },
-          
 
-        
+
+
         channelname: {
             type: String,
 
@@ -21,7 +21,7 @@ const channelSchema = new Schema(
 
         picture: {
             type: String,
-            default:"http://192.168.1.9:3000/public/605b0abf022908280c811bca1617801073904.jpg"
+            default: "http://192.168.1.14:3000/public/606c6e245d82640ba48ba6db1618591960680.jpg"
         },
         CreatedAt: {
             type: Date,
@@ -32,22 +32,23 @@ const channelSchema = new Schema(
         followers: {
             type: [String]
         },
-         videos: {
+        videos: {
             type: [{
                 title: String,
-                description:String,
-                link:String,
-                likers:[],
-                dislikers:[],
+                description: String,
+                link: String,
+                likers: [],
+                dislikers: [],
                 comments: [],
-                note:[]
-            }]}
-               
+                note: []
+            }]
+        }
 
-           
 
-       
-        
+
+
+
+
 
 
     },

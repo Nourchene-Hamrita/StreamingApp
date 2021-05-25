@@ -7,7 +7,7 @@ const { uploadErrors } = require("../utils/errors.util");
 const fs = require('fs');
 const { promisify } = require('util');
 const pipeline = promisify(require("stream").pipeline);
-let endPoint = 'http://192.168.1.13:3000/public/'
+let endPoint = 'http://192.168.1.14:3000/public/'
 module.exports.listVideo = (req, res) => {
     VideoModel.find((err, docs) => {
         if (!err) return res.send(docs);
@@ -331,28 +331,7 @@ module.exports.ChannelVideoList = async (req, res) => {
 
 };
 
-module.exports.DeleteComment = (req, res) => {
-    if (!ObjectID.isValid(req.params.id))
-        return res.status(400).send('ID unknown ' + req.params.id);
-    try {
-        return VideoModel.findByIdAndUpdate(req.params.id, {
-            $pull: {
-                comments: {
-                    _id: req.body.commentId,
-                }
-            }
-        }, { new: true },
-            (err, docs) => {
-                if (!err) return res.send(docs);
-                else return res.status(400).send(err);
-            }
-        )
 
-    } catch (err) {
-        return res.status(400).send(err);
-    }
-
-};
 module.exports.SearchVideo = async (req, res) => {
 
     console.log(req.query.tag);

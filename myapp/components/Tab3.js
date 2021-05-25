@@ -6,15 +6,20 @@ import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 import { ChanneldateParser } from './utils';
 import { Container, Content, Form, Label, Item, List, ListItem, InputGroup, Input, Icon, Text, Picker, Button } from 'native-base';
 import { getInfoChannel, UpdateChannel } from '../services/apis';
+import AsyncStorage from '@react-native-community/async-storage';
 import ImagePicker from 'react-native-image-crop-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 export default class Tab3 extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
       channel: null,
-      newchannel: [],
-      channelname: '', theme: ''
+      channelname: '',
+      theme: '',
+      fileUri: '',
+      CreatedAt:'',
+      followers:'',
 
     };
   }
@@ -24,13 +29,18 @@ export default class Tab3 extends Component {
 
   async componentDidMount() {
     AndroidKeyboardAdjust.setAdjustPan();
-    await this.getData()
+    await this.getChannelInfo();
   }
-  async getData() {
+  async getChannelInfo() {
     await getInfoChannel().then((res) => {
-      console.log({ res })
+      console.log( {res})
       this.setState({
-        channel: res[0]
+        channel: res,
+        fileUri:res.picture,
+        channelname:res.channelname,
+        theme:res.theme,
+        CreatedAt:res.CreatedAt,
+        followers:res.followers.length
       })
     }).catch(err => {
       console.log(err);
@@ -45,8 +55,9 @@ export default class Tab3 extends Component {
       .then((res) => {
         console.log(res);
         this.setState({
-          newchannel: res.data
+          channel: res.data
         })
+        AsyncStorage.setItem("channel", JSON.stringify(res.data))
         alert('Successfully Updated !')
       }
       ).catch(err => {
@@ -55,7 +66,7 @@ export default class Tab3 extends Component {
       });
 
   };
-  ChoosePhoto() {
+  /*ChoosePhoto() {
     ImagePicker.openPicker({
       width: 300,
       height: 400,
@@ -63,7 +74,37 @@ export default class Tab3 extends Component {
     }).then(image => {
       console.log(image);
     });
-  }
+  }*/
+  launchImageLibrary = () => {
+    let options = {
+      title: 'Image Picker',
+      mediaType: 'photo',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      },
+  
+    };
+
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('user cancelled image picker');
+      }
+      else if (response.error) {
+        console.log('image picker error', response.error);
+
+      } else if (response.customButton) {
+        console.log('user tapped custom button', response.customButton);
+      }
+      else {
+        console.log({response})
+        this.setState({ fileUri: response.uri });
+        console.log(this.state.fileUri)
+      }
+
+    })
+  };
+ 
 
   render() {
     let { channel } = this.state
@@ -74,23 +115,23 @@ export default class Tab3 extends Component {
           channel != null ?
             <View>
               <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                <Image source={{ uri: channel.picture }} style={{ height: 150, width: 400 }} />
-                <TouchableOpacity onPress={() => this.ChoosePhoto()}>
+                <Image source={{ uri: this.state.fileUri }} style={{ height: 150, width: 400 }} />
+                <TouchableOpacity onPress={() => this.launchImageLibrary()}>
                   <Text style={{ color: "#4169e1", padding: 10 }}><Icon active name='camera' style={{ color: "#4169e1", fontSize: 20 }} />Change Image</Text>
                 </TouchableOpacity>
-                <Text style={{ padding: 10, color: '#fa8072' }}>{channel.followers.length} Followers</Text>
-                <Text note>Created At : {ChanneldateParser(channel.CreatedAt)}</Text>
+                <Text style={{ padding: 10, color: '#fa8072' }}>{this.state.followers} Followers</Text>
+                <Text note>Created At : {ChanneldateParser(this.state.CreatedAt)}</Text>
               </View>
               <Container style={{ padding: 20 }}>
                 <Content>
                   <Form>
                     <Item stackedLabel>
                       <Label>Channel Name</Label>
-                      <Input onChangeText={(text) => this.setState({ channelname: text })}>{channel.channelname}</Input>
+                      <Input onChangeText={(text) => this.setState({ channelname: text })}>{this.state.channelname}</Input>
                     </Item>
                     <Item stackedLabel>
                       <Label>Theme</Label>
-                      <Input onChangeText={(text) => this.setState({ theme: text })}> {channel.theme}</Input>
+                      <Input onChangeText={(text) => this.setState({ theme: text })}>{this.state.theme}</Input>
                     </Item>
                   </Form>
                   <View style={{ marginTop: 20, justifyContent: 'center', alignItems: 'center' }}>
@@ -107,7 +148,7 @@ export default class Tab3 extends Component {
             :
             null
         }
-
+      
       </ScrollView>
     );
   }

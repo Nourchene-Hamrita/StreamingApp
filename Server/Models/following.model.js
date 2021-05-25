@@ -12,12 +12,13 @@ const followingSchema = new Schema(
             type: String,
 
         },
-        theme:{
-            type:String,},
+        theme: {
+            type: String,
+        },
 
         followers: {
             type: [String],
-            required:true
+            required: true
         },
 
         picture: {

@@ -4,7 +4,7 @@ const Dashboard=(props)=>{
     return(
         <Box variant="grey">
         <Box variant="white">
-         <h1>hhhhh</h1>
+         <h1>Test</h1>
         </Box>
       </Box>
 

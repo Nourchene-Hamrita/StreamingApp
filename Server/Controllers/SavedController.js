@@ -1,8 +1,5 @@
 const ObjectID = require('mongoose').Types.ObjectId;
 const SavedModel = require('../Models/saved.model');
-const UserModel = require('../Models/user.model');
-const ChannelModel = require('../Models/channel.model');
-const CommentModel = require('../Models/comment.model');
 
 module.exports.SavedList = async (req, res) => {
     console.log(req.params);

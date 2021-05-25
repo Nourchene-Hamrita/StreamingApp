@@ -148,7 +148,7 @@ export default class Tab2 extends Component {
     await getInfoChannel().then((res) => {
       console.log({ res })
       this.setState({
-        channel: res[0]
+        channel: res
       })
     }).catch(err => {
       console.log(err);
