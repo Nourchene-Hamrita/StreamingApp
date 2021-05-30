@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { View,FlatList,TouchableOpacity } from 'react-native';
-import CustomHeader from'../components/CustomHeader';
-import {getInfoUser, getSavedVideos,DeleteFromSave} from'../services/apis';
+import { View, FlatList, TouchableOpacity } from 'react-native';
+import CustomHeader from '../components/CustomHeader';
+import { getInfoUser, getSavedVideos, DeleteFromSave } from '../services/apis';
 import styles from '../components/Posts/style';
 import Video from 'react-native-video';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
@@ -24,16 +24,15 @@ export default class SavedScreen extends Component {
       playerState: PLAYER_STATES.PLAYING,
       screenType: 'content',
       saved: [],
-      newSaved:[],
-      profile:null,
+      profile: null,
     };
   }
- 
+
   async componentDidMount() {
     await this.getData();
     await this.SavedVideo(this.state.profile._id)
   }
-  Item(id, channelname, picture, theme, link, title, description,index) {
+  Item(id, channelname, picture, theme, link, title, description, index) {
     //console.log(id)
     return (
 
@@ -48,14 +47,14 @@ export default class SavedScreen extends Component {
               </Body>
             </Left>
             <Right>
-            <TouchableOpacity onPress={()=>this.DeleteSaved(id)} >
-                <LinearGradient style={{ padding: 10, flexDirection: 'row', height: 40, width: 90, padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center'}} colors={['#4169e1', '#fa8072']}>
-                  <MaterialCommunityIcons name='delete'style={{ color: 'white', fontSize: 15 }}/>
+              <TouchableOpacity onPress={() => this.DeleteSaved(id)} >
+                <LinearGradient style={{ padding: 10, flexDirection: 'row', height: 40, width: 90, padding: 10, borderRadius: 30, justifyContent: 'center', alignItems: 'center' }} colors={['#4169e1', '#fa8072']}>
+                  <MaterialCommunityIcons name='delete' style={{ color: 'white', fontSize: 15 }} />
                   <Text style={{ color: 'white' }}>Delete</Text>
                 </LinearGradient>
               </TouchableOpacity>
             </Right>
-           
+
           </CardItem>
           <CardItem cardBody >
             <Video onEnd={this.onEnd}
@@ -84,29 +83,29 @@ export default class SavedScreen extends Component {
 
           </CardItem>
           <CardItem>
-              <Right style={{ marginLeft: 260 }}>
-                <TouchableOpacity onPress={() => this.DeleteSaved(id)}>
-                  <Ionicons name='bookmark' size={25} style={{ color: "#fa8072" }} />
-                </TouchableOpacity>
-              </Right>
-            </CardItem>
+            <Right style={{ marginLeft: 260 }}>
+              <TouchableOpacity onPress={() => this.DeleteSaved(id)}>
+                <Ionicons name='bookmark' size={25} style={{ color: "#fa8072" }} />
+              </TouchableOpacity>
+            </Right>
+          </CardItem>
           <CardItem>
             <Text>{title}</Text>
           </CardItem>
           <CardItem>
             <Text note numberOfLines={2}>{description}</Text>
           </CardItem>
-          
-          </Card>
+
+        </Card>
       </Content>
     )
   }
 
   renderItem = ({ item, index }) => (
-    this.Item(item._id,item.channelname, item.picture, item.theme, item.link, item.title, item.description,item.tags,index)
+    this.Item(item._id, item.channelname, item.picture, item.theme, item.link, item.title, item.description, item.tags, index)
   );
- async getData() {
-   await getInfoUser().then((res) => {
+  async getData() {
+    await getInfoUser().then((res) => {
       console.log(res)
       this.setState({
         profile: res
@@ -115,10 +114,10 @@ export default class SavedScreen extends Component {
       console.log(err);
     });
   };
- async SavedVideo(id) {
-  let paused = []
-    await  getSavedVideos(id).then((res) => {
-      console.log({ res} )
+  async SavedVideo(id) {
+    let paused = []
+    await getSavedVideos(id).then((res) => {
+      console.log({ res })
       res.data.map((t) => {
         paused.push(true)
       })
@@ -126,24 +125,24 @@ export default class SavedScreen extends Component {
         paused: paused,
         saved: res.data
       })
-     
+
     }).catch(err => {
       console.log(err);
     });
   };
-  DeleteSaved(id){
-   DeleteFromSave(id).then((res) => {
-    console.log({ res })
-    this.setState({
-      saved:this.state.saved.filter(item=>item._id!==id)  
-    })
-    alert('Successfully deleted !')
-  }).catch(err => {
-    console.log(err);
-  });
-};
+  DeleteSaved(id) {
+    DeleteFromSave(id).then((res) => {
+      console.log({ res })
+      this.setState({
+        saved: this.state.saved.filter(item => item._id !== id)
+      })
+      alert('Successfully deleted !')
+    }).catch(err => {
+      console.log(err);
+    });
+  };
 
-onSeek = seek => {
+  onSeek = seek => {
     this.videoPlayer.seek(seek);
   };
   onPaused = (index) => {
@@ -188,25 +187,25 @@ onSeek = seek => {
     </View>
   );
   onSeeking = currentTime => this.setState({ currentTime });
- 
 
-   render() {
-     return (
-       <View style={{ flex: 1 }}>
-             <CustomHeader title='Saved' navigation={this.props.navigation}  />
-             {
-         this.state.saved.length>0?
-             <FlatList
-          data={this.state.saved}
-          renderItem={this.renderItem}
-          keyExtractor={item => item._id}
-        />
-        :
-        <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
-        <Text note style={{fontSize:20,color:'#fa8072'}} >There are no saved yet!</Text>
-        </View>
-    }
-       </View>
-     );
-   }
+
+  render() {
+    return (
+      <View style={{ flex: 1 }}>
+        <CustomHeader title='Saved' navigation={this.props.navigation} />
+        {
+          this.state.saved.length > 0 ?
+            <FlatList
+              data={this.state.saved}
+              renderItem={this.renderItem}
+              keyExtractor={item => item._id}
+            />
+            :
+            <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
+              <Text note style={{ fontSize: 20, color: '#fa8072' }} >There are no saved yet!</Text>
+            </View>
+        }
+      </View>
+    );
+  }
 }

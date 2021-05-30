@@ -3,7 +3,7 @@ import { View, TouchableOpacity } from 'react-native';
 import CustomHeader from '../CustomHeader';
 import Video from 'react-native-video';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
-import { Content, Card, CardItem, Thumbnail, Text, Button, Input, Item, Icon, Form, Left, Body, Right } from 'native-base';
+import { Content, Card, CardItem, Thumbnail, Text, Button, Input, Item, Icon, Form, Left, Body, Right, Label } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -16,28 +16,72 @@ export default class EditPost extends Component {
     constructor(props) {
         super(props);
         const { navigation } = this.props;
-        console.log(navigation.getParam('video', null))
+        console.log(navigation.getParam('video','title','description', null))
         this.state = {
             loading: true,
             currentTime: 0,
             duration: 0,
             isFullScreen: false,
             isLoading: true,
-            paused: true,
+            paused: false,
             playerState: PLAYER_STATES.PLAYING,
             screenType: 'content',
             video: navigation.getParam('video', null),
             newvideo: [],
-            title: '',
-            description: ''
+            title: navigation.getParam('title', null),
+            description: navigation.getParam('description', null)
         };
     }
+    onSeek = seek => {
+        this.videoPlayer.seek(seek);
+      };
+      onPaused = playerState => {
+        this.setState({
+          paused: !this.state.paused,
+          playerState,
+        });
+      };
+      onReplay = () => {
+        this.setState({ playerState: PLAYER_STATES.PLAYING });
+        this.videoPlayer.seek(0);
+      };
+      onProgress = data => {
+        const { isLoading, playerState } = this.state;
+        if (!isLoading && playerState !== PLAYER_STATES.ENDED) {
+          this.setState({ currentTime: data.currentTime });
+        }
+      };
+      onLoad = data => this.setState({
+        duration: data.duration, isLoading: false
+      });
+      onLoadStart = data => this.setState({
+        isLoading: true
+      });
+      onEnd = () => this.setState({ playerState: PLAYER_STATES.ENDED });
+      onError = () => alert('Oh! ', error);
+      exitFullScreen = () => {
+        alert("Exit full screen");
+      };
+      enterFullScreen = () => {
+        if (this.state.screenType == 'content')
+          this.setState({ screenType: 'cover' });
+        else
+          this.setState({ screenType: 'content' });
+      };
+    
+      renderToolbar = () => (
+        <View >
+          <Text> toolbar </Text>
+        </View>
+      );
+      onSeeking = currentTime => this.setState({ currentTime });
+    
 
     componentDidMount() {
         AndroidKeyboardAdjust.setAdjustPan();
     };
     Updatevideo(id) {
-        let { title, description } = this.state
+        let { title, description,video } = this.state
         console.log({
             title, description
         })
@@ -45,7 +89,7 @@ export default class EditPost extends Component {
             .then((res) => {
                 console.log(res);
                 this.setState({
-                    newvideo: res.data
+                    video: res.data
                 })
                 alert('Successfully Updated !')
             }
@@ -67,55 +111,10 @@ export default class EditPost extends Component {
             console.log(err);
         });
     };
-    onSeek = seek => {
-        this.videoPlayer.seek(seek);
-    };
-    onPaused = playerState => {
-        this.setState({
-            paused: !this.state.paused,
-            playerState,
-        });
-    };
-    onReplay = () => {
-        this.setState({ playerState: PLAYER_STATES.PLAYING });
-        this.videoPlayer.seek(0);
-    };
-    onProgress = data => {
-        const { isLoading, playerState } = this.state;
-        if (!isLoading && playerState !== PLAYER_STATES.ENDED) {
-            this.setState({ currentTime: data.currentTime });
-        }
-    };
-    onLoad = data => this.setState({
-        duration: data.duration, isLoading: false
-    });
-    onLoadStart = data => this.setState({
-        isLoading: true
-    });
-    onEnd = () => this.setState({ playerState: PLAYER_STATES.ENDED });
-    onError = () => alert('Oh! ', error);
-    exitFullScreen = () => {
-        alert("Exit full screen");
-    };
-    enterFullScreen = () => {
-        if (this.state.screenType == 'content')
-            this.setState({ screenType: 'cover' });
-        else
-            this.setState({ screenType: 'content' });
-    };
-
-
-
-    renderToolbar = () => (
-        <View >
-            <Text> toolbar </Text>
-        </View>
-    );
-    onSeeking = currentTime => this.setState({ currentTime });
 
 
     render() {
-        let { video } = this.state
+        let { video,title,description } = this.state
         console.log({ video })
         return (
             <View style={{ flex: 1 }}>
@@ -141,39 +140,44 @@ export default class EditPost extends Component {
 
                         </CardItem>
                         <CardItem cardBody >
-                            <Video onEnd={this.onEnd}
-                                onLoad={this.onLoad}
-                                onLoadStart={this.onLoadStart}
-                                onProgress={this.onProgress}
-                                paused={this.state.paused}
-                                ref={videoPlayer => (this.videoPlayer = videoPlayer)}
-                                resizeMode={this.state.screenType}
-                                onFullScreen={this.state.isFullScreen} volume={10}
-                                source={{ uri: video.link }}
-                                style={styles.video} resizeMode={'cover'}
-                                repeat={true} />
-                            <MediaControls
-                                duration={this.state.duration}
-                                isLoading={this.state.isLoading}
-                                mainColor="#332"
-                                onFullScreen={this.onFullScreen}
-                                onPaused={() => this.onPaused()}
-                                onReplay={this.onReplay}
-                                onSeek={this.onSeek}
-                                onSeeking={this.onSeeking}
-                                playerState={this.state.playerState}
-                                progress={this.state.currentTime}
-                                toolbar={this.renderToolbar()} />
+                        <Video
+                  onEnd={this.onEnd}
+                  onLoad={this.onLoad}
+                  onLoadStart={this.onLoadStart}
+                  onProgress={this.onProgress}
+                  paused={this.state.paused}
+                  ref={videoPlayer => (this.videoPlayer = videoPlayer)}
+                  resizeMode={this.state.screenType}
+                  onFullScreen={this.state.isFullScreen}
+                  source={{ uri:video.link }}
+                  style={styles.video}
+                  volume={10} />
+
+                <MediaControls
+                  duration={this.state.duration}
+                  isLoading={this.state.isLoading}
+                  mainColor="#333"
+                  onFullScreen={this.onFullScreen}
+                  onPaused={this.onPaused}
+                  onReplay={this.onReplay}
+                  onSeek={this.onSeek}
+                  onSeeking={this.onSeeking}
+                  playerState={this.state.playerState}
+                  progress={this.state.currentTime}
+                  toolbar={this.renderToolbar()}>
+                </MediaControls>
 
                         </CardItem>
 
                         <Form>
-                            <Item >
-                                <Input onChangeText={(text) => this.setState({ title: text })}>{video.title}</Input>
+                            <Item stackedLabel >
+                                <Label>Title</Label>
+                                <Input onChangeText={(text) => this.setState({ title: text })}>{title}</Input>
                                 <Icon name='pencil' style={{ fontSize: 15, color: "#4169e1" }} />
                             </Item>
-                            <Item >
-                                <Input onChangeText={(text) => this.setState({ description: text })} numberOfLines={2}>{video.description}</Input>
+                            <Item stackedLabel>
+                                <Label>Description</Label>
+                                <Input onChangeText={(text) => this.setState({ description: text })} numberOfLines={2}>{description}</Input>
                                 <Icon name='pencil' style={{ fontSize: 15, color: "#4169e1" }} />
                             </Item>
                         </Form>

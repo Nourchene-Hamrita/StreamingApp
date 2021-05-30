@@ -27,7 +27,9 @@ export default class Tab2 extends Component {
       video: [],
       likers: [],
       dislikers: [],
-      text: ''
+      text: '',
+      title:'',
+      description:''
     };
   };
   Item(id, channelname, link, title, description, picture, theme, PublishedAt, likers, dislikers, comments,tags, index) {
@@ -183,9 +185,11 @@ export default class Tab2 extends Component {
     getInfoVideo(id).then((res) => {
       console.log({ res })
       this.setState({
-        video: res.data
+        video: res.data,
+        title:res.title,
+        description:res.description
       })
-      this.props.navigation.navigate('EditVideo', { video: res.data })
+      this.props.navigation.navigate('EditVideo', { video: res.data,title:res.title,description:res.description })
     }).catch(err => {
       console.log(err);
     });
