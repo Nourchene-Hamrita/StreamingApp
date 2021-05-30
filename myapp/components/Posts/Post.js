@@ -7,7 +7,7 @@ import { dateParser } from '../utils';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
-import { getVideos, likeVideo, getInfoUser, dislikeVideo, getComments, CommentVideo, followChannel, SaveVideos } from "../../services/apis";
+import { getVideos, likeVideo, getInfoUser, dislikeVideo, getComments, CommentVideo, followChannel, unfollowChannel, SaveVideos } from "../../services/apis";
 import LinearGradient from 'react-native-linear-gradient';
 import { Content, Card, CardItem, Thumbnail, Text, Button, Item, Input, Icon, Left, Body, Right } from 'native-base';
 
@@ -35,27 +35,60 @@ export default class Post extends Component {
       channel: [],
       saved: [],
       savedBtn: [],
+      FollowBtn: [],
       icon: 'bookmark-outline',
     };
   }
-  changeSaved(index,channelname, picture, theme, title, description, link, category, tags){
-    console.log({index})
-    let {savedBtn}=this.state
-    savedBtn[index]=!savedBtn[index]
-    this.setState({savedBtn})
+  changeSaved(index, channelname, picture, theme, title, description, link, category, tags) {
+    console.log({ index })
+    let { savedBtn } = this.state
+    savedBtn[index] = !savedBtn[index]
+    this.setState({ savedBtn });
     SaveVideos({ UserId: this.state.profile._id, channelname, picture, theme, title, description, link, category, tags }).then((res) => {
-        this.getVideos();
-        this.setState({
-          
-          saved: res.data
-        })
-  
-        this.props.navigation.navigate({ saved: res.data })
-  
-      }).catch(err => {
-        console.log(err);
-      });
+      this.setState({
+
+        saved: res.data
+      })
+
+      this.props.navigation.navigate({ saved: res.data })
+
+    }).catch(err => {
+      console.log(err);
+    });
+
     console.log(savedBtn)
+
+  }
+  changeFollow(index, id, idToFollow, channelname, userId, picture, theme) {
+    console.log({ index })
+    let { FollowBtn } = this.state
+    FollowBtn[index] = !FollowBtn[index]
+    this.setState({ FollowBtn })
+    followChannel(id, { idToFollow, channelname, userId, picture, theme }).then((res) => {
+      this.setState({
+        following: res.data
+      })
+      alert('This channel has been added to your followings')
+    }).catch(err => {
+      console.log(err);
+    });
+    console.log(FollowBtn)
+
+  }
+  changeUnFollow(index, id, idToUnFollow, userId) {
+    console.log({ index })
+    let { FollowBtn } = this.state
+    FollowBtn[index] = !FollowBtn[index]
+    this.setState({ FollowBtn })
+    unfollowChannel(id, { idToUnFollow, userId }).then((res) => {
+      this.setState({
+        following: res.data
+      })
+      alert('This channel has been removed from your followings')
+    }).catch(err => {
+      console.log(err);
+    });
+    console.log(FollowBtn)
 
   }
   Item(id, channelId, channelname, picture, theme, link, title, description, PublishedAt, likers, dislikers, comments, category, tags, index) {
@@ -73,11 +106,20 @@ export default class Post extends Component {
               </Body>
             </Left>
             <Right>
-              <TouchableOpacity onPress={() => this.follow(this.state.profile._id, channelId, channelname, this.state.profile._id, picture, theme)}>
-                <LinearGradient style={{ padding: 10, borderRadius: 20, }} colors={['#4169e1', '#fa8072']}>
-                  <Text style={{ color: 'white' }}>Follow</Text>
-                </LinearGradient>
-              </TouchableOpacity>
+              {
+                this.state.FollowBtn[index] == false ?
+                  <TouchableOpacity onPress={() => this.changeUnFollow(index, this.state.profile._id, channelId, this.state.profile._id)}>
+                    <LinearGradient style={{ padding: 10, borderRadius: 20, }} colors={['#4169e1', '#fa8072']}>
+                      <Text style={{ color: 'white' }}>UnFollow</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                  :
+                  <TouchableOpacity onPress={() => this.changeFollow(index, this.state.profile._id, channelId, channelname, this.state.profile._id, picture, theme)}>
+                    <LinearGradient style={{ padding: 10, borderRadius: 20, }} colors={['#4169e1', '#fa8072']}>
+                      <Text style={{ color: 'white' }}>Follow</Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+              }
             </Right>
           </CardItem>
           <CardItem cardBody >
@@ -112,11 +154,11 @@ export default class Post extends Component {
             <Right style={{ marginLeft: 260 }}>
               {
                 this.state.savedBtn[index] == false ?
-                  <TouchableOpacity onPress={() => this.changeSaved(index,channelname, picture, theme, title, description, link, category, tags)}>
+                  <TouchableOpacity>
                     <Ionicons name="bookmark" size={25} style={{ color: "#fa8072" }} />
                   </TouchableOpacity>
                   :
-                  <TouchableOpacity onPress={() => this.changeSaved(index,channelname, picture, theme, title, description, link, category, tags)}>
+                  <TouchableOpacity onPress={() => this.changeSaved(index, channelname, picture, theme, title, description, link, category, tags)}>
                     <Ionicons name="bookmark-outline" size={25} style={{ color: "#fa8072" }} />
                   </TouchableOpacity>
               }
@@ -201,6 +243,7 @@ export default class Post extends Component {
     let playerState = []
     let screenType = []
     let saved = []
+    let following = []
     this.setState({ Loading: true })
     getVideos()
       .then((res) => {
@@ -208,12 +251,14 @@ export default class Post extends Component {
         res.data.map((t) => {
           paused.push(true)
           saved.push(true)
+          following.push(true)
         })
         this.setState({
           paused: paused,
           dataSource: res.data,
           Loading: false,
-          savedBtn: saved
+          savedBtn: saved,
+          FollowBtn: following
         })
 
 
@@ -232,17 +277,6 @@ export default class Post extends Component {
       console.log(err);
     });
   };
-  follow(id, idToFollow, channelname, userId, picture, theme) {
-    followChannel(id, { idToFollow, channelname, userId, picture, theme }).then((res) => {
-      this.getVideos();
-      this.setState({
-        following: res.data
-      })
-      alert('This channel has been added to your followings')
-    }).catch(err => {
-      console.log(err);
-    });
-  }
 
   like(id) {
     likeVideo(id, { id: this.state.profile._id }).then((res) => {
@@ -404,19 +438,19 @@ const Styles = StyleSheet.create({
   },
 });
  /*<View style={styles.uiContainer}>
-   <View style={styles.rightContainer}>
-     <View style={styles.iconContainer}>
-       <EvilIcons name='heart' size={40} color='white' />
-       <Text style={styles.statsLabel}>123</Text>
-       <Ionicons name='ios-heart-dislike-outline' size={30} color='white' />
-       <Text style={styles.statsLabel}>123</Text>
-       <EvilIcons name='comment' size={40} color='white' />
-       <Text style={styles.statsLabel}>123</Text>
-     </View>
-   </View>
-   <View style={styles.bottomContainer}>
-     <Text style={styles.handle}>{title}</Text>
-     <Text style={styles.description}>{description}</Text>
+ <View style={styles.rightContainer}>
+   <View style={styles.iconContainer}>
+     <EvilIcons name='heart' size={40} color='white' />
+     <Text style={styles.statsLabel}>123</Text>
+     <Ionicons name='ios-heart-dislike-outline' size={30} color='white' />
+     <Text style={styles.statsLabel}>123</Text>
+     <EvilIcons name='comment' size={40} color='white' />
+     <Text style={styles.statsLabel}>123</Text>
    </View>
  </View>
+ <View style={styles.bottomContainer}>
+   <Text style={styles.handle}>{title}</Text>
+   <Text style={styles.description}>{description}</Text>
+ </View>
+</View>
 </View>*/

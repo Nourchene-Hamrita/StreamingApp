@@ -69,8 +69,7 @@ module.exports.createVideo = async (req, res) => {
         },
             { new: true },
             (err, docs) => {
-                if (!err) return res.send(docs);
-                else return res.status(400).send(err);
+                if (err)  return res.status(400).send(err);
 
 
             })
