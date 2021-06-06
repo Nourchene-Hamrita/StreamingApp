@@ -1,5 +1,5 @@
 package com.myapp;
-
+import com.rnfs.RNFSPackage;
 import com.facebook.react.ReactActivity;
 import net.zubricky.AndroidKeyboardAdjust.AndroidKeyboardAdjustPackage;
 
@@ -13,7 +13,9 @@ public class MainActivity extends ReactActivity {
   @Override
   protected String getMainComponentName() {
     return "myapp";
-  }
+  };
+ 
+  
  
   
  

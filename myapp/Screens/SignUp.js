@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { Component, useState } from 'react';
-import { View, Text, Image, Animated, Dimensions, TextInput, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, Animated, Dimensions, TextInput, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Actions } from 'react-native-router-flux';
 import { styles } from '../Styles/style';
@@ -46,9 +46,10 @@ export default class signUp extends Component {
       alert("Passwords are not the same")
       return false
     }
-    else 
+    else {
+    Alert.alert('Sign Up','Successfully SignUp')
     return true
-  }
+  }}
   handleRegister = () => {
     let { login, email, password } = this.state
     if (this.validation()) {
@@ -58,8 +59,8 @@ export default class signUp extends Component {
         email,
         password
       }).then((res) => {
-        console.log(res)
-        
+        console.log(res);
+         
         if (res.data.errors.login == "Login incorrect or already taken") {
            return alert('Login incorrect or already taken')
         }
@@ -75,11 +76,11 @@ export default class signUp extends Component {
         else if (res.data.errors.password == "Password must be 6 characters minimum") {
           return alert("Password must be 6 characters minimum")
         }
-        alert('Successfully SignUp')
-      }
-     
-
-      ).catch(err => {
+       
+        
+       
+       
+       }).catch(err => {
         console.log(err);
 
       });

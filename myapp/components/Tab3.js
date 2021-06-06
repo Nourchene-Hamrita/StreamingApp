@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, View, TouchableOpacity, Image } from 'react-native';
+import { ScrollView, View, TouchableOpacity, Image,Alert } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import LinearGradient from 'react-native-linear-gradient';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
@@ -58,7 +58,7 @@ export default class Tab3 extends Component {
           channel: res.data
         })
         AsyncStorage.setItem("channel", JSON.stringify(res.data))
-        alert('Successfully Updated !')
+        Alert.alert('Updating','Successfully Updated !')
       }
       ).catch(err => {
         console.log(err);

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, TouchableOpacity } from 'react-native';
+import { View, Image, TouchableOpacity,Alert,ScrollView} from 'react-native';
 import { IconButton, Colors } from 'react-native-paper';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import Video from 'react-native-video';
@@ -7,8 +7,13 @@ import styles from '../components/Posts/style';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
 import { Content, Card, CardItem, Thumbnail, Text, Button, Input, Item, Icon, Form, Label, Body, Right } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { getInfoChannel,UploadVideo  } from '../services/apis';
+import AsyncStorage from '@react-native-community/async-storage';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+let endPoint = 'http://192.168.1.14:3000/public/';
+import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
+import FormData from 'form-data';
+
 
 export default class Tab1 extends Component {
   videoPlayer
@@ -18,6 +23,7 @@ export default class Tab1 extends Component {
     this.state = {
       loading: true,
       fileUri: '',
+      fileName:'',
       currentTime: 0,
       duration: 0,
       isFullScreen: false,
@@ -25,10 +31,62 @@ export default class Tab1 extends Component {
       paused: false,
       playerState: PLAYER_STATES.PLAYING,
       screenType: 'content',
+      channel: null,
       title: '',
       description: '',
+      category:'',
       tags: []
     };
+  };
+  UNSAFE_componentWillMount() {
+    this.getInfoChannel();
+  }
+
+  async componentDidMount() {
+    AndroidKeyboardAdjust.setAdjustPan();
+    await this.getInfoChannel();
+  }
+  async getInfoChannel() {
+    await getInfoChannel().then((res) => {
+      console.log( {res})
+      this.setState({
+        channel: res,
+      })
+    }).catch(err => {
+      console.log(err);
+    });
+  };
+  CreateVideo() {
+    const form = new FormData();
+    let { title, description,tags,fileUri,fileName,category } = this.state
+    form.append('file',fileName);
+    form.append('theme', this.state.channel.theme);
+    form.append('channelId',this.state.channel._id );
+    form.append('channelname', this.state.channel.channelname);
+    form.append('title',title);
+    form.append('description', description);
+    form.append('category',category)
+    form.append('picture', this.state.channel.picture);
+    form.append('tags', tags);
+    form.append('link', endPoint+fileName);
+
+    console.log({
+      channelId: this.state.channel._id,
+      channelname:this.state.channel.channelname,
+      theme:this.state.channel.theme,
+      tags,
+    })
+    UploadVideo(form).then((res) => {
+      console.log(res);
+      
+      Alert.alert('Success','The video has been successfully added')
+     
+    }
+    ).catch(err => {
+      console.log(err);
+
+    });
+
   }
   onSeek = seek => {
     this.videoPlayer.seek(seek);
@@ -106,7 +164,8 @@ export default class Tab1 extends Component {
       }
       else {
         console.log({ response })
-        this.setState({ fileUri: response.uri });
+        this.setState({ fileUri: response.uri,
+        fileName:response.fileName });
         console.log(this.state.fileUri)
       }
 
@@ -125,12 +184,12 @@ export default class Tab1 extends Component {
 
 
   render() {
-
+    let {channel}=this.state;
     return (
 
-      <View >
+      <ScrollView >
         {
-          this.state.fileUri != '' ?
+          this.state.fileUri != ''&& channel != null  ?
             <View>
 
               <CardItem cardBody >
@@ -174,13 +233,18 @@ export default class Tab1 extends Component {
                   <Icon name='pencil' style={{ fontSize: 15, color: "#4169e1" }} />
                 </Item>
                 <Item stackedLabel >
+                  <Label>Category</Label>
+                  <Input onChangeText={(text) => this.setState({ category: text })}>{this.state.category}</Input>
+                  <Icon name='pencil' style={{ fontSize: 15, color: "#4169e1" }} />
+                </Item>
+                <Item stackedLabel >
                   <Label>Tags</Label>
                   <Input onChangeText={(text) => this.setState({ tags: text })} numberOfLines={2}>{this.state.tags}</Input>
                   <Icon name='pencil' style={{ fontSize: 15, color: "#4169e1" }} />
                 </Item>
               </Form>
               <View style={{ marginTop: 50, justifyContent: 'center', alignItems: 'center' }}>
-                <TouchableOpacity onPress={() => this.Updatevideo(video._id)} >
+                <TouchableOpacity onPress={() => this.CreateVideo()} >
                   <LinearGradient style={{ flexDirection: 'row', height: 50, width: 150, padding: 10, marginTop: 30, borderRadius: 30, justifyContent: 'center', alignItems: 'center' }} colors={['#4169e1', '#fa8072']}>
                     <MaterialCommunityIcons name="video-plus" style={{ color: 'white', fontSize: 30 }} />
                     <Text style={{ color: 'white', fontSize: 20, paddingLeft: 5 }}>Publish</Text>
@@ -201,7 +265,7 @@ export default class Tab1 extends Component {
             </View>
 
         }
-      </View>
+      </ScrollView>
 
     );
 

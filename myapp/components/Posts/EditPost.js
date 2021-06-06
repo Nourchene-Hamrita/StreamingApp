@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity,Alert } from 'react-native';
 import CustomHeader from '../CustomHeader';
 import Video from 'react-native-video';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
@@ -91,7 +91,7 @@ export default class EditPost extends Component {
                 this.setState({
                     video: res.data
                 })
-                alert('Successfully Updated !')
+                Alert.alert('Updating','Successfully Updated !')
             }
             ).catch(err => {
                 console.log(err);

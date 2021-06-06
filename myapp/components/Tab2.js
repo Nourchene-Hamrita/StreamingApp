@@ -7,6 +7,7 @@ import { getInfoChannel, getInfoUser, CommentVideo, getVideosList, getComments, 
 import { dateParser } from './utils';
 import Video from 'react-native-video';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 export default class Tab2 extends Component {
   videoPlayer;
   constructor(props) {
@@ -310,6 +311,7 @@ export default class Tab2 extends Component {
         />
         :
         <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
+           <MaterialCommunityIcons name="video-vintage" style={{fontSize:40,color:'#fa8072'}}/>
         <Text note style={{fontSize:20,color:'#fa8072'}} >You haven't added content yet!</Text>
         </View>
     }

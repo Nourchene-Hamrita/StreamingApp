@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import { Container, Content, Form, Label, Item, List, ListItem, InputGroup, Input, Icon, Text, Picker, Button } from 'native-base';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -47,7 +47,7 @@ export default class AddChannel extends Component {
     }).then((res) => {
       console.log(res);
       //this.props.navigation.navigate('Channel')
-      alert('The channel has been successfully created')
+      Alert.alert('Success','The channel has been successfully created')
       AsyncStorage.setItem("channel", JSON.stringify(res.data))
     }
     ).catch(err => {

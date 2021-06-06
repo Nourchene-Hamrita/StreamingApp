@@ -153,7 +153,7 @@ module.exports.follow = async (req, res) => {
             { new: true, upsert: true },
             (err, docs) => {
                 if (!err) return res.status(201).json(docs);
-                else return res.status(400).json(err);
+                else  res.status(400).json(err);
             }
         );
         const following = await newFollowing.save();
@@ -164,7 +164,7 @@ module.exports.follow = async (req, res) => {
 
 
     } catch (err) {
-        return res.status(500).json({ message: err});
+        return res.status(400).json({ message: err});
     }
 };
 
@@ -184,7 +184,7 @@ module.exports.unfollow = async (req, res) => {
             { new: true, upsert: true },
             (err, docs) => {
                 if (!err) return res.status(201).json(docs);
-                else return res.status(400).json(err);
+                else res.status(400).json(err);
             }
         );
         await FollowingModel.findOneAndRemove(
@@ -196,7 +196,7 @@ module.exports.unfollow = async (req, res) => {
 
 
     } catch (err) {
-        return res.status(500).json({ message: err });
+        return res.status(400).json({ message: err });
     }
 
 };

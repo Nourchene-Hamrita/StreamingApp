@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, TouchableOpacity } from 'react-native';
+import { View, FlatList, TouchableOpacity,Alert } from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import { getInfoUser, getSavedVideos, DeleteFromSave } from '../services/apis';
 import styles from '../components/Posts/style';
@@ -8,6 +8,7 @@ import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
 import { Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right } from 'native-base';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default class SavedScreen extends Component {
@@ -136,7 +137,7 @@ export default class SavedScreen extends Component {
       this.setState({
         saved: this.state.saved.filter(item => item._id !== id)
       })
-      alert('Successfully deleted !')
+      Alert.alert('Deleting','Successfully deleted !')
     }).catch(err => {
       console.log(err);
     });
@@ -202,7 +203,8 @@ export default class SavedScreen extends Component {
             />
             :
             <View style={{ alignItems: 'center', justifyContent: 'center', flex: 1 }}>
-              <Text note style={{ fontSize: 20, color: '#fa8072' }} >There are no saved yet!</Text>
+              <MaterialIcons name='video-library' style={{ fontSize: 40, color: '#fa8072' }}/>
+              <Text note style={{ fontSize: 20, color: '#fa8072' }} >There are no saved yet !</Text>
             </View>
         }
       </View>

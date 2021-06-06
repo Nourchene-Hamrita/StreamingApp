@@ -47,7 +47,9 @@ module.exports.createVideo = async (req, res) => {
             )
         );
     }
+   
     const newVideo = new VideoModel({
+        
         channelId: req.body.channelId,
         channelname: req.body.channelname,
         theme: req.body.theme,
@@ -61,9 +63,10 @@ module.exports.createVideo = async (req, res) => {
         note: [],
         tags: []
     });
+    
     try {
         console.log(req.body.channelId)
-
+        
         await ChannelModel.findByIdAndUpdate(req.body.channelId, {
             $addToSet: { videos: newVideo }
         },
@@ -77,7 +80,9 @@ module.exports.createVideo = async (req, res) => {
 
 
         const video = await newVideo.save();
+        console.log(newVideo);
         return res.status(201).json(video);
+       
 
 
     } catch (err) {

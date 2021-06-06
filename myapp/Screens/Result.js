@@ -6,6 +6,7 @@ import CustomHeader from '../components/CustomHeader';
 import styles from '../components/Posts/style';
 import { dateParser } from '../components/utils';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
 import { getVideos, likeVideo, getInfoUser, dislikeVideo, getComments, CommentVideo, followChannel, SaveVideos } from "../services/apis";
@@ -346,6 +347,7 @@ export default class Result extends Component {
                 />
                     :
                     <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
+                     <MaterialCommunityIcons name="emoticon-sad-outline" style={{fontSize:40,color:'#fa8072'}}/>
                     <Text note style={{fontSize:20,color:'#fa8072'}} >Sorry! There is no result</Text>
                     </View>
                 }

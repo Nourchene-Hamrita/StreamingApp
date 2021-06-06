@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, SafeAreaView, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import { View, StyleSheet, SafeAreaView, FlatList, TouchableOpacity, ActivityIndicator,Alert } from 'react-native';
 import Video from 'react-native-video';
 import MediaControls, { PLAYER_STATES } from 'react-native-media-controls';
 import styles from './style';
@@ -68,7 +68,7 @@ export default class Post extends Component {
       this.setState({
         following: res.data
       })
-      alert('This channel has been added to your followings')
+      Alert.alert('Follow','This channel has been added to your followings')
     }).catch(err => {
       console.log(err);
     });
@@ -84,7 +84,7 @@ export default class Post extends Component {
       this.setState({
         following: res.data
       })
-      alert('This channel has been removed from your followings')
+      Alert.alert('Unfollow','This channel has been removed from your followings')
     }).catch(err => {
       console.log(err);
     });
@@ -325,7 +325,7 @@ export default class Post extends Component {
         console.log(res);
         this.getVideos();
       },
-        alert('Successfully added')
+      Alert.alert("Success","Your comment has been successfully added")
       ).catch(err => {
         console.log(err);
 

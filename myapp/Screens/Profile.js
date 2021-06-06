@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Image, Touchable, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Image, Touchable, TouchableOpacity, ScrollView,Alert } from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import { Container, Content, Form, Label, Item, List, ListItem, InputGroup, Input, Icon, Text, Picker, Button } from 'native-base';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
@@ -14,7 +14,6 @@ class ProfileScreen extends Component {
     this.state = {
       loading: true,
       profile: null,
-      newProfile: [],
       login: '',
       email: '',
       country: '',
@@ -80,7 +79,7 @@ class ProfileScreen extends Component {
         })
         AsyncStorage.setItem("user", JSON.stringify(res.data))
 
-        alert('Successfully Updated !')
+        Alert.alert('Updating','Successfully Updated !')
       }
       ).catch(err => {
         console.log(err);

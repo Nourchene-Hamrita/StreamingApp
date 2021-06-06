@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { SafeAreaView, View, FlatList, TouchableOpacity } from 'react-native';
+import { SafeAreaView, View, FlatList, Alert } from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import { Container, Header, Item, Input, Icon, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
 import AndroidKeyboardAdjust from 'react-native-android-keyboard-adjust';
@@ -92,7 +92,7 @@ export default class AddComment extends Component {
       .then((res) => {
         console.log(res);
         this.commentVideo(id)
-        alert("The comment has been successfully added")
+        Alert.alert("Success","Your comment has been successfully added")
       }
       ).catch(err => {
         console.log(err);

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { View, FlatList, TouchableOpacity } from 'react-native';
+import { View, FlatList, TouchableOpacity ,Alert} from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import LinearGradient from 'react-native-linear-gradient';
 import {unfollowChannel,getInfoUser} from'../services/apis';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Container, Header, Button, Content, List, ListItem, Left, Body, Right, Thumbnail, Text } from 'native-base';
 
 class SubscriptionScreen extends Component {
@@ -64,7 +65,7 @@ class SubscriptionScreen extends Component {
       this.setState({
         following:this.state.following.filter(item=>item.channelId!==idToUnFollow) 
       })
-      alert('This channel has been removed from your followings')
+      Alert.alert('Unfollow','This channel has been removed from your followings')
     }).catch(err => {
       console.log(err);
     });
@@ -84,7 +85,8 @@ class SubscriptionScreen extends Component {
         />
         :
         <View style={{alignItems:'center',justifyContent:'center',flex:1}}>
-        <Text note style={{fontSize:20,color:'#fa8072'}} >No followings yet!</Text>
+           <MaterialCommunityIcons name="video-vintage" style={{fontSize:40,color:'#fa8072'}}/>
+        <Text note style={{fontSize:20,color:'#fa8072'}} >No followings yet !</Text>
         </View>
     }
 
