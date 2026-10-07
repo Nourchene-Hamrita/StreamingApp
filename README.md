@@ -1,4 +1,6 @@
-This repository implements a video-sharing product: users sign up or log in, browse and search videos, interact with channels and comments, and manage saved videos and profiles.
+# 🎥 Streaming Informative videos App
+This repository implements an application for streaming informative videos, aimed at professionals, businesses, and learners.
+This application provides free access to information in video form: users sign up or log in, browse and search videos, interact with channels and comments, and manage saved videos and profiles.
 The React Native app routes users through these screens and uses an Axios service layer to call an Express/Mongoose backend.
 The backend separates HTTP routes, domain controllers, and MongoDB models.
 
